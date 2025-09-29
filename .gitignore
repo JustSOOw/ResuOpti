@@ -1,0 +1,6 @@
+# Ignore current workspace contents
+.claude/
+.specify/
+spec-kit-template-claude-sh-v0.0.54.zip
+AGENTS.md
+outresource.md

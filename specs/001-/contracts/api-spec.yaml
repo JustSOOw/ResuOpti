@@ -1,0 +1,583 @@
+openapi: 3.0.3
+info:
+  title: ResuOpti API
+  description: 个人简历管理平台REST API接口规范
+  version: 1.0.0
+  contact:
+    name: ResuOpti 开发团队
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: 本地开发环境
+  - url: https://resumopti.railway.app/api/v1
+    description: 生产环境
+
+paths:
+  # 用户认证相关接口
+  /auth/register:
+    post:
+      summary: 用户注册
+      description: 创建新用户账户
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: 用户邮箱地址
+                  example: user@example.com
+                password:
+                  type: string
+                  minLength: 8
+                  description: 用户密码，至少8位包含字母和数字
+                  example: password123
+      responses:
+        '201':
+          description: 注册成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "注册成功"
+                  data:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                        format: uuid
+                        example: "123e4567-e89b-12d3-a456-426614174000"
+                      email:
+                        type: string
+                        example: "user@example.com"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: 邮箱已存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login:
+    post:
+      summary: 用户登录
+      description: 用户登录获取访问令牌
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  example: password123
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "登录成功"
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        description: JWT访问令牌
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      user:
+                        $ref: '#/components/schemas/User'
+        '401':
+          description: 邮箱或密码错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # 目标岗位管理接口
+  /target-positions:
+    get:
+      summary: 获取用户的目标岗位列表
+      description: 获取当前用户创建的所有目标岗位
+      tags: [Target Positions]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TargetPosition'
+
+    post:
+      summary: 创建新的目标岗位
+      description: 为当前用户创建一个新的目标岗位分类
+      tags: [Target Positions]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  maxLength: 100
+                  description: 岗位名称
+                  example: "前端开发工程师"
+                description:
+                  type: string
+                  description: 岗位描述
+                  example: "专注于React和Vue技术栈的前端开发职位"
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "目标岗位创建成功"
+                  data:
+                    $ref: '#/components/schemas/TargetPosition'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /target-positions/{id}:
+    get:
+      summary: 获取指定目标岗位详情
+      tags: [Target Positions]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: 目标岗位ID
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/TargetPositionWithResumes'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: 更新目标岗位信息
+      tags: [Target Positions]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  maxLength: 100
+                  example: "高级前端开发工程师"
+                description:
+                  type: string
+                  example: "更新后的职位描述"
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "目标岗位更新成功"
+                  data:
+                    $ref: '#/components/schemas/TargetPosition'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: 删除目标岗位
+      description: 删除指定目标岗位，需要确保该岗位下没有简历版本
+      tags: [Target Positions]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "目标岗位删除成功"
+        '400':
+          description: 无法删除，该岗位下存在简历版本
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # 简历版本管理接口
+  /resumes:
+    post:
+      summary: 创建新简历版本
+      description: 创建在线简历或上传文件简历
+      tags: [Resume Versions]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - targetPositionId
+                - type
+                - title
+              properties:
+                targetPositionId:
+                  type: string
+                  format: uuid
+                  description: 所属目标岗位ID
+                type:
+                  type: string
+                  enum: [online, file]
+                  description: 简历类型
+                title:
+                  type: string
+                  maxLength: 200
+                  description: 简历标题
+                  example: "腾讯前端开发岗位简历"
+                content:
+                  type: string
+                  description: 富文本内容(type=online时必填)
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "简历版本创建成功"
+                  data:
+                    $ref: '#/components/schemas/ResumeVersion'
+
+  /resumes/upload:
+    post:
+      summary: 上传简历文件
+      description: 上传PDF或Word格式的简历文件
+      tags: [Resume Versions]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - targetPositionId
+                - title
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 简历文件(PDF/Word, ≤10MB)
+                targetPositionId:
+                  type: string
+                  format: uuid
+                  description: 所属目标岗位ID
+                title:
+                  type: string
+                  maxLength: 200
+                  description: 简历标题
+      responses:
+        '201':
+          description: 上传成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "简历文件上传成功"
+                  data:
+                    $ref: '#/components/schemas/ResumeVersion'
+        '400':
+          description: 文件格式或大小不符合要求
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 使用JWT令牌进行身份验证，格式：Bearer <token>
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-09-29T10:00:00Z"
+
+    TargetPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        userId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          example: "前端开发工程师"
+        description:
+          type: string
+          nullable: true
+          example: "专注于React技术栈的前端开发职位"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-09-29T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-09-29T10:00:00Z"
+
+    TargetPositionWithResumes:
+      allOf:
+        - $ref: '#/components/schemas/TargetPosition'
+        - type: object
+          properties:
+            resumes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResumeVersionSummary'
+
+    ResumeVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174002"
+        targetPositionId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        type:
+          type: string
+          enum: [online, file]
+          example: "online"
+        title:
+          type: string
+          example: "腾讯前端开发岗位简历"
+        filePath:
+          type: string
+          nullable: true
+          example: "/uploads/user123/position456/resume.pdf"
+        fileName:
+          type: string
+          nullable: true
+          example: "张三-前端开发简历.pdf"
+        fileSize:
+          type: integer
+          nullable: true
+          example: 2048576
+        content:
+          type: string
+          nullable: true
+          example: "<p>个人简历内容...</p>"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-09-29T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-09-29T10:00:00Z"
+
+    ResumeVersionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [online, file]
+        title:
+          type: string
+        fileName:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        applicationCount:
+          type: integer
+          description: 投递记录数量
+          example: 3
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "错误信息描述"
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "VALIDATION_ERROR"
+            details:
+              type: object
+              description: 详细错误信息
+
+  responses:
+    BadRequest:
+      description: 请求参数错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Unauthorized:
+      description: 未授权访问
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalError:
+      description: 服务器内部错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
