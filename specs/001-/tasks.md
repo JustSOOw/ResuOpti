@@ -138,9 +138,9 @@ frontend/
 
 ## Phase 3.11: 前端路由和类型定义
 
-- [ ] T062 [P] Vue Router配置：路由表和导航守卫 在 frontend/src/router/index.ts
-- [ ] T063 [P] TypeScript类型定义：API响应和业务实体 在 frontend/src/types/
-- [ ] T064 [P] 前后端共享类型定义：确保数据一致性 在 shared/types/
+- [X] T062 [P] Vue Router配置：路由表和导航守卫 在 frontend/src/router/index.ts
+- [X] T063 [P] TypeScript类型定义：API响应和业务实体 在 frontend/src/types/
+- [X] T064 [P] 前后端共享类型定义：确保数据一致性 在 shared/types/
 
 ## Phase 3.12: 集成测试和E2E测试
 
