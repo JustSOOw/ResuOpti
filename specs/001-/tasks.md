@@ -153,11 +153,11 @@ frontend/
 
 ## Phase 3.13: 系统集成和配置
 
-- [ ] T071 数据库种子数据：测试用户和示例数据 在 backend/src/seeders/
-- [ ] T072 API路由整合：Express路由配置和中间件绑定 在 backend/src/app.js
-- [ ] T073 前端应用入口：Vue实例配置和插件注册 在 frontend/src/main.ts
-- [ ] T074 环境配置管理：开发、测试、生产环境变量 在 根目录/.env*
-- [ ] T075 错误边界和全局异常处理：前后端错误捕获 跨 backend/frontend
+- [X] T071 数据库种子数据：测试用户和示例数据 在 backend/src/seeders/
+- [X] T072 API路由整合：Express路由配置和中间件绑定 在 backend/src/app.js
+- [X] T073 前端应用入口：Vue实例配置和插件注册 在 frontend/src/main.ts
+- [X] T074 环境配置管理：开发、测试、生产环境变量 在 根目录/.env*
+- [X] T075 错误边界和全局异常处理：前后端错误捕获 跨 backend/frontend
 
 ## Phase 3.14: 性能优化和Polish
 
