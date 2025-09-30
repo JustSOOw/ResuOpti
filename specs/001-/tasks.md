@@ -86,20 +86,20 @@ frontend/
 
 ## Phase 3.5: 后端API控制器实现
 
-- [ ] T028 实现用户认证API控制器：注册和登录端点 在 backend/src/api/auth/index.js
-- [ ] T029 实现目标岗位API控制器：完整CRUD端点 在 backend/src/api/positions/index.js
-- [ ] T030 实现简历版本API控制器：创建和管理端点 在 backend/src/api/resumes/index.js
-- [ ] T031 实现文件上传API控制器：Multer中间件集成 在 backend/src/api/upload/index.js
+- [X] T028 实现用户认证API控制器：注册和登录端点 在 backend/src/api/auth/index.js
+- [X] T029 实现目标岗位API控制器：完整CRUD端点 在 backend/src/api/positions/index.js
+- [X] T030 实现简历版本API控制器：创建和管理端点 在 backend/src/api/resumes/index.js
+- [X] T031 实现文件上传API控制器：Multer中间件集成 在 backend/src/api/upload/index.js
 
 ## Phase 3.6: 后端中间件和工具
 
-- [ ] T032 [P] JWT认证中间件：token验证和用户提取 在 backend/src/middleware/auth.js
-- [ ] T033 [P] 文件上传中间件：大小和格式验证 在 backend/src/middleware/upload.js
-- [ ] T034 [P] 请求数据验证中间件：Joi/express-validator 在 backend/src/middleware/validation.js
-- [ ] T035 [P] 错误处理中间件：统一错误响应格式 在 backend/src/middleware/error.js
-- [ ] T036 [P] 加密工具：密码哈希和JWT工具函数 在 backend/src/utils/crypto.js
-- [ ] T037 [P] 响应格式化工具：统一API响应结构 在 backend/src/utils/response.js
-- [ ] T038 [P] 日志工具：Winston配置和中间件 在 backend/src/utils/logger.js
+- [X] T032 [P] JWT认证中间件：token验证和用户提取 在 backend/src/middleware/auth.js
+- [X] T033 [P] 文件上传中间件：大小和格式验证 在 backend/src/middleware/upload.js
+- [X] T034 [P] 请求数据验证中间件：Joi/express-validator 在 backend/src/middleware/validation.js
+- [X] T035 [P] 错误处理中间件：统一错误响应格式 在 backend/src/middleware/error.js
+- [X] T036 [P] 加密工具：密码哈希和JWT工具函数 在 backend/src/utils/crypto.js
+- [X] T037 [P] 响应格式化工具：统一API响应结构 在 backend/src/utils/response.js
+- [X] T038 [P] 日志工具：Winston配置和中间件 在 backend/src/utils/logger.js
 
 ## Phase 3.7: 前端状态管理和服务层
 
