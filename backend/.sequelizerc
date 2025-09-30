@@ -1,0 +1,13 @@
+/**
+ * Sequelize CLI 配置文件
+ * 指定模型、迁移文件和配置的路径
+ */
+
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('src', 'config', 'database.js'),
+  'models-path': path.resolve('src', 'models'),
+  'seeders-path': path.resolve('src', 'seeders'),
+  'migrations-path': path.resolve('src', 'migrations')
+};

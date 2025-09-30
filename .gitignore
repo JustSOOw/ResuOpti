@@ -4,3 +4,55 @@
 spec-kit-template-claude-sh-v0.0.54.zip
 AGENTS.md
 outresource.md
+
+# Node.js 依赖与包管理缓存
+node_modules/
+.pnpm-store/
+.pnp/
+.pnp.js
+
+# 包管理与运行日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 构建与测试输出
+.dist/
+dist/
+build/
+coverage/
+coverage-*
+*.tsbuildinfo
+.cache/
+.tmp/
+.temp/
+
+# 环境变量文件
+.env
+.env.*
+!.env.example
+
+# 后端运行时数据
+backend/uploads/
+backend/storage/
+
+# 前端构建产物
+frontend/dist/
+frontend/frontend/dist/
+
+# 编辑器与系统文件
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.iml
+
+# 通用日志与锁文件
+logs/
+*.log
+*.pid
+*.pid.lock
