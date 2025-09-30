@@ -129,12 +129,12 @@ frontend/
 
 ## Phase 3.10: 前端Composition API和工具
 
-- [ ] T056 [P] 认证相关Composable：useAuth用户状态管理 在 frontend/src/composables/useAuth.ts
-- [ ] T057 [P] 文件上传Composable：useFileUpload进度管理 在 frontend/src/composables/useFileUpload.ts
-- [ ] T058 [P] 主题切换Composable：useTheme暗黑模式 在 frontend/src/composables/useTheme.ts
-- [ ] T059 [P] 前端工具函数：HTTP请求封装 在 frontend/src/utils/request.ts
-- [ ] T060 [P] 表单验证工具：validation规则 在 frontend/src/utils/validation.ts
-- [ ] T061 [P] 文件处理工具：类型检查、大小格式化 在 frontend/src/utils/file.ts
+- [X] T056 [P] 认证相关Composable：useAuth用户状态管理 在 frontend/src/composables/useAuth.ts
+- [X] T057 [P] 文件上传Composable：useFileUpload进度管理 在 frontend/src/composables/useFileUpload.ts
+- [X] T058 [P] 主题切换Composable：useTheme暗黑模式 在 frontend/src/composables/useTheme.ts
+- [X] T059 [P] 前端工具函数：HTTP请求封装 在 frontend/src/utils/request.ts
+- [X] T060 [P] 表单验证工具：validation规则 在 frontend/src/utils/validation.ts
+- [X] T061 [P] 文件处理工具：类型检查、大小格式化 在 frontend/src/utils/file.ts
 
 ## Phase 3.11: 前端路由和类型定义
 
