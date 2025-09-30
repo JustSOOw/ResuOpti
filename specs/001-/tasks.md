@@ -103,14 +103,14 @@ frontend/
 
 ## Phase 3.7: 前端状态管理和服务层
 
-- [ ] T039 [P] 用户认证状态管理：登录状态、token管理 在 frontend/src/stores/auth.ts
-- [ ] T040 [P] 目标岗位状态管理：岗位列表和选中状态 在 frontend/src/stores/positions.ts
-- [ ] T041 [P] 简历版本状态管理：简历列表和编辑状态 在 frontend/src/stores/resumes.ts
-- [ ] T042 [P] 主题状态管理：暗黑模式切换和持久化 在 frontend/src/stores/theme.ts
-- [ ] T043 [P] API服务基础配置：axios封装、拦截器 在 frontend/src/services/api.ts
-- [ ] T044 [P] 用户认证API服务：注册、登录接口调用 在 frontend/src/services/auth.ts
-- [ ] T045 [P] 目标岗位API服务：CRUD接口调用 在 frontend/src/services/positions.ts
-- [ ] T046 [P] 简历版本API服务：创建、编辑接口调用 在 frontend/src/services/resumes.ts
+- [X] T039 [P] 用户认证状态管理：登录状态、token管理 在 frontend/src/stores/auth.ts
+- [X] T040 [P] 目标岗位状态管理：岗位列表和选中状态 在 frontend/src/stores/positions.ts
+- [X] T041 [P] 简历版本状态管理：简历列表和编辑状态 在 frontend/src/stores/resumes.ts
+- [X] T042 [P] 主题状态管理：暗黑模式切换和持久化 在 frontend/src/stores/theme.ts
+- [X] T043 [P] API服务基础配置：axios封装、拦截器 在 frontend/src/services/api.ts
+- [X] T044 [P] 用户认证API服务：注册、登录接口调用 在 frontend/src/services/auth.ts
+- [X] T045 [P] 目标岗位API服务：CRUD接口调用 在 frontend/src/services/positions.ts
+- [X] T046 [P] 简历版本API服务：创建、编辑接口调用 在 frontend/src/services/resumes.ts
 
 ## Phase 3.8: 前端通用组件
 
