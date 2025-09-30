@@ -10,7 +10,8 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import router from './router'
 import App from './App.vue'
-import './style.css'
+import './styles/theme.scss'
+import './styles/global.scss'
 
 const app = createApp(App)
 

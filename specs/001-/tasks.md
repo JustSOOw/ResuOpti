@@ -114,10 +114,10 @@ frontend/
 
 ## Phase 3.8: 前端通用组件
 
-- [ ] T047 [P] 基础通用组件：Header、Sidebar、Loading 在 frontend/src/components/common/
-- [ ] T048 [P] 表单通用组件：LoginForm、PositionForm 在 frontend/src/components/forms/
-- [ ] T049 [P] 业务通用组件：ResumeCard、FileUpload 在 frontend/src/components/business/
-- [ ] T050 [P] Element Plus暗黑主题配置和自定义样式 在 frontend/src/styles/theme.scss
+- [X] T047 [P] 基础通用组件：Header、Sidebar、Loading 在 frontend/src/components/common/
+- [X] T048 [P] 表单通用组件：LoginForm、PositionForm 在 frontend/src/components/forms/
+- [X] T049 [P] 业务通用组件：ResumeCard、FileUpload 在 frontend/src/components/business/
+- [X] T050 [P] Element Plus暗黑主题配置和自定义样式 在 frontend/src/styles/theme.scss
 
 ## Phase 3.9: 前端页面组件
 
