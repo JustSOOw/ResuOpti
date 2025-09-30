@@ -144,12 +144,12 @@ frontend/
 
 ## Phase 3.12: 集成测试和E2E测试
 
-- [ ] T065 [P] 用户注册登录集成测试：完整认证流程 在 backend/tests/integration/auth.test.js
-- [ ] T066 [P] 目标岗位管理集成测试：CRUD操作流程 在 backend/tests/integration/positions.test.js
-- [ ] T067 [P] 简历版本管理集成测试：创建编辑流程 在 backend/tests/integration/resumes.test.js
-- [ ] T068 [P] 文件上传集成测试：多格式和大小验证 在 backend/tests/integration/upload.test.js
-- [ ] T069 [P] E2E用户场景测试：注册到创建简历完整流程 在 frontend/tests/e2e/user-journey.cy.ts
-- [ ] T070 [P] E2E简历管理测试：编辑导出投递记录流程 在 frontend/tests/e2e/resume-management.cy.ts
+- [X] T065 [P] 用户注册登录集成测试：完整认证流程 在 backend/tests/integration/auth.test.js
+- [X] T066 [P] 目标岗位管理集成测试：CRUD操作流程 在 backend/tests/integration/positions.test.js
+- [X] T067 [P] 简历版本管理集成测试：创建编辑流程 在 backend/tests/integration/resumes.test.js
+- [X] T068 [P] 文件上传集成测试：多格式和大小验证 在 backend/tests/integration/upload.test.js
+- [X] T069 [P] E2E用户场景测试：注册到创建简历完整流程 在 frontend/tests/e2e/user-journey.cy.ts
+- [X] T070 [P] E2E简历管理测试：编辑导出投递记录流程 在 frontend/tests/e2e/resume-management.cy.ts
 
 ## Phase 3.13: 系统集成和配置
 

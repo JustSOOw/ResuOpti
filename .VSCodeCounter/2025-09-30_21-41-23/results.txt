@@ -1,0 +1,92 @@
+Date : 2025-09-30 21:41:23
+Directory : d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend
+Total : 47 files,  15466 codes, 3166 comments, 1629 blanks, all 20261 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          2 |      8,044 |          0 |          2 |      8,046 |
+| JavaScript |         42 |      7,336 |      3,160 |      1,602 |     12,098 |
+| Markdown   |          1 |         69 |          0 |         18 |         87 |
+| Ignore     |          1 |          9 |          0 |          0 |          9 |
+| Docker     |          1 |          8 |          6 |          7 |         21 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |         47 |     15,466 |      3,166 |      1,629 |     20,261 |
+| . (Files)                                                                                                  |          5 |      8,081 |         10 |         10 |      8,101 |
+| src                                                                                                        |         27 |      3,373 |      1,748 |        621 |      5,742 |
+| src (Files)                                                                                                |          2 |         39 |         16 |         15 |         70 |
+| src\api                                                                                                    |          4 |        800 |        417 |        156 |      1,373 |
+| src\api\auth                                                                                               |          1 |        116 |         74 |         22 |        212 |
+| src\api\positions                                                                                          |          1 |        245 |        134 |         51 |        430 |
+| src\api\resumes                                                                                            |          1 |        298 |        152 |         59 |        509 |
+| src\api\upload                                                                                             |          1 |        141 |         57 |         24 |        222 |
+| src\config                                                                                                 |          2 |         80 |         10 |          7 |         97 |
+| src\middleware                                                                                             |          4 |        660 |        466 |        104 |      1,230 |
+| src\models                                                                                                 |          6 |        390 |         34 |         22 |        446 |
+| src\services                                                                                               |          6 |      1,031 |        466 |        231 |      1,728 |
+| src\utils                                                                                                  |          3 |        373 |        339 |         86 |        798 |
+| tests                                                                                                      |         15 |      4,012 |      1,408 |        998 |      6,418 |
+| tests (Files)                                                                                              |          1 |          6 |          7 |          3 |         16 |
+| tests\contract                                                                                             |          9 |      1,913 |        801 |        449 |      3,163 |
+| tests\integration                                                                                          |          5 |      2,093 |        600 |        546 |      3,239 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                   | language   | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\.dockerignore                                     | Ignore     |          9 |          0 |          0 |          9 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\Dockerfile                                        | Docker     |          8 |          6 |          7 |         21 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\jest.config.js                                    | JavaScript |         20 |          4 |          1 |         25 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\package-lock.json                                 | JSON       |      7,999 |          0 |          1 |      8,000 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\package.json                                      | JSON       |         45 |          0 |          1 |         46 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\api\auth\index.js                             | JavaScript |        116 |         74 |         22 |        212 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\api\positions\index.js                        | JavaScript |        245 |        134 |         51 |        430 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\api\resumes\index.js                          | JavaScript |        298 |        152 |         59 |        509 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\api\upload\index.js                           | JavaScript |        141 |         57 |         24 |        222 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\app.js                                        | JavaScript |         32 |         13 |         12 |         57 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\config\database.js                            | JavaScript |         48 |          4 |          2 |         54 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\config\index.js                               | JavaScript |         32 |          6 |          5 |         43 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\middleware\auth.js                            | JavaScript |         59 |         82 |         21 |        162 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\middleware\error.js                           | JavaScript |        127 |         87 |         23 |        237 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\middleware\upload.js                          | JavaScript |         96 |         70 |         22 |        188 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\middleware\validation.js                      | JavaScript |        378 |        227 |         38 |        643 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\models\ApplicationRecord.js                   | JavaScript |         87 |          5 |          3 |         95 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\models\ResumeMetadata.js                      | JavaScript |         72 |          6 |          3 |         81 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\models\ResumeVersion.js                       | JavaScript |         80 |          5 |          3 |         88 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\models\TargetPosition.js                      | JavaScript |         57 |          4 |          3 |         64 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\models\User.js                                | JavaScript |         44 |          4 |          3 |         51 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\models\index.js                               | JavaScript |         50 |         10 |          7 |         67 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\server.js                                     | JavaScript |          7 |          3 |          3 |         13 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\services\applicationService.js                | JavaScript |        249 |         95 |         50 |        394 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\services\authService.js                       | JavaScript |        115 |         68 |         26 |        209 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\services\fileService.js                       | JavaScript |        145 |         68 |         32 |        245 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\services\metadataService.js                   | JavaScript |        174 |         79 |         37 |        290 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\services\positionService.js                   | JavaScript |        135 |         59 |         35 |        229 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\services\resumeService.js                     | JavaScript |        213 |         97 |         51 |        361 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\utils\crypto.js                               | JavaScript |        123 |        103 |         35 |        261 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\utils\logger.js                               | JavaScript |        190 |         93 |         37 |        320 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\src\utils\response.js                             | JavaScript |         60 |        143 |         14 |        217 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\auth-login.test.js                 | JavaScript |        191 |        165 |         60 |        416 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\auth-register.test.js              | JavaScript |        130 |        126 |         43 |        299 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\resumes-post.test.js               | JavaScript |        310 |         56 |         59 |        425 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\resumes-upload.test.js             | JavaScript |        458 |         86 |         94 |        638 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-delete.test.js    | JavaScript |        145 |         79 |         36 |        260 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-get-by-id.test.js | JavaScript |        146 |         74 |         36 |        256 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-get.test.js       | JavaScript |         98 |         51 |         23 |        172 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-post.test.js      | JavaScript |        202 |         76 |         45 |        323 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-put.test.js       | JavaScript |        233 |         88 |         53 |        374 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\README.md                       | Markdown   |         69 |          0 |         18 |         87 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\auth.test.js                    | JavaScript |        313 |        304 |        105 |        722 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\positions.test.js               | JavaScript |        623 |         97 |        165 |        885 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\resumes.test.js                 | JavaScript |        592 |         89 |        106 |        787 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\upload.test.js                  | JavaScript |        496 |        110 |        152 |        758 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\setup.js                                    | JavaScript |          6 |          7 |          3 |         16 |
+| Total                                                                                                      |            |     15,466 |      3,166 |      1,629 |     20,261 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
