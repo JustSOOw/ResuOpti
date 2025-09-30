@@ -1,30 +1,50 @@
+<!--
+  应用根组件
+  负责渲染路由视图和初始化全局状态
+-->
+
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { onMounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { useThemeStore } from '@/stores/theme'
+
+// ==================== Stores ====================
+
+/** 认证Store */
+const authStore = useAuthStore()
+
+/** 主题Store */
+const themeStore = useThemeStore()
+
+// ==================== 生命周期 ====================
+
+/**
+ * 应用挂载时初始化
+ */
+onMounted(() => {
+  // 从localStorage恢复认证状态
+  authStore.loadAuthFromStorage()
+
+  // 初始化主题
+  themeStore.initTheme()
+})
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+    <!-- 路由视图 -->
+    <router-view />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+/**
+ * 应用根容器
+ */
+#app {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--el-bg-color-page);
+  transition: background-color 0.3s ease;
 }
 </style>

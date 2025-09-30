@@ -121,11 +121,11 @@ frontend/
 
 ## Phase 3.9: 前端页面组件
 
-- [ ] T051 [P] 用户登录注册页面：表单验证和状态管理 在 frontend/src/views/auth/
-- [ ] T052 [P] 主仪表板页面：岗位列表和创建入口 在 frontend/src/views/dashboard/
-- [ ] T053 [P] 目标岗位管理页面：详情、简历列表 在 frontend/src/views/positions/
-- [ ] T054 实现Tiptap富文本编辑器页面：在线简历创建 在 frontend/src/views/editor/
-- [ ] T055 PDF导出功能：html2pdf.js集成 在 frontend/src/views/editor/ (需要T054完成)
+- [X] T051 [P] 用户登录注册页面：表单验证和状态管理 在 frontend/src/views/auth/
+- [X] T052 [P] 主仪表板页面：岗位列表和创建入口 在 frontend/src/views/dashboard/
+- [X] T053 [P] 目标岗位管理页面：详情、简历列表 在 frontend/src/views/positions/
+- [X] T054 实现Tiptap富文本编辑器页面：在线简历创建 在 frontend/src/views/editor/
+- [X] T055 PDF导出功能：html2pdf.js集成 在 frontend/src/views/editor/ (需要T054完成)
 
 ## Phase 3.10: 前端Composition API和工具
 

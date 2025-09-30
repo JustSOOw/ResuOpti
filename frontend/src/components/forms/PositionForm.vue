@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { Briefcase } from '@element-plus/icons-vue'
 
 /**
  * 岗位表单数据接口
