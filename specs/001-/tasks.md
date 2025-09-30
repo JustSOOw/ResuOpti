@@ -77,12 +77,12 @@ frontend/
 
 ## Phase 3.4: 后端业务逻辑服务层
 
-- [ ] T022 [P] 用户认证服务：密码哈希、JWT生成验证 在 backend/src/services/authService.js
-- [ ] T023 [P] 目标岗位管理服务：CRUD操作和验证 在 backend/src/services/positionService.js
-- [ ] T024 [P] 简历版本管理服务：在线/文件管理逻辑 在 backend/src/services/resumeService.js
-- [ ] T025 [P] 文件上传处理服务：Multer集成、验证、存储 在 backend/src/services/fileService.js
-- [ ] T026 [P] 简历元数据管理服务：备注和标签CRUD 在 backend/src/services/metadataService.js
-- [ ] T027 [P] 投递记录管理服务：状态跟踪和查询 在 backend/src/services/applicationService.js
+- [X] T022 [P] 用户认证服务：密码哈希、JWT生成验证 在 backend/src/services/authService.js
+- [X] T023 [P] 目标岗位管理服务：CRUD操作和验证 在 backend/src/services/positionService.js
+- [X] T024 [P] 简历版本管理服务：在线/文件管理逻辑 在 backend/src/services/resumeService.js
+- [X] T025 [P] 文件上传处理服务：Multer集成、验证、存储 在 backend/src/services/fileService.js
+- [X] T026 [P] 简历元数据管理服务：备注和标签CRUD 在 backend/src/services/metadataService.js
+- [X] T027 [P] 投递记录管理服务：状态跟踪和查询 在 backend/src/services/applicationService.js
 
 ## Phase 3.5: 后端API控制器实现
 

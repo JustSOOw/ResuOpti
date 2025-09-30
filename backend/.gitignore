@@ -1,0 +1,32 @@
+# 依赖
+node_modules/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 日志文件
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 上传的文件（保留目录结构但忽略文件内容）
+uploads/**/*
+!uploads/.gitkeep
+
+# 测试覆盖率
+coverage/
+
+# IDE配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
