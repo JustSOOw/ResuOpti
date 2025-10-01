@@ -93,7 +93,7 @@ describe('GET /api/v1/target-positions - 获取目标岗位列表', () => {
       expect(new Date(position.updatedAt).toISOString()).toBe(position.updatedAt);
 
       // description是可选字段，如果存在应该是string或null
-      if (position.hasOwnProperty('description')) {
+      if (Object.prototype.hasOwnProperty.call(position, 'description')) {
         expect(['string', 'object']).toContain(typeof position.description);
         if (position.description !== null) {
           expect(typeof position.description).toBe('string');
@@ -164,7 +164,7 @@ describe('GET /api/v1/target-positions - 获取目标岗位列表', () => {
     // 如果有数据，验证所有岗位都属于同一个用户
     if (data.length > 0) {
       const userId = data[0].userId;
-      data.forEach(position => {
+      data.forEach((position) => {
         expect(position.userId).toBe(userId);
       });
     }

@@ -57,59 +57,49 @@ export const useResumesStore = defineStore('resumes', {
     /**
      * 获取简历总数
      */
-    resumeCount: (state): number => {
-      return state.resumes.length
-    },
+    resumeCount: (state): number => state.resumes.length,
 
     /**
      * 获取文件类型简历列表
      */
-    fileResumes: (state): ResumeVersion[] => {
-      return state.resumes.filter(resume => resume.type === 'file')
-    },
+    fileResumes: (state): ResumeVersion[] =>
+      state.resumes.filter((resume) => resume.type === 'file'),
 
     /**
      * 获取在线创建简历列表
      */
-    onlineResumes: (state): ResumeVersion[] => {
-      return state.resumes.filter(resume => resume.type === 'online')
-    },
+    onlineResumes: (state): ResumeVersion[] =>
+      state.resumes.filter((resume) => resume.type === 'online'),
 
     /**
      * 根据ID查找简历
      * @param id 简历ID
      * @returns 简历对象或undefined
      */
-    getResumeById: (state) => {
-      return (id: string): ResumeVersion | undefined => {
-        return state.resumes.find(resume => resume.id === id)
-      }
-    },
+    getResumeById:
+      (state) =>
+      (id: string): ResumeVersion | undefined =>
+        state.resumes.find((resume) => resume.id === id),
 
     /**
      * 根据岗位ID过滤简历
      * @param positionId 目标岗位ID
      * @returns 该岗位下的所有简历
      */
-    getResumesByPosition: (state) => {
-      return (positionId: string): ResumeVersion[] => {
-        return state.resumes.filter(resume => resume.targetPositionId === positionId)
-      }
-    },
+    getResumesByPosition:
+      (state) =>
+      (positionId: string): ResumeVersion[] =>
+        state.resumes.filter((resume) => resume.targetPositionId === positionId),
 
     /**
      * 判断是否有错误
      */
-    hasError: (state): boolean => {
-      return state.error !== null
-    },
+    hasError: (state): boolean => state.error !== null,
 
     /**
      * 判断是否正在上传文件
      */
-    isUploading: (state): boolean => {
-      return state.uploadProgress > 0 && state.uploadProgress < 100
-    }
+    isUploading: (state): boolean => state.uploadProgress > 0 && state.uploadProgress < 100
   },
 
   // ============ Actions ============
@@ -147,7 +137,7 @@ export const useResumesStore = defineStore('resumes', {
         this.currentResume = resume
 
         // 同时更新列表中的对应项
-        const index = this.resumes.findIndex(r => r.id === id)
+        const index = this.resumes.findIndex((r) => r.id === id)
         if (index !== -1) {
           this.resumes[index] = resume
         }
@@ -197,7 +187,7 @@ export const useResumesStore = defineStore('resumes', {
         const updatedResume = await updateResume(id, data)
 
         // 更新列表中的对应项
-        const index = this.resumes.findIndex(r => r.id === id)
+        const index = this.resumes.findIndex((r) => r.id === id)
         if (index !== -1) {
           this.resumes[index] = updatedResume
         }
@@ -229,7 +219,7 @@ export const useResumesStore = defineStore('resumes', {
         await deleteResume(id)
 
         // 从列表中移除
-        this.resumes = this.resumes.filter(r => r.id !== id)
+        this.resumes = this.resumes.filter((r) => r.id !== id)
 
         // 如果删除的是当前编辑的简历，清空currentResume
         if (this.currentResume?.id === id) {
@@ -257,14 +247,9 @@ export const useResumesStore = defineStore('resumes', {
 
       try {
         // 调用上传API，并传入进度回调
-        const newResume = await uploadResumeFile(
-          file,
-          positionId,
-          title,
-          (progress: number) => {
-            this.updateUploadProgress(progress)
-          }
-        )
+        const newResume = await uploadResumeFile(file, positionId, title, (progress: number) => {
+          this.updateUploadProgress(progress)
+        })
 
         // 上传完成后，将新简历添加到列表头部
         this.resumes.unshift(newResume)
@@ -326,7 +311,7 @@ export const useResumesStore = defineStore('resumes', {
      * @returns 指定类型的简历列表
      */
     getResumesByType(type: ResumeType): ResumeVersion[] {
-      return this.resumes.filter(resume => resume.type === type)
+      return this.resumes.filter((resume) => resume.type === type)
     },
 
     /**
@@ -339,10 +324,10 @@ export const useResumesStore = defineStore('resumes', {
 
       try {
         // 并发删除所有指定的简历
-        await Promise.all(ids.map(id => deleteResume(id)))
+        await Promise.all(ids.map((id) => deleteResume(id)))
 
         // 从列表中移除所有已删除的简历
-        this.resumes = this.resumes.filter(r => !ids.includes(r.id))
+        this.resumes = this.resumes.filter((r) => !ids.includes(r.id))
 
         // 如果当前编辑的简历被删除，清空currentResume
         if (this.currentResume && ids.includes(this.currentResume.id)) {

@@ -20,7 +20,7 @@ let useWinston = false;
 try {
   winston = require('winston');
   useWinston = true;
-} catch (error) {
+} catch (_error) {
   console.warn('⚠️  Winston未安装，使用Console fallback。建议安装：npm install winston');
 }
 
@@ -35,8 +35,8 @@ const LOG_LEVELS = {
 // ANSI颜色代码（用于console输出）
 const COLORS = {
   error: '\x1b[31m', // 红色
-  warn: '\x1b[33m',  // 黄色
-  info: '\x1b[36m',  // 青色
+  warn: '\x1b[33m', // 黄色
+  info: '\x1b[36m', // 青色
   debug: '\x1b[35m', // 紫色
   reset: '\x1b[0m'
 };
@@ -72,7 +72,8 @@ function formatConsoleMessage(level, message, meta = {}) {
  */
 class ConsoleFallbackLogger {
   constructor() {
-    this.level = process.env.LOG_LEVEL || (process.env.NODE_ENV === 'production' ? 'info' : 'debug');
+    this.level =
+      process.env.LOG_LEVEL || (process.env.NODE_ENV === 'production' ? 'info' : 'debug');
     this.maxLevel = LOG_LEVELS[this.level];
   }
 
@@ -158,11 +159,7 @@ function createWinstonLogger() {
   );
 
   // 生产环境日志格式（JSON、结构化）
-  const prodFormat = combine(
-    timestamp(),
-    errors({ stack: true }),
-    json()
-  );
+  const prodFormat = combine(timestamp(), errors({ stack: true }), json());
 
   // 根据环境选择格式
   const isProduction = process.env.NODE_ENV === 'production';
@@ -202,17 +199,21 @@ function createWinstonLogger() {
     format: logFormat,
     transports,
     // 处理未捕获的异常
-    exceptionHandlers: isProduction ? [
-      new winston.transports.File({
-        filename: path.join(logsDir, 'exceptions.log')
-      })
-    ] : [],
+    exceptionHandlers: isProduction
+      ? [
+          new winston.transports.File({
+            filename: path.join(logsDir, 'exceptions.log')
+          })
+        ]
+      : [],
     // 处理未处理的Promise拒绝
-    rejectionHandlers: isProduction ? [
-      new winston.transports.File({
-        filename: path.join(logsDir, 'rejections.log')
-      })
-    ] : []
+    rejectionHandlers: isProduction
+      ? [
+          new winston.transports.File({
+            filename: path.join(logsDir, 'rejections.log')
+          })
+        ]
+      : []
   });
 }
 

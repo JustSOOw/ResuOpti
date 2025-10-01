@@ -18,9 +18,9 @@ const fs = require('fs');
 const UPLOAD_DIR = path.join(__dirname, '../../uploads');
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB = 10,485,760 字节
 const ALLOWED_MIME_TYPES = [
-  'application/pdf',                                                      // .pdf
+  'application/pdf', // .pdf
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-  'application/msword'                                                    // .doc
+  'application/msword' // .doc
 ];
 const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc'];
 
@@ -103,7 +103,7 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: MAX_FILE_SIZE  // 限制文件大小为10MB
+    fileSize: MAX_FILE_SIZE // 限制文件大小为10MB
   }
 });
 

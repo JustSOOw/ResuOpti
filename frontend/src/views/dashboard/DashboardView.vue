@@ -13,10 +13,15 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Edit, Delete, View, Briefcase } from '@element-plus/icons-vue'
 
-// 导入组件
+// 导入公共组件
 import Header from '@/components/common/Header.vue'
 import Loading from '@/components/common/Loading.vue'
-import PositionForm from '@/components/forms/PositionForm.vue'
+
+// 异步导入业务组件（非首屏必需，延迟加载）
+import { createAsyncComponent } from '@/utils/asyncComponent'
+const PositionForm = createAsyncComponent(() => import('@/components/forms/PositionForm.vue'), {
+  loadingText: '加载表单中...'
+})
 
 // 导入Store
 import { useAuthStore } from '@/stores/auth'
@@ -281,12 +286,7 @@ const getEditFormData = computed((): PositionFormData | null => {
             <p class="subtitle">管理您的求职目标岗位和简历版本</p>
           </div>
           <div class="header-actions">
-            <el-button
-              type="primary"
-              :icon="Plus"
-              size="large"
-              @click="handleOpenCreateDialog"
-            >
+            <el-button type="primary" :icon="Plus" size="large" @click="handleOpenCreateDialog">
               创建新岗位
             </el-button>
           </div>
@@ -343,9 +343,7 @@ const getEditFormData = computed((): PositionFormData | null => {
                   <div v-if="position.description" class="position-description">
                     {{ position.description }}
                   </div>
-                  <div v-else class="position-description empty">
-                    暂无描述
-                  </div>
+                  <div v-else class="position-description empty">暂无描述</div>
 
                   <!-- 统计信息 -->
                   <div class="position-stats">
@@ -371,11 +369,7 @@ const getEditFormData = computed((): PositionFormData | null => {
                     >
                       查看详情
                     </el-button>
-                    <el-button
-                      :icon="Edit"
-                      size="small"
-                      @click="handleOpenEditDialog(position)"
-                    >
+                    <el-button :icon="Edit" size="small" @click="handleOpenEditDialog(position)">
                       编辑
                     </el-button>
                     <el-button
@@ -404,10 +398,7 @@ const getEditFormData = computed((): PositionFormData | null => {
       :close-on-click-modal="false"
       @close="handleCloseCreateDialog"
     >
-      <PositionForm
-        @submit="handleCreatePosition"
-        @cancel="handleCloseCreateDialog"
-      />
+      <PositionForm @submit="handleCreatePosition" @cancel="handleCloseCreateDialog" />
     </el-dialog>
 
     <!-- 编辑岗位对话框 -->

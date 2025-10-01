@@ -153,12 +153,16 @@ module.exports = {
       return;
     }
 
-    const resumeIds = resumes.map(r => r.id);
+    const resumeIds = resumes.map((r) => r.id);
 
     // 删除投递记录
-    await queryInterface.bulkDelete('application_records', {
-      resume_id: resumeIds
-    }, {});
+    await queryInterface.bulkDelete(
+      'application_records',
+      {
+        resume_id: resumeIds
+      },
+      {}
+    );
 
     console.log('🗑️  示例投递记录已删除');
   }

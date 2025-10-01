@@ -13,7 +13,7 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-  'application/msword', // .doc
+  'application/msword' // .doc
 ];
 const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc'];
 const UPLOAD_BASE_DIR = path.join(__dirname, '../../uploads');
@@ -135,15 +135,13 @@ const getMulterConfig = (userId, targetPositionId) => {
       } catch (error) {
         cb(new Error(`生成文件名失败: ${error.message}`));
       }
-    },
+    }
   });
 
   // 文件过滤器
   const fileFilter = (req, file, cb) => {
     if (!validateFileType(file)) {
-      const error = new Error(
-        `不支持的文件类型。仅允许: ${ALLOWED_EXTENSIONS.join(', ')}`
-      );
+      const error = new Error(`不支持的文件类型。仅允许: ${ALLOWED_EXTENSIONS.join(', ')}`);
       error.code = 'INVALID_FILE_TYPE';
       return cb(error, false);
     }
@@ -155,9 +153,9 @@ const getMulterConfig = (userId, targetPositionId) => {
   return multer({
     storage: storage,
     limits: {
-      fileSize: MAX_FILE_SIZE,
+      fileSize: MAX_FILE_SIZE
     },
-    fileFilter: fileFilter,
+    fileFilter: fileFilter
   });
 };
 
@@ -200,11 +198,7 @@ const cleanupUserFiles = async (userId) => {
  */
 const cleanupPositionFiles = async (userId, targetPositionId) => {
   try {
-    const positionDirPath = path.join(
-      UPLOAD_BASE_DIR,
-      String(userId),
-      String(targetPositionId)
-    );
+    const positionDirPath = path.join(UPLOAD_BASE_DIR, String(userId), String(targetPositionId));
 
     // 检查目录是否存在
     try {
@@ -241,5 +235,5 @@ module.exports = {
   MAX_FILE_SIZE,
   ALLOWED_MIME_TYPES,
   ALLOWED_EXTENSIONS,
-  UPLOAD_BASE_DIR,
+  UPLOAD_BASE_DIR
 };

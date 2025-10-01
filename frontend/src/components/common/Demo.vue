@@ -43,10 +43,7 @@ const handleSidebarCollapse = (collapsed: boolean) => {
 
     <div class="main-container">
       <!-- 侧边栏 -->
-      <Sidebar
-        :default-collapsed="false"
-        @collapse-change="handleSidebarCollapse"
-      />
+      <Sidebar :default-collapsed="false" @collapse-change="handleSidebarCollapse" />
 
       <!-- 主内容区域 -->
       <div class="content-area">
@@ -75,20 +72,14 @@ const handleSidebarCollapse = (collapsed: boolean) => {
 
             <h4>3. Loading 组件</h4>
             <p>全局加载指示器，支持自定义文本和样式</p>
-            <el-button type="primary" @click="simulateLoading">
-              测试加载效果
-            </el-button>
+            <el-button type="primary" @click="simulateLoading"> 测试加载效果 </el-button>
           </div>
         </el-card>
       </div>
     </div>
 
     <!-- 加载指示器 -->
-    <Loading
-      :loading="isLoading"
-      text="正在加载中..."
-      :fullscreen="true"
-    />
+    <Loading :loading="isLoading" text="正在加载中..." :fullscreen="true" />
   </div>
 </template>
 

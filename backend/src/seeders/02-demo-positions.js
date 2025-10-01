@@ -32,32 +32,36 @@ module.exports = {
     const userId = users[0].id;
 
     // 插入目标岗位数据
-    await queryInterface.bulkInsert('target_positions', [
-      {
-        id: positionIds.frontendDev,
-        user_id: userId,
-        name: '前端开发工程师',
-        description: '专注于 Vue.js、React 前端框架，熟悉现代前端工程化',
-        created_at: now,
-        updated_at: now
-      },
-      {
-        id: positionIds.backendDev,
-        user_id: userId,
-        name: '后端开发工程师',
-        description: '专注于 Node.js、Java 后端开发，熟悉微服务架构',
-        created_at: now,
-        updated_at: now
-      },
-      {
-        id: positionIds.fullstackDev,
-        user_id: userId,
-        name: '全栈开发工程师',
-        description: '前后端通吃，具备完整的项目开发能力',
-        created_at: now,
-        updated_at: now
-      }
-    ], {});
+    await queryInterface.bulkInsert(
+      'target_positions',
+      [
+        {
+          id: positionIds.frontendDev,
+          user_id: userId,
+          name: '前端开发工程师',
+          description: '专注于 Vue.js、React 前端框架，熟悉现代前端工程化',
+          created_at: now,
+          updated_at: now
+        },
+        {
+          id: positionIds.backendDev,
+          user_id: userId,
+          name: '后端开发工程师',
+          description: '专注于 Node.js、Java 后端开发，熟悉微服务架构',
+          created_at: now,
+          updated_at: now
+        },
+        {
+          id: positionIds.fullstackDev,
+          user_id: userId,
+          name: '全栈开发工程师',
+          description: '前后端通吃，具备完整的项目开发能力',
+          created_at: now,
+          updated_at: now
+        }
+      ],
+      {}
+    );
 
     console.log('✅ 示例目标岗位创建成功');
     console.log('📁 前端开发工程师');
@@ -80,9 +84,13 @@ module.exports = {
 
     const userId = users[0].id;
 
-    await queryInterface.bulkDelete('target_positions', {
-      user_id: userId
-    }, {});
+    await queryInterface.bulkDelete(
+      'target_positions',
+      {
+        user_id: userId
+      },
+      {}
+    );
 
     console.log('🗑️  示例目标岗位已删除');
   },

@@ -142,9 +142,7 @@ export function useTheme(options: { autoInit?: boolean } = {}) {
    * isCurrentTheme('dark') // 检查当前是否为暗黑模式
    * isCurrentTheme('auto') // 检查当前是否为自动模式
    */
-  const isCurrentTheme = (mode: ThemeMode): boolean => {
-    return themeStore.themeMode === mode
-  }
+  const isCurrentTheme = (mode: ThemeMode): boolean => themeStore.themeMode === mode
 
   /**
    * 获取当前主题的 CSS 类名
@@ -156,9 +154,7 @@ export function useTheme(options: { autoInit?: boolean } = {}) {
    * const themeClass = getThemeClass()
    * // 在模板中使用: <div :class="themeClass">...</div>
    */
-  const getThemeClass = (): 'light' | 'dark' => {
-    return themeStore.currentTheme
-  }
+  const getThemeClass = (): 'light' | 'dark' => themeStore.currentTheme
 
   /**
    * 获取主题图标名称
@@ -241,6 +237,6 @@ export function useTheme(options: { autoInit?: boolean } = {}) {
     getThemeText,
 
     // Store 实例（用于高级操作）
-    themeStore,
+    themeStore
   }
 }

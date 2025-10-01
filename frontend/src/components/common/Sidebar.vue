@@ -10,13 +10,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import {
-  Odometer,
-  Document,
-  FolderOpened,
-  Fold,
-  Expand
-} from '@element-plus/icons-vue'
+import { Odometer, Document, FolderOpened, Fold, Expand } from '@element-plus/icons-vue'
 
 /**
  * Props定义
@@ -78,9 +72,7 @@ const activeMenu = computed(() => {
 /**
  * 侧边栏实际宽度
  */
-const sidebarWidth = computed(() => {
-  return isCollapsed.value ? props.collapsedWidth : props.width
-})
+const sidebarWidth = computed(() => (isCollapsed.value ? props.collapsedWidth : props.width))
 
 // ==================== 菜单配置 ====================
 
@@ -329,7 +321,9 @@ const handleMenuSelect = (item: MenuItem): void => {
 @media (max-width: 480px) {
   .app-sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s ease, width 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      width 0.3s ease;
   }
 
   .app-sidebar.show {

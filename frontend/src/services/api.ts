@@ -3,7 +3,8 @@
  * 配置axios实例、请求/响应拦截器、错误处理
  */
 
-import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
+import axios from 'axios'
 
 /**
  * API错误响应接口
@@ -75,7 +76,10 @@ apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     // 开发环境日志
     if (import.meta.env.DEV) {
-      console.log(`[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`, response.data)
+      console.log(
+        `[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
+        response.data
+      )
     }
 
     // 返回响应数据

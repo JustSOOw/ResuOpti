@@ -2,65 +2,17 @@
   文件上传组件
   支持拖拽上传、文件类型和大小验证、上传进度显示等功能
 -->
-<template>
-  <div class="file-upload">
-    <el-upload
-      ref="uploadRef"
-      class="upload-container"
-      :class="{ 'is-dragging': isDragging }"
-      drag
-      :accept="accept"
-      :multiple="multiple"
-      :auto-upload="autoUpload"
-      :on-change="handleFileChange"
-      :on-remove="handleFileRemove"
-      :on-exceed="handleExceed"
-      :on-success="handleSuccess"
-      :on-error="handleError"
-      :on-progress="handleProgress"
-      :before-upload="handleBeforeUpload"
-      :limit="multiple ? undefined : 1"
-      :show-file-list="true"
-      :file-list="fileList"
-      @dragenter="isDragging = true"
-      @dragleave="isDragging = false"
-      @drop="isDragging = false"
-    >
-      <!-- 上传区域内容 -->
-      <div class="upload-content">
-        <el-icon class="upload-icon" :size="60">
-          <UploadFilled />
-        </el-icon>
-        <div class="upload-text">
-          <div class="primary-text">拖拽文件到此处或</div>
-          <el-button type="primary" size="default">选择文件</el-button>
-        </div>
-        <div class="upload-tip">
-          支持 {{ acceptText }} 格式，大小不超过 {{ maxSizeText }}
-        </div>
-      </div>
-    </el-upload>
-
-    <!-- 上传进度条 -->
-    <div v-if="uploadProgress > 0 && uploadProgress < 100" class="progress-section">
-      <div class="progress-header">
-        <span class="progress-text">正在上传...</span>
-        <span class="progress-percent">{{ uploadProgress }}%</span>
-      </div>
-      <el-progress
-        :percentage="uploadProgress"
-        :status="uploadProgress === 100 ? 'success' : undefined"
-        :show-text="false"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import type { UploadInstance, UploadFile, UploadFiles, UploadRawFile, UploadProgressEvent } from 'element-plus'
+import type {
+  UploadInstance,
+  UploadFile,
+  UploadFiles,
+  UploadRawFile,
+  UploadProgressEvent
+} from 'element-plus'
 
 // ============ Props定义 ============
 interface Props {
@@ -115,16 +67,14 @@ const fileList = ref<UploadFile[]>([])
  * 可接受的文件类型文本描述
  */
 const acceptText = computed(() => {
-  const types = props.accept.split(',').map(t => t.trim().toUpperCase())
+  const types = props.accept.split(',').map((t) => t.trim().toUpperCase())
   return types.join(', ')
 })
 
 /**
  * 最大文件大小文本描述
  */
-const maxSizeText = computed(() => {
-  return formatFileSize(props.maxSize)
-})
+const maxSizeText = computed(() => formatFileSize(props.maxSize))
 
 // ============ 工具函数 ============
 /**
@@ -146,11 +96,11 @@ const formatFileSize = (bytes: number): string => {
  */
 const validateFileType = (file: File): boolean => {
   // 解析accept属性中的MIME类型和扩展名
-  const acceptTypes = props.accept.split(',').map(t => t.trim().toLowerCase())
+  const acceptTypes = props.accept.split(',').map((t) => t.trim().toLowerCase())
 
   // 检查扩展名
   const fileName = file.name.toLowerCase()
-  const hasValidExtension = acceptTypes.some(type => {
+  const hasValidExtension = acceptTypes.some((type) => {
     if (type.startsWith('.')) {
       return fileName.endsWith(type)
     }
@@ -159,7 +109,7 @@ const validateFileType = (file: File): boolean => {
 
   // 检查MIME类型
   const fileMimeType = file.type.toLowerCase()
-  const hasValidMimeType = acceptTypes.some(type => {
+  const hasValidMimeType = acceptTypes.some((type) => {
     if (!type.startsWith('.')) {
       return fileMimeType === type || fileMimeType.startsWith(type.replace('*', ''))
     }
@@ -174,9 +124,7 @@ const validateFileType = (file: File): boolean => {
  * @param file 文件对象
  * @returns 是否通过验证
  */
-const validateFileSize = (file: File): boolean => {
-  return file.size <= props.maxSize
-}
+const validateFileSize = (file: File): boolean => file.size <= props.maxSize
 
 // ============ 事件处理 ============
 /**
@@ -315,6 +263,58 @@ defineExpose({
   abort
 })
 </script>
+
+<template>
+  <div class="file-upload">
+    <el-upload
+      ref="uploadRef"
+      class="upload-container"
+      :class="{ 'is-dragging': isDragging }"
+      drag
+      :accept="accept"
+      :multiple="multiple"
+      :auto-upload="autoUpload"
+      :on-change="handleFileChange"
+      :on-remove="handleFileRemove"
+      :on-exceed="handleExceed"
+      :on-success="handleSuccess"
+      :on-error="handleError"
+      :on-progress="handleProgress"
+      :before-upload="handleBeforeUpload"
+      :limit="multiple ? undefined : 1"
+      :show-file-list="true"
+      :file-list="fileList"
+      @dragenter="isDragging = true"
+      @dragleave="isDragging = false"
+      @drop="isDragging = false"
+    >
+      <!-- 上传区域内容 -->
+      <div class="upload-content">
+        <el-icon class="upload-icon" :size="60">
+          <UploadFilled />
+        </el-icon>
+        <div class="upload-text">
+          <div class="primary-text">拖拽文件到此处或</div>
+          <el-button type="primary" size="default">选择文件</el-button>
+        </div>
+        <div class="upload-tip">支持 {{ acceptText }} 格式，大小不超过 {{ maxSizeText }}</div>
+      </div>
+    </el-upload>
+
+    <!-- 上传进度条 -->
+    <div v-if="uploadProgress > 0 && uploadProgress < 100" class="progress-section">
+      <div class="progress-header">
+        <span class="progress-text">正在上传...</span>
+        <span class="progress-percent">{{ uploadProgress }}%</span>
+      </div>
+      <el-progress
+        :percentage="uploadProgress"
+        :status="uploadProgress === 100 ? 'success' : undefined"
+        :show-text="false"
+      />
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .file-upload {

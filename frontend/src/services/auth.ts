@@ -66,18 +66,12 @@ export interface LoginResponse {
  * @throws 400 - 请求参数验证失败
  * @throws 409 - 邮箱已存在
  */
-export const register = async (
-  email: string,
-  password: string
-): Promise<RegisterResponse> => {
+export const register = async (email: string, password: string): Promise<RegisterResponse> => {
   try {
-    const response = await apiClient.post<RegisterResponse>(
-      '/auth/register',
-      {
-        email,
-        password
-      }
-    )
+    const response = await apiClient.post<RegisterResponse>('/auth/register', {
+      email,
+      password
+    })
     return response as RegisterResponse
   } catch (error: any) {
     // 提取错误消息
@@ -94,18 +88,12 @@ export const register = async (
  * @throws 400 - 请求参数验证失败
  * @throws 401 - 用户不存在或密码错误
  */
-export const login = async (
-  email: string,
-  password: string
-): Promise<LoginResponse> => {
+export const login = async (email: string, password: string): Promise<LoginResponse> => {
   try {
-    const response = await apiClient.post<LoginResponse>(
-      '/auth/login',
-      {
-        email,
-        password
-      }
-    )
+    const response = await apiClient.post<LoginResponse>('/auth/login', {
+      email,
+      password
+    })
 
     // 登录成功后，将token保存到localStorage
     const loginData = response as LoginResponse

@@ -26,7 +26,7 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
   let authToken;
-  let testUserId;
+  let _testUserId; // 使用 _ 前缀表示暂未使用
   let testTargetPositionId;
   let testFilesDir;
 
@@ -35,7 +35,9 @@ describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
    */
   const createTestFile = (filename, sizeInBytes, content = 'Test file content\n') => {
     const filePath = path.join(testFilesDir, filename);
-    const fileContent = content.repeat(Math.ceil(sizeInBytes / content.length)).slice(0, sizeInBytes);
+    const fileContent = content
+      .repeat(Math.ceil(sizeInBytes / content.length))
+      .slice(0, sizeInBytes);
     fs.writeFileSync(filePath, fileContent);
     return filePath;
   };
@@ -72,7 +74,7 @@ describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
         });
 
       if (registerResponse.body.data) {
-        testUserId = registerResponse.body.data.userId;
+        _testUserId = registerResponse.body.data.userId;
       }
 
       // 登录获取token
@@ -109,7 +111,7 @@ describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
    */
   afterAll(() => {
     if (fs.existsSync(testFilesDir)) {
-      fs.readdirSync(testFilesDir).forEach(file => {
+      fs.readdirSync(testFilesDir).forEach((file) => {
         fs.unlinkSync(path.join(testFilesDir, file));
       });
       fs.rmdirSync(testFilesDir);
@@ -144,7 +146,9 @@ describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
       // 验证ResumeVersion schema字段
       const resumeData = response.body.data;
       expect(resumeData).toHaveProperty('id');
-      expect(resumeData.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+      expect(resumeData.id).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      );
       expect(resumeData).toHaveProperty('targetPositionId');
       expect(resumeData).toHaveProperty('type', 'file');
       expect(resumeData).toHaveProperty('title', title);
@@ -520,7 +524,7 @@ describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
     });
 
     it('应该正确处理长文件名', async () => {
-      const longFileName = 'a'.repeat(200) + '.pdf';
+      const longFileName = `${'a'.repeat(200)}.pdf`;
       const longNamePath = createMockPDF(longFileName, 1024);
 
       const response = await request(API_BASE_URL)

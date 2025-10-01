@@ -103,23 +103,17 @@ export function useFileUpload(defaultConfig: FileUploadConfig = {}) {
   /**
    * 格式化的上传进度文本
    */
-  const progressText = computed(() => {
-    return `${uploadProgress.value}%`
-  })
+  const progressText = computed(() => `${uploadProgress.value}%`)
 
   /**
    * 是否有错误
    */
-  const hasError = computed(() => {
-    return error.value !== null
-  })
+  const hasError = computed(() => error.value !== null)
 
   /**
    * 已上传文件数量
    */
-  const uploadedFileCount = computed(() => {
-    return uploadedFiles.value.length
-  })
+  const uploadedFileCount = computed(() => uploadedFiles.value.length)
 
   // ============ 工具方法 ============
   /**
@@ -153,7 +147,7 @@ export function useFileUpload(defaultConfig: FileUploadConfig = {}) {
    */
   const validateFileType = (file: File, acceptTypes: string): boolean => {
     // 解析accept参数中的MIME类型和扩展名
-    const types = acceptTypes.split(',').map(t => t.trim().toLowerCase())
+    const types = acceptTypes.split(',').map((t) => t.trim().toLowerCase())
 
     // 获取文件扩展名和MIME类型
     const fileName = file.name.toLowerCase()
@@ -161,7 +155,7 @@ export function useFileUpload(defaultConfig: FileUploadConfig = {}) {
     const fileMimeType = file.type.toLowerCase()
 
     // 检查是否匹配任一类型
-    return types.some(type => {
+    return types.some((type) => {
       // 检查扩展名匹配
       if (type.startsWith('.')) {
         return fileExtension === type
@@ -187,9 +181,7 @@ export function useFileUpload(defaultConfig: FileUploadConfig = {}) {
    * @param maxSize 最大文件大小（字节）
    * @returns 是否通过验证
    */
-  const validateFileSize = (file: File, maxSize: number): boolean => {
-    return file.size <= maxSize
-  }
+  const validateFileSize = (file: File, maxSize: number): boolean => file.size <= maxSize
 
   /**
    * 验证文件
@@ -207,7 +199,7 @@ export function useFileUpload(defaultConfig: FileUploadConfig = {}) {
     if (mergedConfig.accept && !validateFileType(file, mergedConfig.accept)) {
       const acceptTypes = mergedConfig.accept
         .split(',')
-        .map(t => t.trim().toUpperCase())
+        .map((t) => t.trim().toUpperCase())
         .join(', ')
 
       return {
@@ -281,20 +273,14 @@ export function useFileUpload(defaultConfig: FileUploadConfig = {}) {
         onUploadProgress: (progressEvent: AxiosProgressEvent) => {
           // 更新上传进度
           if (progressEvent.total && progressEvent.total > 0) {
-            uploadProgress.value = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            )
+            uploadProgress.value = Math.round((progressEvent.loaded / progressEvent.total) * 100)
           }
         },
         cancelToken: cancelTokenSource.token
       }
 
       // 发送上传请求
-      const response = await apiClient.post<any, T>(
-        mergedConfig.url!,
-        formData,
-        axiosConfig
-      )
+      const response = await apiClient.post<any, T>(mergedConfig.url!, formData, axiosConfig)
 
       // 上传成功
       uploadProgress.value = 100

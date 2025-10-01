@@ -21,7 +21,7 @@ const API_VERSION = '/api/v1';
 
 describe('POST /api/v1/resumes - 创建新简历版本', () => {
   let authToken;
-  let testUserId;
+  let _testUserId; // 使用 _ 前缀表示暂未使用
   let testTargetPositionId;
 
   /**
@@ -40,7 +40,7 @@ describe('POST /api/v1/resumes - 创建新简历版本', () => {
         });
 
       if (registerResponse.body.data) {
-        testUserId = registerResponse.body.data.userId;
+        _testUserId = registerResponse.body.data.userId;
       }
 
       // 登录获取token
@@ -102,7 +102,9 @@ describe('POST /api/v1/resumes - 创建新简历版本', () => {
       // 验证ResumeVersion schema字段
       const resumeData = response.body.data;
       expect(resumeData).toHaveProperty('id');
-      expect(resumeData.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+      expect(resumeData.id).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      );
       expect(resumeData).toHaveProperty('targetPositionId', requestBody.targetPositionId);
       expect(resumeData).toHaveProperty('type', 'online');
       expect(resumeData).toHaveProperty('title', requestBody.title);

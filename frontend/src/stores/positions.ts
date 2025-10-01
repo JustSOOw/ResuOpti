@@ -65,27 +65,23 @@ export const usePositionsStore = defineStore('positions', {
     /**
      * 获取岗位总数
      */
-    positionCount: (state): number => {
-      return state.positions.length
-    },
+    positionCount: (state): number => state.positions.length,
 
     /**
      * 根据ID查找岗位
      */
-    getPositionById: (state) => {
-      return (id: string): TargetPosition | undefined => {
-        return state.positions.find((position) => position.id === id)
-      }
-    },
+    getPositionById:
+      (state) =>
+      (id: string): TargetPosition | undefined =>
+        state.positions.find((position) => position.id === id),
 
     /**
      * 按创建时间降序排列的岗位列表
      */
-    sortedPositions: (state): TargetPosition[] => {
-      return [...state.positions].sort((a, b) => {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      })
-    }
+    sortedPositions: (state): TargetPosition[] =>
+      [...state.positions].sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )
   },
 
   /**
@@ -100,9 +96,7 @@ export const usePositionsStore = defineStore('positions', {
       this.error = null
 
       try {
-        const response = await apiClient.get<{ data: TargetPosition[] }>(
-          '/target-positions'
-        )
+        const response = await apiClient.get<{ data: TargetPosition[] }>('/target-positions')
         // API拦截器已经返回了response.data，所以这里直接访问data属性
         this.positions = (response as any).data || []
       } catch (error: any) {
@@ -123,9 +117,7 @@ export const usePositionsStore = defineStore('positions', {
       this.error = null
 
       try {
-        const response = await apiClient.get<{ data: TargetPosition }>(
-          `/target-positions/${id}`
-        )
+        const response = await apiClient.get<{ data: TargetPosition }>(`/target-positions/${id}`)
         // API拦截器已经返回了response.data，所以这里直接访问data属性
         this.currentPosition = (response as any).data
       } catch (error: any) {
@@ -146,10 +138,7 @@ export const usePositionsStore = defineStore('positions', {
       this.error = null
 
       try {
-        const response = await apiClient.post<{ data: TargetPosition }>(
-          '/target-positions',
-          data
-        )
+        const response = await apiClient.post<{ data: TargetPosition }>('/target-positions', data)
         // API拦截器已经返回了response.data，所以这里直接访问data属性
         const newPosition = (response as any).data
 
@@ -171,10 +160,7 @@ export const usePositionsStore = defineStore('positions', {
      * @param id 岗位ID
      * @param data 更新数据
      */
-    async updatePosition(
-      id: string,
-      data: UpdatePositionDto
-    ): Promise<TargetPosition> {
+    async updatePosition(id: string, data: UpdatePositionDto): Promise<TargetPosition> {
       this.isLoading = true
       this.error = null
 

@@ -73,7 +73,6 @@ function authenticate(req, res, next) {
 
     // 7. 继续下一个中间件或路由处理器
     next();
-
   } catch (error) {
     // 处理token验证错误
     // authService.verifyToken会抛出以下错误:
@@ -148,8 +147,7 @@ function optionalAuth(req, res, next) {
 
     // 7. 继续下一个中间件或路由处理器
     next();
-
-  } catch (error) {
+  } catch (_error) {
     // token验证失败，但不阻止请求继续
     // req.user 保持为 undefined
     next();

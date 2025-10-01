@@ -435,11 +435,13 @@ function validate(schema) {
         const errors = validateField(value, fieldRules, fieldName, data);
 
         if (errors.length > 0) {
-          allErrors.push(...errors.map(error => ({
-            field: fieldName,
-            location: source,
-            message: error
-          })));
+          allErrors.push(
+            ...errors.map((error) => ({
+              field: fieldName,
+              location: source,
+              message: error
+            }))
+          );
         }
       }
     }

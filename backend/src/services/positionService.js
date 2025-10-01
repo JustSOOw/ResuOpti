@@ -1,10 +1,12 @@
 /**
  * 目标岗位管理服务
  * 提供岗位的CRUD操作和业务逻辑
+ * 性能优化：添加缓存、优化查询字段、使用findByPk
  */
 
 const { TargetPosition, ResumeVersion } = require('../models');
 const { Op } = require('sequelize');
+const { positionCache, LRUCache } = require('../utils/cache');
 
 /**
  * 创建目标岗位
@@ -24,12 +26,13 @@ async function createPosition(userId, name, description = null) {
     throw new Error('岗位名称长度不能超过100个字符');
   }
 
-  // 检查同一用户下name是否重复
+  // 检查同一用户下name是否重复 - 优化：只查询id字段
   const existingPosition = await TargetPosition.findOne({
     where: {
       user_id: userId,
       name: name.trim()
-    }
+    },
+    attributes: ['id'] // 只查询id即可判断是否存在
   });
 
   if (existingPosition) {
@@ -43,7 +46,13 @@ async function createPosition(userId, name, description = null) {
     description: description ? description.trim() : null
   });
 
-  return position.toJSON();
+  const positionData = position.toJSON();
+
+  // 将岗位信息存入缓存
+  const cacheKey = LRUCache.generateKey('position', position.id);
+  positionCache.set(cacheKey, positionData);
+
+  return positionData;
 }
 
 /**
@@ -60,7 +69,7 @@ async function getPositionsByUserId(userId) {
     attributes: ['id', 'user_id', 'name', 'description', 'created_at', 'updated_at']
   });
 
-  return positions.map(position => position.toJSON());
+  return positions.map((position) => position.toJSON());
 }
 
 /**
@@ -72,37 +81,39 @@ async function getPositionsByUserId(userId) {
  * @throws {Error} 岗位不存在或无权限访问时抛出错误
  */
 async function getPositionById(positionId, userId, includeResumeCount = true) {
-  // 查找岗位
-  const position = await TargetPosition.findOne({
-    where: {
-      id: positionId
-    },
-    attributes: ['id', 'user_id', 'name', 'description', 'created_at', 'updated_at']
-  });
+  const cacheKey = LRUCache.generateKey('position', positionId);
 
-  // 验证岗位存在性
-  if (!position) {
-    throw new Error('目标岗位不存在');
-  }
-
-  // 验证岗位所有权
-  if (position.user_id !== userId) {
-    throw new Error('无权限访问该目标岗位');
-  }
-
-  const positionData = position.toJSON();
-
-  // 如果需要包含简历数量统计
-  if (includeResumeCount) {
-    const resumeCount = await ResumeVersion.count({
-      where: {
-        target_position_id: positionId
-      }
+  // 使用缓存包装函数
+  return positionCache.wrap(cacheKey, async () => {
+    // 优化：使用findByPk代替findOne，更高效
+    const position = await TargetPosition.findByPk(positionId, {
+      attributes: ['id', 'user_id', 'name', 'description', 'created_at', 'updated_at']
     });
-    positionData.resumeCount = resumeCount;
-  }
 
-  return positionData;
+    // 验证岗位存在性
+    if (!position) {
+      throw new Error('目标岗位不存在');
+    }
+
+    // 验证岗位所有权
+    if (position.user_id !== userId) {
+      throw new Error('无权限访问该目标岗位');
+    }
+
+    const positionData = position.toJSON();
+
+    // 如果需要包含简历数量统计
+    if (includeResumeCount) {
+      const resumeCount = await ResumeVersion.count({
+        where: {
+          target_position_id: positionId
+        }
+      });
+      positionData.resumeCount = resumeCount;
+    }
+
+    return positionData;
+  });
 }
 
 /**
@@ -114,12 +125,8 @@ async function getPositionById(positionId, userId, includeResumeCount = true) {
  * @throws {Error} 岗位不存在、无权限或验证失败时抛出错误
  */
 async function updatePosition(positionId, userId, updateData) {
-  // 查找岗位
-  const position = await TargetPosition.findOne({
-    where: {
-      id: positionId
-    }
-  });
+  // 查找岗位 - 优化：使用findByPk
+  const position = await TargetPosition.findByPk(positionId);
 
   // 验证岗位存在性
   if (!position) {
@@ -152,7 +159,8 @@ async function updatePosition(positionId, userId, updateData) {
           id: {
             [Op.ne]: positionId
           }
-        }
+        },
+        attributes: ['id'] // 只查询id字段
       });
 
       if (existingPosition) {
@@ -171,7 +179,13 @@ async function updatePosition(positionId, userId, updateData) {
   // 执行更新
   await position.update(updateData);
 
-  return position.toJSON();
+  const positionData = position.toJSON();
+
+  // 更新缓存
+  const cacheKey = LRUCache.generateKey('position', positionId);
+  positionCache.set(cacheKey, positionData);
+
+  return positionData;
 }
 
 /**
@@ -182,12 +196,8 @@ async function updatePosition(positionId, userId, updateData) {
  * @throws {Error} 岗位不存在、无权限或包含简历时抛出错误
  */
 async function deletePosition(positionId, userId) {
-  // 查找岗位
-  const position = await TargetPosition.findOne({
-    where: {
-      id: positionId
-    }
-  });
+  // 查找岗位 - 优化：使用findByPk
+  const position = await TargetPosition.findByPk(positionId);
 
   // 验证岗位存在性
   if (!position) {
@@ -212,6 +222,10 @@ async function deletePosition(positionId, userId) {
 
   // 执行删除
   await position.destroy();
+
+  // 删除缓存
+  const cacheKey = LRUCache.generateKey('position', positionId);
+  positionCache.delete(cacheKey);
 
   return {
     success: true,

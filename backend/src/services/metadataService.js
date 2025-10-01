@@ -1,10 +1,12 @@
 /**
  * 简历元数据管理服务
  * 提供简历备注和标签的增删改查功能
+ * 性能优化：添加缓存、优化查询字段
  */
 
 const { ResumeMetadata, ResumeVersion, TargetPosition } = require('../models');
 const { Op } = require('sequelize');
+const { metadataCache, LRUCache } = require('../utils/cache');
 
 /**
  * 验证简历存在性和所有权
@@ -15,11 +17,13 @@ const { Op } = require('sequelize');
  */
 async function validateResumeOwnership(resumeId, userId) {
   const resume = await ResumeVersion.findByPk(resumeId, {
-    include: [{
-      model: TargetPosition,
-      as: 'targetPosition',
-      attributes: ['id', 'user_id', 'name']
-    }]
+    include: [
+      {
+        model: TargetPosition,
+        as: 'targetPosition',
+        attributes: ['id', 'user_id', 'name']
+      }
+    ]
   });
 
   if (!resume) {
@@ -43,21 +47,27 @@ async function getMetadataByResumeId(resumeId, userId) {
   // 验证简历存在性和所有权
   await validateResumeOwnership(resumeId, userId);
 
-  // 查找或创建元数据
-  let metadata = await ResumeMetadata.findOne({
-    where: { resume_id: resumeId }
-  });
+  const cacheKey = LRUCache.generateKey('metadata', resumeId);
 
-  // 如果元数据不存在，自动创建一个空的元数据记录
-  if (!metadata) {
-    metadata = await ResumeMetadata.create({
-      resume_id: resumeId,
-      notes: null,
-      tags: []
+  // 使用缓存包装函数
+  return metadataCache.wrap(cacheKey, async () => {
+    // 查找或创建元数据
+    let metadata = await ResumeMetadata.findOne({
+      where: { resume_id: resumeId },
+      attributes: ['id', 'resume_id', 'notes', 'tags', 'created_at', 'updated_at']
     });
-  }
 
-  return metadata;
+    // 如果元数据不存在，自动创建一个空的元数据记录
+    if (!metadata) {
+      metadata = await ResumeMetadata.create({
+        resume_id: resumeId,
+        notes: null,
+        tags: []
+      });
+    }
+
+    return metadata.toJSON();
+  });
 }
 
 /**
@@ -94,7 +104,13 @@ async function updateNotes(resumeId, userId, notes) {
     await metadata.save();
   }
 
-  return metadata;
+  const result = metadata.toJSON();
+
+  // 更新缓存
+  const cacheKey = LRUCache.generateKey('metadata', resumeId);
+  metadataCache.set(cacheKey, result);
+
+  return result;
 }
 
 /**
@@ -146,7 +162,13 @@ async function addTag(resumeId, userId, tag) {
     await metadata.save();
   }
 
-  return metadata;
+  const result = metadata.toJSON();
+
+  // 更新缓存
+  const cacheKey = LRUCache.generateKey('metadata', resumeId);
+  metadataCache.set(cacheKey, result);
+
+  return result;
 }
 
 /**
@@ -170,10 +192,16 @@ async function removeTag(resumeId, userId, tag) {
   }
 
   // 从标签数组中移除指定标签
-  metadata.tags = metadata.tags.filter(t => t !== tag);
+  metadata.tags = metadata.tags.filter((t) => t !== tag);
   await metadata.save();
 
-  return metadata;
+  const result = metadata.toJSON();
+
+  // 更新缓存
+  const cacheKey = LRUCache.generateKey('metadata', resumeId);
+  metadataCache.set(cacheKey, result);
+
+  return result;
 }
 
 /**
@@ -225,7 +253,13 @@ async function updateTags(resumeId, userId, tags) {
     await metadata.save();
   }
 
-  return metadata;
+  const result = metadata.toJSON();
+
+  // 更新缓存
+  const cacheKey = LRUCache.generateKey('metadata', resumeId);
+  metadataCache.set(cacheKey, result);
+
+  return result;
 }
 
 /**
@@ -242,21 +276,25 @@ async function searchByTag(userId, tag) {
         [Op.contains]: [tag] // PostgreSQL的JSON数组包含操作符
       }
     },
-    include: [{
-      model: ResumeVersion,
-      as: 'resume',
-      attributes: ['id', 'target_position_id', 'type', 'title', 'created_at', 'updated_at'],
-      include: [{
-        model: TargetPosition,
-        as: 'targetPosition',
-        attributes: ['id', 'user_id', 'name', 'description'],
-        where: { user_id: userId } // 只返回该用户的简历
-      }]
-    }]
+    include: [
+      {
+        model: ResumeVersion,
+        as: 'resume',
+        attributes: ['id', 'target_position_id', 'type', 'title', 'created_at', 'updated_at'],
+        include: [
+          {
+            model: TargetPosition,
+            as: 'targetPosition',
+            attributes: ['id', 'user_id', 'name', 'description'],
+            where: { user_id: userId } // 只返回该用户的简历
+          }
+        ]
+      }
+    ]
   });
 
   // 格式化返回结果
-  return metadataList.map(metadata => ({
+  return metadataList.map((metadata) => ({
     metadata: {
       id: metadata.id,
       resume_id: metadata.resume_id,

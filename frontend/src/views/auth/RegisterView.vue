@@ -2,52 +2,6 @@
   用户注册页面
   提供用户注册功能，支持邮箱密码注册
 -->
-<template>
-  <div class="register-view">
-    <!-- 注册容器 -->
-    <div class="register-container">
-      <!-- 标题区域 -->
-      <div class="register-header">
-        <h1 class="title">加入 ResuOpti</h1>
-        <p class="subtitle">创建您的账户，开始优化您的简历</p>
-      </div>
-
-      <!-- 注册卡片 -->
-      <el-card class="register-card" shadow="always">
-        <!-- 使用已有的LoginForm组件（注册模式） -->
-        <LoginForm
-          ref="registerFormRef"
-          mode="register"
-          @submit="handleRegister"
-        />
-
-        <!-- 额外链接 -->
-        <div class="extra-links">
-          <span class="link-text">已有账号？</span>
-          <el-link type="primary" @click="goToLogin">
-            立即登录
-          </el-link>
-        </div>
-
-        <!-- 服务条款提示 -->
-        <div class="terms-notice">
-          <el-text size="small" type="info">
-            注册即表示您同意我们的
-            <el-link type="primary" :underline="false" size="small">服务条款</el-link>
-            和
-            <el-link type="primary" :underline="false" size="small">隐私政策</el-link>
-          </el-text>
-        </div>
-      </el-card>
-
-      <!-- 页脚信息 -->
-      <div class="register-footer">
-        <p>&copy; 2025 ResuOpti. 保留所有权利。</p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -137,6 +91,46 @@ const goToLogin = () => {
 }
 </script>
 
+<template>
+  <div class="register-view">
+    <!-- 注册容器 -->
+    <div class="register-container">
+      <!-- 标题区域 -->
+      <div class="register-header">
+        <h1 class="title">加入 ResuOpti</h1>
+        <p class="subtitle">创建您的账户，开始优化您的简历</p>
+      </div>
+
+      <!-- 注册卡片 -->
+      <el-card class="register-card" shadow="always">
+        <!-- 使用已有的LoginForm组件（注册模式） -->
+        <LoginForm ref="registerFormRef" mode="register" @submit="handleRegister" />
+
+        <!-- 额外链接 -->
+        <div class="extra-links">
+          <span class="link-text">已有账号？</span>
+          <el-link type="primary" @click="goToLogin"> 立即登录 </el-link>
+        </div>
+
+        <!-- 服务条款提示 -->
+        <div class="terms-notice">
+          <el-text size="small" type="info">
+            注册即表示您同意我们的
+            <el-link type="primary" :underline="false" size="small">服务条款</el-link>
+            和
+            <el-link type="primary" :underline="false" size="small">隐私政策</el-link>
+          </el-text>
+        </div>
+      </el-card>
+
+      <!-- 页脚信息 -->
+      <div class="register-footer">
+        <p>&copy; 2025 ResuOpti. 保留所有权利。</p>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped>
 /**
  * 注册视图容器样式
@@ -190,7 +184,9 @@ const goToLogin = () => {
   overflow: hidden;
   backdrop-filter: blur(10px);
   background-color: var(--el-bg-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .register-card:hover {

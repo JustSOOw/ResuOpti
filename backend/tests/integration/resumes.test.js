@@ -12,7 +12,13 @@
  */
 
 const { describe, it, expect, beforeAll, afterAll, beforeEach } = require('@jest/globals');
-const { sequelize, ResumeVersion, ResumeMetadata, TargetPosition, User } = require('../../src/models');
+const {
+  sequelize,
+  ResumeVersion,
+  ResumeMetadata,
+  TargetPosition,
+  User
+} = require('../../src/models');
 const resumeService = require('../../src/services/resumeService');
 const authService = require('../../src/services/authService');
 const positionService = require('../../src/services/positionService');
@@ -285,14 +291,10 @@ describe('简历版本管理集成测试', () => {
     });
 
     it('应该自动trim标题空格', async () => {
-      const result = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '  测试简历标题  ',
-          content: '<p>测试内容</p>'
-        }
-      );
+      const result = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '  测试简历标题  ',
+        content: '<p>测试内容</p>'
+      });
 
       expect(result.title).toBe('测试简历标题');
     });
@@ -303,10 +305,7 @@ describe('简历版本管理集成测试', () => {
    */
   describe('查询简历', () => {
     it('应该获取岗位下的所有简历（空列表）', async () => {
-      const resumes = await resumeService.getResumesByPosition(
-        testPosition1.id,
-        testUser1.id
-      );
+      const resumes = await resumeService.getResumesByPosition(testPosition1.id, testUser1.id);
 
       expect(Array.isArray(resumes)).toBe(true);
       expect(resumes.length).toBe(0);
@@ -331,15 +330,12 @@ describe('简历版本管理集成测试', () => {
         content: '<p>内容C</p>'
       });
 
-      const resumes = await resumeService.getResumesByPosition(
-        testPosition1.id,
-        testUser1.id
-      );
+      const resumes = await resumeService.getResumesByPosition(testPosition1.id, testUser1.id);
 
       expect(resumes.length).toBe(3);
 
       // 验证每个简历都包含metadata
-      resumes.forEach(resume => {
+      resumes.forEach((resume) => {
         expect(resume).toHaveProperty('metadata');
         expect(resume.metadata).toHaveProperty('id');
       });
@@ -351,14 +347,10 @@ describe('简历版本管理集成测试', () => {
     });
 
     it('应该获取单个简历详情（包含metadata）', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '详情测试简历',
-          content: '<p>详情内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '详情测试简历',
+        content: '<p>详情内容</p>'
+      });
 
       const resume = await resumeService.getResumeById(created.id, testUser1.id);
 
@@ -372,26 +364,22 @@ describe('简历版本管理集成测试', () => {
     it('应该在简历不存在时抛出错误', async () => {
       const nonExistentId = '123e4567-e89b-12d3-a456-999999999999';
 
-      await expect(
-        resumeService.getResumeById(nonExistentId, testUser1.id)
-      ).rejects.toThrow('简历不存在或您无权访问');
+      await expect(resumeService.getResumeById(nonExistentId, testUser1.id)).rejects.toThrow(
+        '简历不存在或您无权访问'
+      );
     });
 
     it('应该在无权限访问其他用户的简历时抛出错误', async () => {
       // 用户1创建简历
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '用户1的简历',
-          content: '<p>内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '用户1的简历',
+        content: '<p>内容</p>'
+      });
 
       // 用户2尝试访问用户1的简历
-      await expect(
-        resumeService.getResumeById(created.id, testUser2.id)
-      ).rejects.toThrow('简历不存在或您无权访问');
+      await expect(resumeService.getResumeById(created.id, testUser2.id)).rejects.toThrow(
+        '简历不存在或您无权访问'
+      );
     });
   });
 
@@ -400,79 +388,55 @@ describe('简历版本管理集成测试', () => {
    */
   describe('更新在线简历', () => {
     it('应该成功更新title', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '原标题',
-          content: '<p>原内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '原标题',
+        content: '<p>原内容</p>'
+      });
 
-      const updated = await resumeService.updateOnlineResume(
-        created.id,
-        testUser1.id,
-        { title: '新标题' }
-      );
+      const updated = await resumeService.updateOnlineResume(created.id, testUser1.id, {
+        title: '新标题'
+      });
 
       expect(updated.title).toBe('新标题');
       expect(updated.content).toBe('<p>原内容</p>');
     });
 
     it('应该成功更新content', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '原标题',
-          content: '<p>原内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '原标题',
+        content: '<p>原内容</p>'
+      });
 
-      const updated = await resumeService.updateOnlineResume(
-        created.id,
-        testUser1.id,
-        { content: '<p>新内容</p><h2>新章节</h2>' }
-      );
+      const updated = await resumeService.updateOnlineResume(created.id, testUser1.id, {
+        content: '<p>新内容</p><h2>新章节</h2>'
+      });
 
       expect(updated.title).toBe('原标题');
       expect(updated.content).toBe('<p>新内容</p><h2>新章节</h2>');
     });
 
     it('应该同时更新title和content', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '原标题',
-          content: '<p>原内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '原标题',
+        content: '<p>原内容</p>'
+      });
 
-      const updated = await resumeService.updateOnlineResume(
-        created.id,
-        testUser1.id,
-        {
-          title: '全新标题',
-          content: '<p>全新内容</p>'
-        }
-      );
+      const updated = await resumeService.updateOnlineResume(created.id, testUser1.id, {
+        title: '全新标题',
+        content: '<p>全新内容</p>'
+      });
 
       expect(updated.title).toBe('全新标题');
       expect(updated.content).toBe('<p>全新内容</p>');
     });
 
     it('应该验证只能更新online类型简历', async () => {
-      const fileResume = await resumeService.createFileResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '文件简历',
-          filePath: '/uploads/test.pdf',
-          fileName: 'test.pdf',
-          fileSize: 1000
-        }
-      );
+      const fileResume = await resumeService.createFileResume(testPosition1.id, testUser1.id, {
+        title: '文件简历',
+        filePath: '/uploads/test.pdf',
+        fileName: 'test.pdf',
+        fileSize: 1000
+      });
 
       await expect(
         resumeService.updateOnlineResume(fileResume.id, testUser1.id, {
@@ -482,14 +446,10 @@ describe('简历版本管理集成测试', () => {
     });
 
     it('应该在无权限更新其他用户的简历时抛出错误', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '用户1的简历',
-          content: '<p>内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '用户1的简历',
+        content: '<p>内容</p>'
+      });
 
       await expect(
         resumeService.updateOnlineResume(created.id, testUser2.id, {
@@ -499,14 +459,10 @@ describe('简历版本管理集成测试', () => {
     });
 
     it('应该验证更新的title长度', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '原标题',
-          content: '<p>内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '原标题',
+        content: '<p>内容</p>'
+      });
 
       const longTitle = 'a'.repeat(201);
       await expect(
@@ -517,14 +473,10 @@ describe('简历版本管理集成测试', () => {
     });
 
     it('应该验证更新的content不能为空', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '原标题',
-          content: '<p>原内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '原标题',
+        content: '<p>原内容</p>'
+      });
 
       await expect(
         resumeService.updateOnlineResume(created.id, testUser1.id, {
@@ -534,18 +486,14 @@ describe('简历版本管理集成测试', () => {
     });
 
     it('应该在没有提供更新数据时抛出错误', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '原标题',
-          content: '<p>原内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '原标题',
+        content: '<p>原内容</p>'
+      });
 
-      await expect(
-        resumeService.updateOnlineResume(created.id, testUser1.id, {})
-      ).rejects.toThrow('没有提供需要更新的数据');
+      await expect(resumeService.updateOnlineResume(created.id, testUser1.id, {})).rejects.toThrow(
+        '没有提供需要更新的数据'
+      );
     });
   });
 
@@ -554,14 +502,10 @@ describe('简历版本管理集成测试', () => {
    */
   describe('删除简历', () => {
     it('应该成功删除简历并级联删除metadata', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '待删除简历',
-          content: '<p>内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '待删除简历',
+        content: '<p>内容</p>'
+      });
 
       const resumeId = created.id;
       const metadataId = created.metadata.id;
@@ -585,42 +529,31 @@ describe('简历版本管理集成测试', () => {
     it('应该在删除不存在的简历时抛出错误', async () => {
       const nonExistentId = '123e4567-e89b-12d3-a456-999999999999';
 
-      await expect(
-        resumeService.deleteResume(nonExistentId, testUser1.id)
-      ).rejects.toThrow('简历不存在或您无权访问');
+      await expect(resumeService.deleteResume(nonExistentId, testUser1.id)).rejects.toThrow(
+        '简历不存在或您无权访问'
+      );
     });
 
     it('应该在无权限删除其他用户的简历时抛出错误', async () => {
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '用户1的简历',
-          content: '<p>内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '用户1的简历',
+        content: '<p>内容</p>'
+      });
 
-      await expect(
-        resumeService.deleteResume(created.id, testUser2.id)
-      ).rejects.toThrow('简历不存在或您无权访问');
+      await expect(resumeService.deleteResume(created.id, testUser2.id)).rejects.toThrow(
+        '简历不存在或您无权访问'
+      );
     });
 
     it('应该能删除file类型简历', async () => {
-      const fileResume = await resumeService.createFileResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '文件简历',
-          filePath: '/uploads/test.pdf',
-          fileName: 'test.pdf',
-          fileSize: 1000
-        }
-      );
+      const fileResume = await resumeService.createFileResume(testPosition1.id, testUser1.id, {
+        title: '文件简历',
+        filePath: '/uploads/test.pdf',
+        fileName: 'test.pdf',
+        fileSize: 1000
+      });
 
-      const result = await resumeService.deleteResume(
-        fileResume.id,
-        testUser1.id
-      );
+      const result = await resumeService.deleteResume(fileResume.id, testUser1.id);
 
       expect(result.success).toBe(true);
       expect(result.type).toBe('file');
@@ -637,106 +570,74 @@ describe('简历版本管理集成测试', () => {
   describe('完整流程测试', () => {
     it('应该完成创建->查询->更新->删除的完整流程', async () => {
       // 步骤1: 创建在线简历
-      const created = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '流程测试简历',
-          content: '<p>初始内容</p>'
-        }
-      );
+      const created = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '流程测试简历',
+        content: '<p>初始内容</p>'
+      });
       expect(created.id).toBeDefined();
       expect(created.title).toBe('流程测试简历');
 
       // 步骤2: 查询简历详情
-      const fetched = await resumeService.getResumeById(
-        created.id,
-        testUser1.id
-      );
+      const fetched = await resumeService.getResumeById(created.id, testUser1.id);
       expect(fetched.id).toBe(created.id);
       expect(fetched.content).toBe('<p>初始内容</p>');
 
       // 步骤3: 更新简历
-      const updated = await resumeService.updateOnlineResume(
-        created.id,
-        testUser1.id,
-        {
-          title: '更新后的标题',
-          content: '<p>更新后的内容</p>'
-        }
-      );
+      const updated = await resumeService.updateOnlineResume(created.id, testUser1.id, {
+        title: '更新后的标题',
+        content: '<p>更新后的内容</p>'
+      });
       expect(updated.title).toBe('更新后的标题');
       expect(updated.content).toBe('<p>更新后的内容</p>');
 
       // 步骤4: 再次查询验证更新
-      const fetchedAgain = await resumeService.getResumeById(
-        created.id,
-        testUser1.id
-      );
+      const fetchedAgain = await resumeService.getResumeById(created.id, testUser1.id);
       expect(fetchedAgain.title).toBe('更新后的标题');
       expect(fetchedAgain.content).toBe('<p>更新后的内容</p>');
 
       // 步骤5: 删除简历
-      const deleteResult = await resumeService.deleteResume(
-        created.id,
-        testUser1.id
-      );
+      const deleteResult = await resumeService.deleteResume(created.id, testUser1.id);
       expect(deleteResult.success).toBe(true);
 
       // 步骤6: 验证已删除
-      await expect(
-        resumeService.getResumeById(created.id, testUser1.id)
-      ).rejects.toThrow('简历不存在或您无权访问');
+      await expect(resumeService.getResumeById(created.id, testUser1.id)).rejects.toThrow(
+        '简历不存在或您无权访问'
+      );
     });
 
     it('应该支持一个岗位下管理多个简历', async () => {
       // 创建多个不同类型的简历
-      const online1 = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '在线简历1',
-          content: '<p>内容1</p>'
-        }
-      );
+      const online1 = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '在线简历1',
+        content: '<p>内容1</p>'
+      });
 
-      const file1 = await resumeService.createFileResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '文件简历1',
-          filePath: '/uploads/file1.pdf',
-          fileName: 'file1.pdf',
-          fileSize: 2000
-        }
-      );
+      const file1 = await resumeService.createFileResume(testPosition1.id, testUser1.id, {
+        title: '文件简历1',
+        filePath: '/uploads/file1.pdf',
+        fileName: 'file1.pdf',
+        fileSize: 2000
+      });
 
-      const online2 = await resumeService.createOnlineResume(
-        testPosition1.id,
-        testUser1.id,
-        {
-          title: '在线简历2',
-          content: '<p>内容2</p>'
-        }
-      );
+      const online2 = await resumeService.createOnlineResume(testPosition1.id, testUser1.id, {
+        title: '在线简历2',
+        content: '<p>内容2</p>'
+      });
 
       // 查询该岗位下的所有简历
-      const resumes = await resumeService.getResumesByPosition(
-        testPosition1.id,
-        testUser1.id
-      );
+      const resumes = await resumeService.getResumesByPosition(testPosition1.id, testUser1.id);
 
       expect(resumes.length).toBe(3);
 
       // 验证包含所有创建的简历
-      const resumeIds = resumes.map(r => r.id);
+      const resumeIds = resumes.map((r) => r.id);
       expect(resumeIds).toContain(online1.id);
       expect(resumeIds).toContain(file1.id);
       expect(resumeIds).toContain(online2.id);
 
       // 验证类型
-      const onlineCount = resumes.filter(r => r.type === 'online').length;
-      const fileCount = resumes.filter(r => r.type === 'file').length;
+      const onlineCount = resumes.filter((r) => r.type === 'online').length;
+      const fileCount = resumes.filter((r) => r.type === 'file').length;
       expect(onlineCount).toBe(2);
       expect(fileCount).toBe(1);
 
@@ -756,10 +657,10 @@ describe('简历版本管理集成测试', () => {
       expect(remainingResumes.length).toBe(2);
 
       // 验证更新和删除生效
-      const updatedResume = remainingResumes.find(r => r.id === online1.id);
+      const updatedResume = remainingResumes.find((r) => r.id === online1.id);
       expect(updatedResume.title).toBe('更新后的在线简历1');
 
-      const deletedResume = remainingResumes.find(r => r.id === file1.id);
+      const deletedResume = remainingResumes.find((r) => r.id === file1.id);
       expect(deletedResume).toBeUndefined();
     });
 

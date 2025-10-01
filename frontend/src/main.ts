@@ -15,11 +15,7 @@ import './styles/theme.scss'
 import './styles/global.scss'
 
 // 导入错误处理工具
-import {
-  handleVueError,
-  handleUnhandledRejection,
-  handleGlobalError
-} from './utils/errorHandler'
+import { handleVueError, handleUnhandledRejection, handleGlobalError } from './utils/errorHandler'
 
 // 导入全局错误边界组件
 import ErrorBoundary from './components/common/ErrorBoundary.vue'
@@ -37,7 +33,11 @@ app.config.errorHandler = (err: any, instance, info) => {
 // Vue警告处理 (仅开发环境)
 if (import.meta.env.DEV) {
   app.config.warnHandler = (msg, instance, trace) => {
-    console.warn('%c Vue Warning ', 'background: #ff9800; color: white; padding: 2px 4px; border-radius: 2px', msg)
+    console.warn(
+      '%c Vue Warning ',
+      'background: #ff9800; color: white; padding: 2px 4px; border-radius: 2px',
+      msg
+    )
     console.warn('Warning Trace:', trace)
   }
 }
@@ -93,7 +93,10 @@ app.mount('#app')
 // ==================== 开发环境信息 ====================
 
 if (import.meta.env.DEV) {
-  console.log('%c ResuOpti 开发模式 ', 'background: #42b883; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold')
+  console.log(
+    '%c ResuOpti 开发模式 ',
+    'background: #42b883; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold'
+  )
   console.log('Vue版本:', app.version)
   console.log('API地址:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000')
   console.log('环境变量:', {
@@ -103,8 +106,8 @@ if (import.meta.env.DEV) {
   })
 
   // 暴露错误日志工具到控制台 (方便调试)
-  import('./utils/errorHandler').then(module => {
-    (window as any).__ERROR_HANDLER__ = module.default
+  import('./utils/errorHandler').then((module) => {
+    ;(window as any).__ERROR_HANDLER__ = module.default
     console.log('💡 提示: 可以使用 window.__ERROR_HANDLER__ 访问错误处理工具')
     console.log('   - getErrorLogs(): 获取所有错误日志')
     console.log('   - clearErrorLogs(): 清空错误日志')

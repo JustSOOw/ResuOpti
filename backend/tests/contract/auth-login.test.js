@@ -14,7 +14,7 @@
  */
 
 const request = require('supertest');
-const { describe, test, expect, beforeAll, afterAll } = require('@jest/globals');
+const { describe, test, expect } = require('@jest/globals');
 
 // API基础URL
 const API_BASE_URL = 'http://localhost:3000';
@@ -370,7 +370,7 @@ describe('用户登录API契约测试 - POST /api/v1/auth/login', () => {
       expect(parts).toHaveLength(3);
 
       // 每个部分都应该是非空的base64url编码字符串
-      parts.forEach(part => {
+      parts.forEach((part) => {
         expect(part.length).toBeGreaterThan(0);
         expect(part).toMatch(/^[A-Za-z0-9-_]+$/);
       });
@@ -408,7 +408,7 @@ describe('用户登录API契约测试 - POST /api/v1/auth/login', () => {
 
       // 应该只包含契约中定义的字段
       const allowedFields = ['id', 'email', 'createdAt'];
-      Object.keys(user).forEach(key => {
+      Object.keys(user).forEach((key) => {
         expect(allowedFields).toContain(key);
       });
     }

@@ -2,83 +2,6 @@
   用户登录/注册表单组件
   支持登录和注册两种模式
 -->
-<template>
-  <el-form
-    ref="formRef"
-    :model="formData"
-    :rules="rules"
-    label-width="80px"
-    class="login-form"
-    @submit.prevent="handleSubmit"
-  >
-    <!-- 邮箱输入框 -->
-    <el-form-item label="邮箱" prop="email">
-      <el-input
-        v-model="formData.email"
-        type="email"
-        placeholder="请输入您的邮箱地址"
-        clearable
-        :disabled="loading"
-        autocomplete="email"
-      >
-        <template #prefix>
-          <el-icon><Message /></el-icon>
-        </template>
-      </el-input>
-    </el-form-item>
-
-    <!-- 密码输入框 -->
-    <el-form-item label="密码" prop="password">
-      <el-input
-        v-model="formData.password"
-        type="password"
-        placeholder="请输入密码（至少8位）"
-        show-password
-        clearable
-        :disabled="loading"
-        autocomplete="current-password"
-      >
-        <template #prefix>
-          <el-icon><Lock /></el-icon>
-        </template>
-      </el-input>
-    </el-form-item>
-
-    <!-- 确认密码输入框（仅注册模式显示） -->
-    <el-form-item
-      v-if="mode === 'register'"
-      label="确认密码"
-      prop="confirmPassword"
-    >
-      <el-input
-        v-model="formData.confirmPassword"
-        type="password"
-        placeholder="请再次输入密码"
-        show-password
-        clearable
-        :disabled="loading"
-        autocomplete="new-password"
-      >
-        <template #prefix>
-          <el-icon><Lock /></el-icon>
-        </template>
-      </el-input>
-    </el-form-item>
-
-    <!-- 提交按钮 -->
-    <el-form-item>
-      <el-button
-        type="primary"
-        :loading="loading"
-        @click="handleSubmit"
-        class="submit-button"
-      >
-        {{ mode === 'login' ? '登录' : '注册' }}
-      </el-button>
-    </el-form-item>
-  </el-form>
-</template>
-
 <script setup lang="ts">
 import { ref, reactive, watch, type PropType } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
@@ -219,15 +142,9 @@ const validateConfirmPassword = (rule: any, value: string, callback: any) => {
  * 表单验证规则
  */
 const rules = reactive<FormRules<LoginFormData>>({
-  email: [
-    { validator: validateEmail, trigger: 'blur' }
-  ],
-  password: [
-    { validator: validatePassword, trigger: 'blur' }
-  ],
-  confirmPassword: [
-    { validator: validateConfirmPassword, trigger: 'blur' }
-  ]
+  email: [{ validator: validateEmail, trigger: 'blur' }],
+  password: [{ validator: validatePassword, trigger: 'blur' }],
+  confirmPassword: [{ validator: validateConfirmPassword, trigger: 'blur' }]
 })
 
 // ==================== 方法定义 ====================
@@ -251,7 +168,6 @@ const handleSubmit = async () => {
       email: formData.email,
       password: formData.password
     })
-
   } catch (error) {
     // 验证失败
     ElMessage.error('请检查表单填写是否正确')
@@ -321,6 +237,74 @@ defineExpose({
   }
 })
 </script>
+
+<template>
+  <el-form
+    ref="formRef"
+    :model="formData"
+    :rules="rules"
+    label-width="80px"
+    class="login-form"
+    @submit.prevent="handleSubmit"
+  >
+    <!-- 邮箱输入框 -->
+    <el-form-item label="邮箱" prop="email">
+      <el-input
+        v-model="formData.email"
+        type="email"
+        placeholder="请输入您的邮箱地址"
+        clearable
+        :disabled="loading"
+        autocomplete="email"
+      >
+        <template #prefix>
+          <el-icon><Message /></el-icon>
+        </template>
+      </el-input>
+    </el-form-item>
+
+    <!-- 密码输入框 -->
+    <el-form-item label="密码" prop="password">
+      <el-input
+        v-model="formData.password"
+        type="password"
+        placeholder="请输入密码（至少8位）"
+        show-password
+        clearable
+        :disabled="loading"
+        autocomplete="current-password"
+      >
+        <template #prefix>
+          <el-icon><Lock /></el-icon>
+        </template>
+      </el-input>
+    </el-form-item>
+
+    <!-- 确认密码输入框（仅注册模式显示） -->
+    <el-form-item v-if="mode === 'register'" label="确认密码" prop="confirmPassword">
+      <el-input
+        v-model="formData.confirmPassword"
+        type="password"
+        placeholder="请再次输入密码"
+        show-password
+        clearable
+        :disabled="loading"
+        autocomplete="new-password"
+      >
+        <template #prefix>
+          <el-icon><Lock /></el-icon>
+        </template>
+      </el-input>
+    </el-form-item>
+
+    <!-- 提交按钮 -->
+    <el-form-item>
+      <el-button type="primary" :loading="loading" class="submit-button" @click="handleSubmit">
+        {{ mode === 'login' ? '登录' : '注册' }}
+      </el-button>
+    </el-form-item>
+  </el-form>
+</template>
 
 <style scoped>
 /**

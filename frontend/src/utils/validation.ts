@@ -27,7 +27,8 @@ export function isEmail(email: string): boolean {
   }
 
   // RFC 5322 标准的简化正则表达式
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
   return emailRegex.test(email)
 }
@@ -93,13 +94,11 @@ interface DateValidationOptions {
  * @param options 验证选项
  * @returns 是否为有效日期
  */
-export function isValidDate(date: Date | string | number, options: DateValidationOptions = {}): boolean {
-  const {
-    allowFuture = true,
-    allowPast = true,
-    minDate,
-    maxDate
-  } = options
+export function isValidDate(
+  date: Date | string | number,
+  options: DateValidationOptions = {}
+): boolean {
+  const { allowFuture = true, allowPast = true, minDate, maxDate } = options
 
   // 转换为Date对象
   const dateObj = date instanceof Date ? date : new Date(date)
@@ -421,7 +420,7 @@ export function validateFileType(file: File, accept: string[]): ValidationResult
   const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
 
   // 检查扩展名是否在允许的列表中
-  const isAccepted = accept.some(ext => {
+  const isAccepted = accept.some((ext) => {
     const normalizedExt = ext.toLowerCase()
     return fileExtension === normalizedExt
   })
@@ -566,7 +565,7 @@ export function formatBytes(bytes: number, decimals: number = 2): string {
 
   const i = Math.floor(Math.log(bytes) / Math.log(k))
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
 
 /**
@@ -606,11 +605,7 @@ const ruleTypeMap: Record<string, string> = {
  * @param customMessage 自定义消息
  * @returns 错误消息字符串
  */
-export function getErrorMessage(
-  field: string,
-  rule: string,
-  customMessage?: string
-): string {
+export function getErrorMessage(field: string, rule: string, customMessage?: string): string {
   if (customMessage) {
     return customMessage
   }

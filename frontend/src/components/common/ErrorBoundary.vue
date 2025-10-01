@@ -4,44 +4,6 @@
   用法: 在需要错误保护的组件外包裹 <ErrorBoundary>
 -->
 
-<template>
-  <div v-if="hasError" class="error-boundary">
-    <div class="error-boundary-content">
-      <el-result
-        icon="error"
-        title="页面加载失败"
-        :sub-title="errorMessage"
-      >
-        <template #extra>
-          <el-space>
-            <el-button type="primary" @click="handleReset">
-              重新加载
-            </el-button>
-            <el-button @click="handleGoBack">
-              返回上一页
-            </el-button>
-            <el-button v-if="isDev" @click="showDetails = !showDetails">
-              {{ showDetails ? '隐藏' : '查看' }}详情
-            </el-button>
-          </el-space>
-        </template>
-      </el-result>
-
-      <!-- 开发环境显示错误详情 -->
-      <div v-if="isDev && showDetails && errorInfo" class="error-details">
-        <el-collapse>
-          <el-collapse-item title="错误详情" name="error">
-            <pre>{{ errorInfo }}</pre>
-          </el-collapse-item>
-        </el-collapse>
-      </div>
-    </div>
-  </div>
-
-  <!-- 正常渲染子组件 -->
-  <slot v-else></slot>
-</template>
-
 <script setup lang="ts">
 import { ref, onErrorCaptured, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -127,6 +89,36 @@ const handleGoBack = () => {
   router.back()
 }
 </script>
+
+<template>
+  <div v-if="hasError" class="error-boundary">
+    <div class="error-boundary-content">
+      <el-result icon="error" title="页面加载失败" :sub-title="errorMessage">
+        <template #extra>
+          <el-space>
+            <el-button type="primary" @click="handleReset"> 重新加载 </el-button>
+            <el-button @click="handleGoBack"> 返回上一页 </el-button>
+            <el-button v-if="isDev" @click="showDetails = !showDetails">
+              {{ showDetails ? '隐藏' : '查看' }}详情
+            </el-button>
+          </el-space>
+        </template>
+      </el-result>
+
+      <!-- 开发环境显示错误详情 -->
+      <div v-if="isDev && showDetails && errorInfo" class="error-details">
+        <el-collapse>
+          <el-collapse-item title="错误详情" name="error">
+            <pre>{{ errorInfo }}</pre>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+    </div>
+  </div>
+
+  <!-- 正常渲染子组件 -->
+  <slot v-else></slot>
+</template>
 
 <style scoped lang="scss">
 .error-boundary {

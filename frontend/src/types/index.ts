@@ -18,12 +18,7 @@
  */
 
 // ==================== 枚举类型 ====================
-export type {
-  ResumeType,
-  ApplicationStatus,
-  ThemeMode,
-  SortOrder
-} from './enums'
+export type { ResumeType, ApplicationStatus, ThemeMode, SortOrder } from './enums'
 
 // ==================== 业务实体 ====================
 export type {

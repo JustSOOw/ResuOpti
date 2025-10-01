@@ -2,117 +2,6 @@
   简历卡片展示组件
   用于展示简历的基本信息、标签、备注等，并提供查看、编辑、删除、下载等操作
 -->
-<template>
-  <el-card
-    class="resume-card"
-    :class="{ 'is-hover': isHovering }"
-    shadow="hover"
-    @mouseenter="isHovering = true"
-    @mouseleave="isHovering = false"
-  >
-    <!-- 卡片头部：标题和类型图标 -->
-    <template #header>
-      <div class="card-header">
-        <div class="header-left">
-          <!-- 简历类型图标 -->
-          <el-icon :size="20" class="type-icon">
-            <Document v-if="resume.type === 'file'" />
-            <Edit v-else />
-          </el-icon>
-          <!-- 简历标题 -->
-          <span class="title">{{ resume.title }}</span>
-        </div>
-        <!-- 操作按钮组 -->
-        <div v-if="showActions" class="header-actions">
-          <el-button
-            type="primary"
-            size="small"
-            :icon="View"
-            @click="handleView"
-          >
-            查看
-          </el-button>
-          <el-dropdown @command="handleCommand">
-            <el-button size="small" :icon="More">
-            </el-button>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="edit" :icon="Edit">
-                  编辑
-                </el-dropdown-item>
-                <el-dropdown-item
-                  v-if="resume.type === 'file'"
-                  command="download"
-                  :icon="Download"
-                >
-                  下载
-                </el-dropdown-item>
-                <el-dropdown-item
-                  command="delete"
-                  :icon="Delete"
-                  divided
-                >
-                  <span class="danger-text">删除</span>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-      </div>
-    </template>
-
-    <!-- 卡片内容：文件信息、创建时间、标签、备注 -->
-    <div class="card-content">
-      <!-- 文件信息（仅file类型显示） -->
-      <div v-if="resume.type === 'file' && resume.fileName" class="info-row">
-        <el-icon class="info-icon"><Paperclip /></el-icon>
-        <span class="info-text">{{ resume.fileName }}</span>
-        <span class="file-size">{{ formatFileSize(resume.fileSize || 0) }}</span>
-      </div>
-
-      <!-- 创建时间 -->
-      <div class="info-row">
-        <el-icon class="info-icon"><Clock /></el-icon>
-        <span class="info-text">{{ formatDate(resume.createdAt) }}</span>
-      </div>
-
-      <!-- 标签列表 -->
-      <div v-if="metadata?.tags && metadata.tags.length > 0" class="tags-section">
-        <el-icon class="info-icon"><Collection /></el-icon>
-        <div class="tags-wrapper">
-          <!-- 最多显示3个标签 -->
-          <el-tag
-            v-for="(tag, index) in displayTags"
-            :key="index"
-            :type="getTagType(index)"
-            size="small"
-            class="tag-item"
-          >
-            {{ tag }}
-          </el-tag>
-          <!-- 更多标签提示 -->
-          <el-tag
-            v-if="remainingTagsCount > 0"
-            size="small"
-            type="info"
-            class="tag-item"
-          >
-            +{{ remainingTagsCount }}
-          </el-tag>
-        </div>
-      </div>
-
-      <!-- 备注摘要 -->
-      <div v-if="metadata?.notes" class="notes-section">
-        <el-icon class="info-icon"><Document /></el-icon>
-        <span class="notes-text" :title="metadata.notes">
-          {{ truncateNotes(metadata.notes) }}
-        </span>
-      </div>
-    </div>
-  </el-card>
-</template>
-
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import {
@@ -227,7 +116,7 @@ const formatDate = (dateString: string): string => {
  */
 const truncateNotes = (notes: string): string => {
   if (notes.length <= 50) return notes
-  return notes.substring(0, 50) + '...'
+  return `${notes.substring(0, 50)}...`
 }
 
 /**
@@ -236,13 +125,7 @@ const truncateNotes = (notes: string): string => {
  * @returns Element Plus标签类型
  */
 const getTagType = (index: number): 'primary' | 'success' | 'info' | 'warning' | 'danger' => {
-  const types = [
-    'primary',
-    'success',
-    'warning',
-    'danger',
-    'info'
-  ] as const
+  const types = ['primary', 'success', 'warning', 'danger', 'info'] as const
   return types[index % types.length] as 'primary' | 'success' | 'info' | 'warning' | 'danger'
 }
 
@@ -293,6 +176,94 @@ const handleDelete = async () => {
   }
 }
 </script>
+
+<template>
+  <el-card
+    class="resume-card"
+    :class="{ 'is-hover': isHovering }"
+    shadow="hover"
+    @mouseenter="isHovering = true"
+    @mouseleave="isHovering = false"
+  >
+    <!-- 卡片头部：标题和类型图标 -->
+    <template #header>
+      <div class="card-header">
+        <div class="header-left">
+          <!-- 简历类型图标 -->
+          <el-icon :size="20" class="type-icon">
+            <Document v-if="resume.type === 'file'" />
+            <Edit v-else />
+          </el-icon>
+          <!-- 简历标题 -->
+          <span class="title">{{ resume.title }}</span>
+        </div>
+        <!-- 操作按钮组 -->
+        <div v-if="showActions" class="header-actions">
+          <el-button type="primary" size="small" :icon="View" @click="handleView"> 查看 </el-button>
+          <el-dropdown @command="handleCommand">
+            <el-button size="small" :icon="More"> </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="edit" :icon="Edit"> 编辑 </el-dropdown-item>
+                <el-dropdown-item v-if="resume.type === 'file'" command="download" :icon="Download">
+                  下载
+                </el-dropdown-item>
+                <el-dropdown-item command="delete" :icon="Delete" divided>
+                  <span class="danger-text">删除</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </div>
+    </template>
+
+    <!-- 卡片内容：文件信息、创建时间、标签、备注 -->
+    <div class="card-content">
+      <!-- 文件信息（仅file类型显示） -->
+      <div v-if="resume.type === 'file' && resume.fileName" class="info-row">
+        <el-icon class="info-icon"><Paperclip /></el-icon>
+        <span class="info-text">{{ resume.fileName }}</span>
+        <span class="file-size">{{ formatFileSize(resume.fileSize || 0) }}</span>
+      </div>
+
+      <!-- 创建时间 -->
+      <div class="info-row">
+        <el-icon class="info-icon"><Clock /></el-icon>
+        <span class="info-text">{{ formatDate(resume.createdAt) }}</span>
+      </div>
+
+      <!-- 标签列表 -->
+      <div v-if="metadata?.tags && metadata.tags.length > 0" class="tags-section">
+        <el-icon class="info-icon"><Collection /></el-icon>
+        <div class="tags-wrapper">
+          <!-- 最多显示3个标签 -->
+          <el-tag
+            v-for="(tag, index) in displayTags"
+            :key="index"
+            :type="getTagType(index)"
+            size="small"
+            class="tag-item"
+          >
+            {{ tag }}
+          </el-tag>
+          <!-- 更多标签提示 -->
+          <el-tag v-if="remainingTagsCount > 0" size="small" type="info" class="tag-item">
+            +{{ remainingTagsCount }}
+          </el-tag>
+        </div>
+      </div>
+
+      <!-- 备注摘要 -->
+      <div v-if="metadata?.notes" class="notes-section">
+        <el-icon class="info-icon"><Document /></el-icon>
+        <span class="notes-text" :title="metadata.notes">
+          {{ truncateNotes(metadata.notes) }}
+        </span>
+      </div>
+    </div>
+  </el-card>
+</template>
 
 <style scoped lang="scss">
 .resume-card {

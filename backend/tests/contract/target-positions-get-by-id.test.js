@@ -117,7 +117,7 @@ describe('GET /api/v1/target-positions/{id} - 获取目标岗位详情', () => {
       expect(resume.id).toMatch(uuidRegex);
 
       // fileName是可选字段
-      if (resume.hasOwnProperty('fileName')) {
+      if (Object.prototype.hasOwnProperty.call(resume, 'fileName')) {
         expect(['string', 'object']).toContain(typeof resume.fileName);
       }
     }

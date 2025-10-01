@@ -161,13 +161,13 @@ frontend/
 
 ## Phase 3.14: 性能优化和Polish
 
-- [ ] T076 [P] 前端性能优化：路由懒加载、组件异步加载 在 frontend/src/router/
-- [ ] T077 [P] 后端性能优化：数据库查询优化和缓存策略 在 backend/src/services/
-- [ ] T078 [P] 前端单元测试：关键组件测试覆盖 在 frontend/tests/unit/
-- [ ] T079 [P] 后端单元测试：服务层和工具函数测试 在 backend/tests/unit/
-- [ ] T080 代码质量检查：ESLint规则调优和重构优化 跨 backend/frontend
-- [ ] T081 [P] API文档生成：Swagger/OpenAPI文档自动化 在 backend/docs/
-- [ ] T082 quickstart.md用户验收测试：端到端场景验证 在 根目录
+- [X] T076 [P] 前端性能优化：路由懒加载、组件异步加载 在 frontend/src/router/
+- [X] T077 [P] 后端性能优化：数据库查询优化和缓存策略 在 backend/src/services/
+- [X] T078 [P] 前端单元测试：关键组件测试覆盖 在 frontend/tests/unit/
+- [X] T079 [P] 后端单元测试：服务层和工具函数测试 在 backend/tests/unit/
+- [X] T080 代码质量检查：ESLint规则调优和重构优化 跨 backend/frontend
+- [X] T081 [P] API文档生成：Swagger/OpenAPI文档自动化 在 backend/docs/
+- [X] T082 quickstart.md用户验收测试：端到端场景验证 在 根目录
 
 ## 依赖关系图
 

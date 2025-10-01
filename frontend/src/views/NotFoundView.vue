@@ -1,19 +1,3 @@
-<template>
-  <div class="not-found-container">
-    <div class="not-found-content">
-      <el-icon :size="120" class="error-icon">
-        <WarningFilled />
-      </el-icon>
-      <h1 class="error-title">404</h1>
-      <p class="error-message">抱歉，您访问的页面不存在</p>
-      <div class="action-buttons">
-        <el-button type="primary" @click="goBack">返回上一页</el-button>
-        <el-button @click="goHome">回到首页</el-button>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { WarningFilled } from '@element-plus/icons-vue'
@@ -34,6 +18,22 @@ const goHome = () => {
   router.push('/dashboard')
 }
 </script>
+
+<template>
+  <div class="not-found-container">
+    <div class="not-found-content">
+      <el-icon :size="120" class="error-icon">
+        <WarningFilled />
+      </el-icon>
+      <h1 class="error-title">404</h1>
+      <p class="error-message">抱歉，您访问的页面不存在</p>
+      <div class="action-buttons">
+        <el-button type="primary" @click="goBack">返回上一页</el-button>
+        <el-button @click="goHome">回到首页</el-button>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .not-found-container {

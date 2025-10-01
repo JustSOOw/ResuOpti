@@ -30,7 +30,7 @@ module.exports = {
     const resumeMetadata = [];
 
     // 为前端开发岗位创建在线简历
-    const frontendPosition = positions.find(p => p.name === '前端开发工程师');
+    const frontendPosition = positions.find((p) => p.name === '前端开发工程师');
     if (frontendPosition) {
       const resumeId1 = uuidv4();
       resumeVersions.push({
@@ -65,15 +65,30 @@ module.exports = {
               content: [
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '精通 Vue 3、React 18、TypeScript' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '精通 Vue 3、React 18、TypeScript' }]
+                    }
+                  ]
                 },
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '熟悉 Webpack、Vite 等前端工程化工具' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '熟悉 Webpack、Vite 等前端工程化工具' }]
+                    }
+                  ]
                 },
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '掌握响应式设计、性能优化、前端安全' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '掌握响应式设计、性能优化、前端安全' }]
+                    }
+                  ]
                 }
               ]
             },
@@ -85,7 +100,11 @@ module.exports = {
             {
               type: 'paragraph',
               content: [
-                { type: 'text', marks: [{ type: 'bold' }], text: 'XX科技有限公司 | 高级前端工程师 | 2021.06 - 至今' }
+                {
+                  type: 'text',
+                  marks: [{ type: 'bold' }],
+                  text: 'XX科技有限公司 | 高级前端工程师 | 2021.06 - 至今'
+                }
               ]
             },
             {
@@ -93,11 +112,21 @@ module.exports = {
               content: [
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '负责公司核心产品前端架构设计和开发' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '负责公司核心产品前端架构设计和开发' }]
+                    }
+                  ]
                 },
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '优化首屏加载速度，提升40%性能' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '优化首屏加载速度，提升40%性能' }]
+                    }
+                  ]
                 }
               ]
             }
@@ -118,7 +147,7 @@ module.exports = {
     }
 
     // 为后端开发岗位创建文件类型简历
-    const backendPosition = positions.find(p => p.name === '后端开发工程师');
+    const backendPosition = positions.find((p) => p.name === '后端开发工程师');
     if (backendPosition) {
       const resumeId2 = uuidv4();
       resumeVersions.push({
@@ -145,7 +174,7 @@ module.exports = {
     }
 
     // 为全栈开发岗位创建在线简历
-    const fullstackPosition = positions.find(p => p.name === '全栈开发工程师');
+    const fullstackPosition = positions.find((p) => p.name === '全栈开发工程师');
     if (fullstackPosition) {
       const resumeId3 = uuidv4();
       resumeVersions.push({
@@ -166,9 +195,7 @@ module.exports = {
             },
             {
               type: 'paragraph',
-              content: [
-                { type: 'text', text: '一个能从0到1独立完成项目的全能选手' }
-              ]
+              content: [{ type: 'text', text: '一个能从0到1独立完成项目的全能选手' }]
             },
             {
               type: 'heading',
@@ -180,15 +207,30 @@ module.exports = {
               content: [
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '前端: Vue.js、React、TypeScript' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '前端: Vue.js、React、TypeScript' }]
+                    }
+                  ]
                 },
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '后端: Node.js、Express、PostgreSQL' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '后端: Node.js、Express、PostgreSQL' }]
+                    }
+                  ]
                 },
                 {
                   type: 'listItem',
-                  content: [{ type: 'paragraph', content: [{ type: 'text', text: '运维: Docker、CI/CD、云服务部署' }] }]
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [{ type: 'text', text: '运维: Docker、CI/CD、云服务部署' }]
+                    }
+                  ]
                 }
               ]
             }
@@ -238,17 +280,25 @@ module.exports = {
       return;
     }
 
-    const resumeIds = resumes.map(r => r.id);
+    const resumeIds = resumes.map((r) => r.id);
 
     // 删除简历元数据
-    await queryInterface.bulkDelete('resume_metadata', {
-      resume_id: resumeIds
-    }, {});
+    await queryInterface.bulkDelete(
+      'resume_metadata',
+      {
+        resume_id: resumeIds
+      },
+      {}
+    );
 
     // 删除简历版本
-    await queryInterface.bulkDelete('resume_versions', {
-      id: resumeIds
-    }, {});
+    await queryInterface.bulkDelete(
+      'resume_versions',
+      {
+        id: resumeIds
+      },
+      {}
+    );
 
     console.log('🗑️  示例简历已删除');
   }

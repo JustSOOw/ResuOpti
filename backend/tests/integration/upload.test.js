@@ -26,7 +26,7 @@ const fileService = require('../../src/services/fileService');
 
 // 测试常量
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc'];
+const _ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc'];
 
 // 创建测试用的Express应用
 const createTestApp = () => {
@@ -105,7 +105,8 @@ describe('文件上传集成测试', () => {
   const createMockPDF = async (filename, sizeInBytes) => {
     // PDF文件的基本结构
     const pdfHeader = '%PDF-1.4\n';
-    const pdfBody = '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\n';
+    const pdfBody =
+      '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\n';
     const pdfFooter = '%%EOF\n';
 
     const pdfContent = pdfHeader + pdfBody + pdfFooter;
@@ -120,7 +121,7 @@ describe('文件上传集成测试', () => {
    */
   const createMockDOCX = async (filename, sizeInBytes) => {
     // DOCX文件是ZIP格式,使用ZIP文件头
-    const zipHeader = Buffer.from([0x50, 0x4B, 0x03, 0x04]); // PK\x03\x04
+    const zipHeader = Buffer.from([0x50, 0x4b, 0x03, 0x04]); // PK\x03\x04
     return createTestFile(filename, sizeInBytes, zipHeader);
   };
 
@@ -132,7 +133,7 @@ describe('文件上传集成测试', () => {
    */
   const createMockDOC = async (filename, sizeInBytes) => {
     // DOC文件使用OLE文件头
-    const oleHeader = Buffer.from([0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]);
+    const oleHeader = Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]);
     return createTestFile(filename, sizeInBytes, oleHeader);
   };
 
@@ -143,7 +144,7 @@ describe('文件上传集成测试', () => {
     for (const filePath of uploadedFiles) {
       try {
         await fs.unlink(filePath);
-      } catch (error) {
+      } catch (_error) {
         // 文件可能已经被删除,忽略错误
       }
     }
@@ -159,7 +160,7 @@ describe('文件上传集成测试', () => {
       for (const file of files) {
         await fs.unlink(path.join(testFilesDir, file));
       }
-    } catch (error) {
+    } catch (_error) {
       // 忽略清理错误
     }
   };
@@ -189,7 +190,7 @@ describe('文件上传集成测试', () => {
     // 删除测试文件目录
     try {
       await fs.rmdir(testFilesDir);
-    } catch (error) {
+    } catch (_error) {
       // 忽略错误
     }
   });
@@ -238,7 +239,9 @@ describe('文件上传集成测试', () => {
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
       expect(response.body.data.file_name).toMatch(/\.docx$/);
-      expect(response.body.data.mimetype).toBe('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      expect(response.body.data.mimetype).toBe(
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      );
 
       uploadedFiles.push(response.body.data.file_path);
 
@@ -265,9 +268,7 @@ describe('文件上传集成测试', () => {
     it('上传的文件名应该是UUID格式', async () => {
       const pdfPath = await createMockPDF('original-name.pdf', 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', pdfPath);
+      const response = await request(app).post('/upload').attach('file', pdfPath);
 
       expect(response.status).toBe(200);
 
@@ -284,9 +285,7 @@ describe('文件上传集成测试', () => {
     it('应该保留原始文件的扩展名', async () => {
       const pdfPath = await createMockPDF('my-resume.pdf', 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', pdfPath);
+      const response = await request(app).post('/upload').attach('file', pdfPath);
 
       expect(response.status).toBe(200);
       expect(response.body.data.file_name).toMatch(/\.pdf$/);
@@ -314,12 +313,10 @@ describe('文件上传集成测试', () => {
     });
 
     it('应该拒绝JPG图片文件', async () => {
-      const jpgHeader = Buffer.from([0xFF, 0xD8, 0xFF, 0xE0]); // JPEG文件头
+      const jpgHeader = Buffer.from([0xff, 0xd8, 0xff, 0xe0]); // JPEG文件头
       const jpgPath = await createTestFile('test.jpg', 1024, jpgHeader);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', jpgPath);
+      const response = await request(app).post('/upload').attach('file', jpgPath);
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -327,12 +324,10 @@ describe('文件上传集成测试', () => {
     });
 
     it('应该拒绝PNG图片文件', async () => {
-      const pngHeader = Buffer.from([0x89, 0x50, 0x4E, 0x47]); // PNG文件头
+      const pngHeader = Buffer.from([0x89, 0x50, 0x4e, 0x47]); // PNG文件头
       const pngPath = await createTestFile('test.png', 1024, pngHeader);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', pngPath);
+      const response = await request(app).post('/upload').attach('file', pngPath);
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -341,9 +336,7 @@ describe('文件上传集成测试', () => {
     it('应该拒绝可执行文件(.exe)', async () => {
       const exePath = await createTestFile('malware.exe', 1024, 'MZ'); // EXE文件头
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', exePath);
+      const response = await request(app).post('/upload').attach('file', exePath);
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -352,9 +345,7 @@ describe('文件上传集成测试', () => {
     it('应该拒绝JavaScript文件', async () => {
       const jsPath = await createTestFile('script.js', 1024, 'console.log("hello");');
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', jsPath);
+      const response = await request(app).post('/upload').attach('file', jsPath);
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -364,9 +355,7 @@ describe('文件上传集成测试', () => {
       // 创建一个扩展名是.pdf但内容不是PDF的文件
       const fakePdfPath = await createTestFile('fake.pdf', 1024, 'This is not a PDF');
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', fakePdfPath);
+      const response = await request(app).post('/upload').attach('file', fakePdfPath);
 
       // 应该被拒绝(如果有MIME类型检查)或接受(如果只检查扩展名)
       // 根据实现,这里可能是200或400
@@ -448,9 +437,7 @@ describe('文件上传集成测试', () => {
       const testSize = 512 * 1024; // 512KB
       const pdfPath = await createMockPDF('sized.pdf', testSize);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', pdfPath);
+      const response = await request(app).post('/upload').attach('file', pdfPath);
 
       expect(response.status).toBe(200);
 
@@ -467,9 +454,7 @@ describe('文件上传集成测试', () => {
    */
   describe('错误处理测试', () => {
     it('应该在没有文件上传时返回错误', async () => {
-      const response = await request(app)
-        .post('/upload')
-        .expect('Content-Type', /json/);
+      const response = await request(app).post('/upload').expect('Content-Type', /json/);
 
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('success', false);
@@ -492,9 +477,7 @@ describe('文件上传集成测试', () => {
     it('应该处理文件名包含特殊字符的情况', async () => {
       const specialNamePath = await createMockPDF('resume-2024(final)!@#.pdf', 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', specialNamePath);
+      const response = await request(app).post('/upload').attach('file', specialNamePath);
 
       // 应该成功处理特殊字符
       expect(response.status).toBe(200);
@@ -508,9 +491,7 @@ describe('文件上传集成测试', () => {
     it('应该处理中文文件名', async () => {
       const chineseNamePath = await createMockPDF('张三的简历.pdf', 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', chineseNamePath);
+      const response = await request(app).post('/upload').attach('file', chineseNamePath);
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
@@ -522,12 +503,10 @@ describe('文件上传集成测试', () => {
     });
 
     it('应该处理非常长的文件名', async () => {
-      const longName = 'a'.repeat(200) + '.pdf';
+      const longName = `${'a'.repeat(200)}.pdf`;
       const longNamePath = await createMockPDF(longName, 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', longNamePath);
+      const response = await request(app).post('/upload').attach('file', longNamePath);
 
       // 可能成功或因文件名过长而失败
       expect([200, 400]).toContain(response.status);
@@ -545,9 +524,7 @@ describe('文件上传集成测试', () => {
     it('文件应该保存到uploads目录', async () => {
       const pdfPath = await createMockPDF('test.pdf', 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', pdfPath);
+      const response = await request(app).post('/upload').attach('file', pdfPath);
 
       expect(response.status).toBe(200);
       expect(response.body.data.file_path).toContain('uploads');
@@ -559,9 +536,7 @@ describe('文件上传集成测试', () => {
       const originalContent = '%PDF-1.4\nTest Content\n%%EOF\n';
       const pdfPath = await createTestFile('readable.pdf', 1024, originalContent);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', pdfPath);
+      const response = await request(app).post('/upload').attach('file', pdfPath);
 
       expect(response.status).toBe(200);
 
@@ -577,13 +552,9 @@ describe('文件上传集成测试', () => {
       const pdf1Path = await createMockPDF('file1.pdf', 1024);
       const pdf2Path = await createMockPDF('file2.pdf', 1024);
 
-      const response1 = await request(app)
-        .post('/upload')
-        .attach('file', pdf1Path);
+      const response1 = await request(app).post('/upload').attach('file', pdf1Path);
 
-      const response2 = await request(app)
-        .post('/upload')
-        .attach('file', pdf2Path);
+      const response2 = await request(app).post('/upload').attach('file', pdf2Path);
 
       expect(response1.status).toBe(200);
       expect(response2.status).toBe(200);
@@ -713,9 +684,7 @@ describe('文件上传集成测试', () => {
     it('应该处理1字节的文件', async () => {
       const tinyPath = await createMockPDF('tiny.pdf', 1);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', tinyPath);
+      const response = await request(app).post('/upload').attach('file', tinyPath);
 
       // 可能接受或拒绝极小文件
       expect([200, 400]).toContain(response.status);
@@ -729,9 +698,7 @@ describe('文件上传集成测试', () => {
     it('应该处理只有扩展名的文件名(.pdf)', async () => {
       const noNamePath = await createMockPDF('.pdf', 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', noNamePath);
+      const response = await request(app).post('/upload').attach('file', noNamePath);
 
       // 应该能处理或拒绝这种特殊情况
       expect([200, 400]).toContain(response.status);
@@ -744,9 +711,7 @@ describe('文件上传集成测试', () => {
     it('应该处理多个点的文件名(my.resume.final.pdf)', async () => {
       const multiDotPath = await createMockPDF('my.resume.final.pdf', 1024);
 
-      const response = await request(app)
-        .post('/upload')
-        .attach('file', multiDotPath);
+      const response = await request(app).post('/upload').attach('file', multiDotPath);
 
       expect(response.status).toBe(200);
       expect(response.body.data.original_name).toBe('my.resume.final.pdf');

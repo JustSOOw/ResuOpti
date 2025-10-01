@@ -123,7 +123,7 @@ const handleDatabaseError = (error) => {
  * @param {Object} res - Express响应对象
  * @param {Function} next - Express下一个中间件函数
  */
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, _next) => {
   let error = err;
 
   // 如果不是自定义的AppError，进行转换
@@ -201,11 +201,7 @@ const errorHandler = (err, req, res, next) => {
  *   res.json({ success: true, data: user });
  * }));
  */
-const asyncHandler = (fn) => {
-  return (req, res, next) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
-  };
-};
+const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
 /**
  * 404错误处理中间件

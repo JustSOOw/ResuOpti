@@ -76,7 +76,6 @@ router.post('/register', async (req, res) => {
         email: user.email
       }
     });
-
   } catch (error) {
     // 处理业务逻辑错误
     if (error.message.includes('邮箱格式')) {
@@ -182,7 +181,6 @@ router.post('/login', async (req, res) => {
         }
       }
     });
-
   } catch (error) {
     // 处理业务逻辑错误
     if (error.message.includes('邮箱格式')) {

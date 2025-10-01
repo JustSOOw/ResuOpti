@@ -3,7 +3,8 @@
  * 提供便捷的请求方法、配置工具和辅助函数
  */
 
-import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
+import type { AxiosRequestConfig, CancelTokenSource } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import apiClient from '@/services/api'
 
 /**
@@ -79,10 +80,7 @@ export async function put<T = any>(
  * @param config - axios配置
  * @returns Promise<响应数据>
  */
-export async function del<T = any>(
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<T> {
+export async function del<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
   return apiClient.delete<T, T>(url, config)
 }
 
@@ -142,7 +140,7 @@ export function buildFormData(data: Record<string, FormDataValue | FormDataValue
 
     // 处理数组
     if (Array.isArray(value)) {
-      value.forEach(item => {
+      value.forEach((item) => {
         if (item !== undefined && item !== null) {
           formData.append(key, item instanceof Blob ? item : String(item))
         }
@@ -193,10 +191,7 @@ export function mergeConfig(
  * await requestWithRetry(() => get('/api/data'))
  */
 export function createRequestWithRetry(retryCount: number = 3) {
-  return async function <T>(
-    requestFn: () => Promise<T>,
-    delay: number = 1000
-  ): Promise<T> {
+  return async function <T>(requestFn: () => Promise<T>, delay: number = 1000): Promise<T> {
     let lastError: any
 
     for (let i = 0; i <= retryCount; i++) {
@@ -210,7 +205,7 @@ export function createRequestWithRetry(retryCount: number = 3) {
           if (import.meta.env.DEV) {
             console.log(`[Request Retry] 第 ${i + 1} 次重试，${delay}ms 后重试...`)
           }
-          await new Promise(resolve => setTimeout(resolve, delay))
+          await new Promise((resolve) => setTimeout(resolve, delay))
           // 指数退避：每次重试延迟翻倍
           delay *= 2
         }
@@ -316,7 +311,7 @@ export function joinUrl(base: string, ...paths: string[]): string {
 
   for (const path of paths) {
     const cleanPath = path.startsWith('/') ? path.slice(1) : path
-    result += '/' + cleanPath
+    result += `/${cleanPath}`
   }
 
   return result
@@ -386,7 +381,7 @@ export async function uploadFiles<T = any>(
   const formData = new FormData()
 
   // 添加所有文件
-  files.forEach(file => {
+  files.forEach((file) => {
     formData.append('files', file)
   })
 

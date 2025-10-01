@@ -21,8 +21,8 @@ export interface TargetPosition {
  * 创建岗位DTO
  */
 export interface CreatePositionDto {
-  name: string          // 必需，1-100字符
-  description?: string  // 可选
+  name: string // 必需，1-100字符
+  description?: string // 可选
 }
 
 /**
@@ -92,9 +92,15 @@ export const createPosition = async (data: CreatePositionDto): Promise<TargetPos
  * @param data - 更新数据
  * @returns Promise<TargetPosition> 更新后的岗位
  */
-export const updatePosition = async (id: string, data: UpdatePositionDto): Promise<TargetPosition> => {
+export const updatePosition = async (
+  id: string,
+  data: UpdatePositionDto
+): Promise<TargetPosition> => {
   try {
-    const response = await apiClient.put<ApiResponse<TargetPosition>>(`/target-positions/${id}`, data)
+    const response = await apiClient.put<ApiResponse<TargetPosition>>(
+      `/target-positions/${id}`,
+      data
+    )
     return response.data
   } catch (error: any) {
     const errorMessage = error.response?.data?.message || '更新岗位失败'

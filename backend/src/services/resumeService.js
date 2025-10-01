@@ -1,14 +1,10 @@
 /**
  * ResumeService - 简历版本管理服务
  * 提供简历的CRUD操作，支持文件类型和在线类型两种简历
+ * 性能优化：优化查询字段、使用findByPk
  */
 
-const {
-  sequelize,
-  ResumeVersion,
-  ResumeMetadata,
-  TargetPosition
-} = require('../models');
+const { sequelize, ResumeVersion, ResumeMetadata, TargetPosition } = require('../models');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -20,8 +16,10 @@ const path = require('path');
  * @throws {Error} 岗位不存在或无权限
  */
 async function validateTargetPosition(targetPositionId, userId) {
+  // 优化：只查询需要验证的字段
   const targetPosition = await TargetPosition.findOne({
-    where: { id: targetPositionId, user_id: userId }
+    where: { id: targetPositionId, user_id: userId },
+    attributes: ['id', 'user_id', 'name']
   });
 
   if (!targetPosition) {
@@ -82,21 +80,27 @@ async function createFileResume(targetPositionId, userId, resumeData) {
 
   try {
     // 创建简历版本
-    const resume = await ResumeVersion.create({
-      target_position_id: targetPositionId,
-      type: 'file',
-      title: title.trim(),
-      file_path: filePath,
-      file_name: fileName,
-      file_size: fileSize
-    }, { transaction });
+    const resume = await ResumeVersion.create(
+      {
+        target_position_id: targetPositionId,
+        type: 'file',
+        title: title.trim(),
+        file_path: filePath,
+        file_name: fileName,
+        file_size: fileSize
+      },
+      { transaction }
+    );
 
     // 创建对应的元数据记录（初始化为空）
-    const metadata = await ResumeMetadata.create({
-      resume_id: resume.id,
-      notes: null,
-      tags: []
-    }, { transaction });
+    const metadata = await ResumeMetadata.create(
+      {
+        resume_id: resume.id,
+        notes: null,
+        tags: []
+      },
+      { transaction }
+    );
 
     await transaction.commit();
 
@@ -140,19 +144,25 @@ async function createOnlineResume(targetPositionId, userId, resumeData) {
 
   try {
     // 创建简历版本
-    const resume = await ResumeVersion.create({
-      target_position_id: targetPositionId,
-      type: 'online',
-      title: title.trim(),
-      content: content
-    }, { transaction });
+    const resume = await ResumeVersion.create(
+      {
+        target_position_id: targetPositionId,
+        type: 'online',
+        title: title.trim(),
+        content: content
+      },
+      { transaction }
+    );
 
     // 创建对应的元数据记录
-    const metadata = await ResumeMetadata.create({
-      resume_id: resume.id,
-      notes: null,
-      tags: []
-    }, { transaction });
+    const metadata = await ResumeMetadata.create(
+      {
+        resume_id: resume.id,
+        notes: null,
+        tags: []
+      },
+      { transaction }
+    );
 
     await transaction.commit();
 
@@ -179,17 +189,33 @@ async function getResumesByPosition(targetPositionId, userId) {
   await validateTargetPosition(targetPositionId, userId);
 
   // 查询该岗位下的所有简历，并关联metadata
+  // 优化：只查询需要的字段，减少数据传输
   const resumes = await ResumeVersion.findAll({
     where: { target_position_id: targetPositionId },
-    include: [{
-      model: ResumeMetadata,
-      as: 'metadata',
-      required: false // 左连接，即使没有metadata也返回简历
-    }],
+    attributes: [
+      'id',
+      'target_position_id',
+      'type',
+      'title',
+      'file_path',
+      'file_name',
+      'file_size',
+      'content',
+      'created_at',
+      'updated_at'
+    ],
+    include: [
+      {
+        model: ResumeMetadata,
+        as: 'metadata',
+        required: false, // 左连接，即使没有metadata也返回简历
+        attributes: ['id', 'resume_id', 'notes', 'tags', 'created_at', 'updated_at']
+      }
+    ],
     order: [['created_at', 'DESC']] // 按创建时间降序排列
   });
 
-  return resumes.map(resume => resume.toJSON());
+  return resumes.map((resume) => resume.toJSON());
 }
 
 /**
@@ -200,19 +226,33 @@ async function getResumesByPosition(targetPositionId, userId) {
  * @throws {Error} 简历不存在或无权限
  */
 async function getResumeById(resumeId, userId) {
-  // 查询简历，关联metadata和targetPosition
-  const resume = await ResumeVersion.findOne({
-    where: { id: resumeId },
+  // 优化：直接通过关联查询验证所有权，减少一次查询
+  // 使用findByPk代替findOne提升性能
+  const resume = await ResumeVersion.findByPk(resumeId, {
+    attributes: [
+      'id',
+      'target_position_id',
+      'type',
+      'title',
+      'file_path',
+      'file_name',
+      'file_size',
+      'content',
+      'created_at',
+      'updated_at'
+    ],
     include: [
       {
         model: ResumeMetadata,
         as: 'metadata',
-        required: false
+        required: false,
+        attributes: ['id', 'resume_id', 'notes', 'tags', 'created_at', 'updated_at']
       },
       {
         model: TargetPosition,
         as: 'targetPosition',
         required: true,
+        attributes: ['id', 'user_id', 'name', 'description'],
         where: { user_id: userId } // 通过targetPosition验证所有权
       }
     ]
@@ -239,14 +279,18 @@ async function updateOnlineResume(resumeId, userId, updateData) {
   const { title, content } = updateData;
 
   // 先获取简历并验证所有权和类型
-  const resume = await ResumeVersion.findOne({
-    where: { id: resumeId },
-    include: [{
-      model: TargetPosition,
-      as: 'targetPosition',
-      required: true,
-      where: { user_id: userId }
-    }]
+  // 优化：使用findByPk，只查询必要字段
+  const resume = await ResumeVersion.findByPk(resumeId, {
+    attributes: ['id', 'type', 'title', 'content', 'target_position_id'],
+    include: [
+      {
+        model: TargetPosition,
+        as: 'targetPosition',
+        required: true,
+        attributes: ['user_id'],
+        where: { user_id: userId }
+      }
+    ]
   });
 
   if (!resume) {
@@ -283,11 +327,14 @@ async function updateOnlineResume(resumeId, userId, updateData) {
 
   // 重新加载以获取最新数据（包含metadata）
   await resume.reload({
-    include: [{
-      model: ResumeMetadata,
-      as: 'metadata',
-      required: false
-    }]
+    include: [
+      {
+        model: ResumeMetadata,
+        as: 'metadata',
+        required: false,
+        attributes: ['id', 'resume_id', 'notes', 'tags', 'created_at', 'updated_at']
+      }
+    ]
   });
 
   return resume.toJSON();
@@ -302,14 +349,18 @@ async function updateOnlineResume(resumeId, userId, updateData) {
  */
 async function deleteResume(resumeId, userId) {
   // 先获取简历并验证所有权
-  const resume = await ResumeVersion.findOne({
-    where: { id: resumeId },
-    include: [{
-      model: TargetPosition,
-      as: 'targetPosition',
-      required: true,
-      where: { user_id: userId }
-    }]
+  // 优化：使用findByPk，只查询必要字段
+  const resume = await ResumeVersion.findByPk(resumeId, {
+    attributes: ['id', 'type', 'file_path'],
+    include: [
+      {
+        model: TargetPosition,
+        as: 'targetPosition',
+        required: true,
+        attributes: ['user_id'],
+        where: { user_id: userId }
+      }
+    ]
   });
 
   if (!resume) {

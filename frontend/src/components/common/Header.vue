@@ -12,12 +12,7 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useThemeStore } from '@/stores/theme'
-import {
-  Moon,
-  Sunny,
-  User,
-  SwitchButton
-} from '@element-plus/icons-vue'
+import { Moon, Sunny, User, SwitchButton } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
 /**
@@ -48,9 +43,7 @@ const router = useRouter()
 /**
  * 获取当前用户邮箱
  */
-const userEmail = computed(() => {
-  return authStore.user?.email || '未登录'
-})
+const userEmail = computed(() => authStore.user?.email || '未登录')
 
 /**
  * 获取用户名首字母（用于头像显示）
@@ -121,10 +114,7 @@ const handleLogout = async (): Promise<void> => {
       <!-- 右侧：主题切换、用户信息、退出登录 -->
       <div class="header-right">
         <!-- 主题切换按钮 -->
-        <el-tooltip
-          :content="isDark ? '切换到亮色主题' : '切换到暗黑主题'"
-          placement="bottom"
-        >
+        <el-tooltip :content="isDark ? '切换到亮色主题' : '切换到暗黑主题'" placement="bottom">
           <el-button
             class="theme-toggle-btn"
             :icon="isDark ? Sunny : Moon"
@@ -134,11 +124,7 @@ const handleLogout = async (): Promise<void> => {
         </el-tooltip>
 
         <!-- 用户下拉菜单 -->
-        <el-dropdown
-          v-if="authStore.isAuthenticated"
-          class="user-dropdown"
-          @command="handleLogout"
-        >
+        <el-dropdown v-if="authStore.isAuthenticated" class="user-dropdown" @command="handleLogout">
           <div class="user-info">
             <el-avatar class="user-avatar" :size="32">
               {{ userInitial }}

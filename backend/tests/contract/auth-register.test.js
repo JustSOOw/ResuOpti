@@ -13,7 +13,7 @@
  */
 
 const request = require('supertest');
-const { describe, test, expect, beforeAll, afterAll } = require('@jest/globals');
+const { describe, test, expect } = require('@jest/globals');
 
 // API基础URL
 const API_BASE_URL = 'http://localhost:3000';

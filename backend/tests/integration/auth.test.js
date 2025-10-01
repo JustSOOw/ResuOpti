@@ -17,7 +17,7 @@
 
 const { describe, test, expect, beforeAll, afterAll, beforeEach } = require('@jest/globals');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken'); // 暂未使用
 const { sequelize } = require('../../src/config');
 const User = require('../../src/models/User');
 const authService = require('../../src/services/authService');
@@ -172,9 +172,7 @@ describe('用户认证集成测试', () => {
       await authService.register(testEmail, testPassword);
 
       // 第二次使用相同邮箱注册应该失败
-      await expect(
-        authService.register(testEmail, testPassword)
-      ).rejects.toThrow('该邮箱已被注册');
+      await expect(authService.register(testEmail, testPassword)).rejects.toThrow('该邮箱已被注册');
 
       // 验证数据库中只有一个用户
       const users = await User.findAll({ where: { email: testEmail } });
@@ -190,18 +188,18 @@ describe('用户认证集成测试', () => {
      */
     test('应该拒绝无效的邮箱格式', async () => {
       const invalidEmails = [
-        'notanemail',           // 缺少@符号
-        'missing@domain',       // 缺少顶级域名
-        '@nodomain.com',        // 缺少用户名
-        'spaces in@email.com',  // 包含空格
-        ''                      // 空字符串
+        'notanemail', // 缺少@符号
+        'missing@domain', // 缺少顶级域名
+        '@nodomain.com', // 缺少用户名
+        'spaces in@email.com', // 包含空格
+        '' // 空字符串
       ];
 
       // 测试所有无效邮箱格式
       for (const invalidEmail of invalidEmails) {
-        await expect(
-          authService.register(invalidEmail, 'password123')
-        ).rejects.toThrow('邮箱格式不正确');
+        await expect(authService.register(invalidEmail, 'password123')).rejects.toThrow(
+          '邮箱格式不正确'
+        );
       }
 
       // 验证数据库中没有创建任何用户
@@ -219,17 +217,17 @@ describe('用户认证集成测试', () => {
     test('应该拒绝长度少于8位的密码', async () => {
       const testEmail = 'user@example.com';
       const shortPasswords = [
-        'pass1',      // 5位
-        'abc123',     // 6位
-        'test12',     // 6位
-        '1234567'     // 7位
+        'pass1', // 5位
+        'abc123', // 6位
+        'test12', // 6位
+        '1234567' // 7位
       ];
 
       // 测试所有短密码
       for (const shortPassword of shortPasswords) {
-        await expect(
-          authService.register(testEmail, shortPassword)
-        ).rejects.toThrow('密码长度至少为8位');
+        await expect(authService.register(testEmail, shortPassword)).rejects.toThrow(
+          '密码长度至少为8位'
+        );
       }
 
       // 验证数据库中没有创建任何用户
@@ -249,19 +247,19 @@ describe('用户认证集成测试', () => {
       const testEmail = 'user@example.com';
 
       // 测试纯字母密码
-      await expect(
-        authService.register(testEmail, 'onlyletters')
-      ).rejects.toThrow('密码必须同时包含字母和数字');
+      await expect(authService.register(testEmail, 'onlyletters')).rejects.toThrow(
+        '密码必须同时包含字母和数字'
+      );
 
       // 测试纯数字密码
-      await expect(
-        authService.register(testEmail, '12345678')
-      ).rejects.toThrow('密码必须同时包含字母和数字');
+      await expect(authService.register(testEmail, '12345678')).rejects.toThrow(
+        '密码必须同时包含字母和数字'
+      );
 
       // 测试特殊字符密码（没有字母和数字）
-      await expect(
-        authService.register(testEmail, '!@#$%^&*')
-      ).rejects.toThrow('密码必须同时包含字母和数字');
+      await expect(authService.register(testEmail, '!@#$%^&*')).rejects.toThrow(
+        '密码必须同时包含字母和数字'
+      );
 
       // 验证数据库中没有创建任何用户
       const userCount = await User.count();
@@ -277,19 +275,15 @@ describe('用户认证集成测试', () => {
      */
     test('应该拒绝空的邮箱或密码', async () => {
       // 测试空邮箱
-      await expect(
-        authService.register('', 'password123')
-      ).rejects.toThrow('邮箱格式不正确');
+      await expect(authService.register('', 'password123')).rejects.toThrow('邮箱格式不正确');
 
       // 测试空密码
-      await expect(
-        authService.register('user@example.com', '')
-      ).rejects.toThrow('密码长度至少为8位');
+      await expect(authService.register('user@example.com', '')).rejects.toThrow(
+        '密码长度至少为8位'
+      );
 
       // 测试null值
-      await expect(
-        authService.register(null, 'password123')
-      ).rejects.toThrow('邮箱格式不正确');
+      await expect(authService.register(null, 'password123')).rejects.toThrow('邮箱格式不正确');
 
       // 验证数据库中没有创建任何用户
       const userCount = await User.count();
@@ -390,9 +384,7 @@ describe('用户认证集成测试', () => {
       const wrongPassword = 'wrongpassword123';
 
       // 尝试使用错误密码登录
-      await expect(
-        authService.login(testUser.email, wrongPassword)
-      ).rejects.toThrow('密码错误');
+      await expect(authService.login(testUser.email, wrongPassword)).rejects.toThrow('密码错误');
     });
 
     /**
@@ -406,9 +398,9 @@ describe('用户认证集成测试', () => {
       const nonExistentEmail = 'nonexistent@example.com';
 
       // 尝试使用不存在的邮箱登录
-      await expect(
-        authService.login(nonExistentEmail, 'password123')
-      ).rejects.toThrow('用户不存在');
+      await expect(authService.login(nonExistentEmail, 'password123')).rejects.toThrow(
+        '用户不存在'
+      );
     });
 
     /**
@@ -421,23 +413,15 @@ describe('用户认证集成测试', () => {
      */
     test('应该拒绝空的邮箱或密码', async () => {
       // 测试空邮箱
-      await expect(
-        authService.login('', 'password123')
-      ).rejects.toThrow('邮箱和密码不能为空');
+      await expect(authService.login('', 'password123')).rejects.toThrow('邮箱和密码不能为空');
 
       // 测试空密码
-      await expect(
-        authService.login(testUser.email, '')
-      ).rejects.toThrow('邮箱和密码不能为空');
+      await expect(authService.login(testUser.email, '')).rejects.toThrow('邮箱和密码不能为空');
 
       // 测试null值
-      await expect(
-        authService.login(null, 'password123')
-      ).rejects.toThrow('邮箱和密码不能为空');
+      await expect(authService.login(null, 'password123')).rejects.toThrow('邮箱和密码不能为空');
 
-      await expect(
-        authService.login(testUser.email, null)
-      ).rejects.toThrow('邮箱和密码不能为空');
+      await expect(authService.login(testUser.email, null)).rejects.toThrow('邮箱和密码不能为空');
     });
 
     /**
@@ -454,9 +438,9 @@ describe('用户认证集成测试', () => {
 
       // 密码使用不同大小写应该失败（密码区分大小写）
       const wrongCasePassword = 'PASSWORD123'; // 原密码是password123
-      await expect(
-        authService.login(testUser.email, wrongCasePassword)
-      ).rejects.toThrow('密码错误');
+      await expect(authService.login(testUser.email, wrongCasePassword)).rejects.toThrow(
+        '密码错误'
+      );
     });
   });
 
@@ -573,7 +557,7 @@ describe('用户认证集成测试', () => {
       }
 
       // 验证每个用户的ID是唯一的
-      const userIds = registeredUsers.map(u => u.id);
+      const userIds = registeredUsers.map((u) => u.id);
       const uniqueIds = new Set(userIds);
       expect(uniqueIds.size).toBe(3);
     });
@@ -599,15 +583,10 @@ describe('用户认证集成测试', () => {
 
       // 模拟密码更改：直接更新数据库中的密码哈希
       const newPasswordHash = await authService.hashPassword(newPassword);
-      await User.update(
-        { password_hash: newPasswordHash },
-        { where: { id: registerResult.id } }
-      );
+      await User.update({ password_hash: newPasswordHash }, { where: { id: registerResult.id } });
 
       // 验证旧密码无法登录
-      await expect(
-        authService.login(userEmail, oldPassword)
-      ).rejects.toThrow('密码错误');
+      await expect(authService.login(userEmail, oldPassword)).rejects.toThrow('密码错误');
 
       // 验证新密码可以登录
       const loginWithNewPass = await authService.login(userEmail, newPassword);
@@ -682,7 +661,7 @@ describe('用户认证集成测试', () => {
      * - 验证系统可以处理较长的密码
      */
     test('应该能够处理较长的密码', async () => {
-      const longPassword = 'a1' + 'x'.repeat(100); // 102位密码
+      const longPassword = `a1${'x'.repeat(100)}`; // 102位密码
 
       const result = await authService.register('longpass@example.com', longPassword);
       expect(result).toHaveProperty('id');
@@ -709,9 +688,7 @@ describe('用户认证集成测试', () => {
       // 多次使用错误密码尝试登录
       const wrongPasswords = ['wrong1', 'wrong2', 'wrong3', 'wrong4', 'wrong5'];
       for (const wrongPass of wrongPasswords) {
-        await expect(
-          authService.login(email, wrongPass)
-        ).rejects.toThrow();
+        await expect(authService.login(email, wrongPass)).rejects.toThrow();
       }
 
       // 使用正确密码应该仍然可以登录

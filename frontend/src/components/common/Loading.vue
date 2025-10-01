@@ -202,7 +202,8 @@ const spinnerSize = computed(() => {
  * 文本脉冲动画
  */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

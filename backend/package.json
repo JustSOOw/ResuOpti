@@ -11,7 +11,10 @@
     "dev": "nodemon src/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.js\" \"tests/**/*.js\""
   },
   "keywords": [],
   "author": "",
@@ -28,11 +31,14 @@
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
+    "swagger-ui-express": "^5.0.1",
     "validator": "^13.15.15",
-    "winston": "^3.18.1"
+    "winston": "^3.18.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",
+    "axios": "^1.12.2",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

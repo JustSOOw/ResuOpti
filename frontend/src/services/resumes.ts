@@ -20,10 +20,10 @@ export interface ResumeVersion {
   targetPositionId: string
   type: ResumeType
   title: string
-  filePath?: string          // 仅file类型
-  fileName?: string          // 仅file类型
-  fileSize?: number          // 仅file类型
-  content?: string           // 仅online类型
+  filePath?: string // 仅file类型
+  fileName?: string // 仅file类型
+  fileSize?: number // 仅file类型
+  content?: string // 仅online类型
   createdAt: string
   updatedAt: string
 }
@@ -47,8 +47,8 @@ export interface CreateResumeDto {
   targetPositionId: string
   type: ResumeType
   title: string
-  content?: string           // online类型必需
-  filePath?: string          // file类型必需
+  content?: string // online类型必需
+  filePath?: string // file类型必需
   fileName?: string
   fileSize?: number
 }
@@ -188,9 +188,9 @@ export const uploadResumeFile = async (
   try {
     // 客户端文件类型验证
     const allowedTypes = [
-      'application/pdf',                                                                  // PDF
-      'application/msword',                                                               // Word 97-2003
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'         // Word 2007+
+      'application/pdf', // PDF
+      'application/msword', // Word 97-2003
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // Word 2007+
     ]
 
     if (!allowedTypes.includes(file.type)) {
@@ -232,10 +232,10 @@ export const uploadResumeFile = async (
     console.error('上传简历文件失败:', error)
 
     // 如果是我们自己抛出的验证错误，直接抛出
-    if (error.message && (
-      error.message.includes('不支持的文件格式') ||
-      error.message.includes('文件大小不能超过')
-    )) {
+    if (
+      error.message &&
+      (error.message.includes('不支持的文件格式') || error.message.includes('文件大小不能超过'))
+    ) {
       throw error
     }
 

@@ -14,19 +14,21 @@ import { useRouter, useRoute } from 'vue-router'
 import { usePositionsStore } from '@/stores/positions'
 import { useResumesStore } from '@/stores/resumes'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  ArrowLeft,
-  Edit,
-  Delete,
-  Plus,
-  Upload,
-  Document,
-  Briefcase
-} from '@element-plus/icons-vue'
+import { ArrowLeft, Edit, Delete, Plus, Upload, Document, Briefcase } from '@element-plus/icons-vue'
+
+// 导入公共组件
 import Header from '@/components/common/Header.vue'
 import Loading from '@/components/common/Loading.vue'
-import ResumeCard from '@/components/business/ResumeCard.vue'
-import PositionForm from '@/components/forms/PositionForm.vue'
+
+// 异步导入业务组件（非首屏必需，延迟加载）
+import { createAsyncComponent } from '@/utils/asyncComponent'
+const ResumeCard = createAsyncComponent(() => import('@/components/business/ResumeCard.vue'), {
+  loadingText: '加载简历卡片中...'
+})
+const PositionForm = createAsyncComponent(() => import('@/components/forms/PositionForm.vue'), {
+  loadingText: '加载表单中...'
+})
+
 import type { PositionFormData } from '@/components/forms/PositionForm.vue'
 
 // ==================== Router & Stores ====================
@@ -87,9 +89,7 @@ const currentPosition = computed(() => positionsStore.currentPosition)
 /**
  * 该岗位下的简历列表
  */
-const positionResumes = computed(() => {
-  return resumesStore.getResumesByPosition(positionId.value)
-})
+const positionResumes = computed(() => resumesStore.getResumesByPosition(positionId.value))
 
 /**
  * 简历数量统计
@@ -282,11 +282,7 @@ const handleConfirmUpload = async () => {
   isSubmitting.value = true
 
   try {
-    await resumesStore.uploadFile(
-      uploadFile.value,
-      positionId.value,
-      uploadTitle.value.trim()
-    )
+    await resumesStore.uploadFile(uploadFile.value, positionId.value, uploadTitle.value.trim())
 
     ElMessage.success('简历上传成功')
     showUploadDialog.value = false
@@ -448,11 +444,7 @@ const handleDeleteResume = async (resumeId: string) => {
     <div v-else class="page-content">
       <!-- 404错误提示 -->
       <div v-if="positionNotFound" class="error-container">
-        <el-result
-          icon="error"
-          title="岗位不存在"
-          sub-title="该岗位可能已被删除或您没有访问权限"
-        >
+        <el-result icon="error" title="岗位不存在" sub-title="该岗位可能已被删除或您没有访问权限">
           <template #extra>
             <el-button type="primary" @click="handleBackToDashboard">
               <el-icon><ArrowLeft /></el-icon>
@@ -482,26 +474,13 @@ const handleDeleteResume = async (resumeId: string) => {
                 <h2 class="position-name">{{ currentPosition.name }}</h2>
               </div>
               <div class="header-actions">
-                <el-button
-                  type="primary"
-                  :icon="Edit"
-                  @click="handleOpenEditDialog"
-                >
+                <el-button type="primary" :icon="Edit" @click="handleOpenEditDialog">
                   编辑岗位
                 </el-button>
-                <el-button
-                  type="danger"
-                  :icon="Delete"
-                  @click="handleDeletePosition"
-                >
+                <el-button type="danger" :icon="Delete" @click="handleDeletePosition">
                   删除岗位
                 </el-button>
-                <el-button
-                  :icon="ArrowLeft"
-                  @click="handleBackToDashboard"
-                >
-                  返回列表
-                </el-button>
+                <el-button :icon="ArrowLeft" @click="handleBackToDashboard"> 返回列表 </el-button>
               </div>
             </div>
           </template>
@@ -544,18 +523,10 @@ const handleDeleteResume = async (resumeId: string) => {
               <span class="count-badge">{{ resumeCount }}</span>
             </h3>
             <div class="section-actions">
-              <el-button
-                type="primary"
-                :icon="Upload"
-                @click="handleOpenUploadDialog"
-              >
+              <el-button type="primary" :icon="Upload" @click="handleOpenUploadDialog">
                 上传简历
               </el-button>
-              <el-button
-                type="success"
-                :icon="Plus"
-                @click="handleOpenCreateOnlineDialog"
-              >
+              <el-button type="success" :icon="Plus" @click="handleOpenCreateOnlineDialog">
                 创建在线简历
               </el-button>
             </div>
@@ -575,14 +546,8 @@ const handleDeleteResume = async (resumeId: string) => {
           </div>
 
           <!-- 空状态 -->
-          <el-empty
-            v-else
-            description="暂无简历版本，点击上方按钮创建或上传"
-            :image-size="120"
-          >
-            <el-button type="primary" @click="handleOpenUploadDialog">
-              上传简历
-            </el-button>
+          <el-empty v-else description="暂无简历版本，点击上方按钮创建或上传" :image-size="120">
+            <el-button type="primary" @click="handleOpenUploadDialog"> 上传简历 </el-button>
             <el-button type="success" @click="handleOpenCreateOnlineDialog">
               创建在线简历
             </el-button>
@@ -638,13 +603,9 @@ const handleDeleteResume = async (resumeId: string) => {
             :on-change="handleFileSelect"
           >
             <el-icon class="el-icon--upload"><Upload /></el-icon>
-            <div class="el-upload__text">
-              拖拽文件到此处或<em>点击选择</em>
-            </div>
+            <div class="el-upload__text">拖拽文件到此处或<em>点击选择</em></div>
             <template #tip>
-              <div class="el-upload__tip">
-                支持 PDF、Word 格式，大小不超过 10MB
-              </div>
+              <div class="el-upload__tip">支持 PDF、Word 格式，大小不超过 10MB</div>
             </template>
           </el-upload>
         </el-form-item>
@@ -653,22 +614,14 @@ const handleDeleteResume = async (resumeId: string) => {
         <div v-if="uploadFile" class="selected-file-info">
           <el-icon><Document /></el-icon>
           <span>{{ uploadFile.name }}</span>
-          <span class="file-size">
-            ({{ (uploadFile.size / 1024 / 1024).toFixed(2) }} MB)
-          </span>
+          <span class="file-size"> ({{ (uploadFile.size / 1024 / 1024).toFixed(2) }} MB) </span>
         </div>
       </div>
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancelUpload" :disabled="isSubmitting">
-            取消
-          </el-button>
-          <el-button
-            type="primary"
-            @click="handleConfirmUpload"
-            :loading="isSubmitting"
-          >
+          <el-button :disabled="isSubmitting" @click="handleCancelUpload"> 取消 </el-button>
+          <el-button type="primary" :loading="isSubmitting" @click="handleConfirmUpload">
             确认上传
           </el-button>
         </div>
@@ -693,23 +646,15 @@ const handleDeleteResume = async (resumeId: string) => {
             @keyup.enter="handleConfirmCreateOnline"
           />
           <template #extra>
-            <span class="form-tip">
-              例如：前端工程师简历-V1.0、产品经理简历-通用版
-            </span>
+            <span class="form-tip"> 例如：前端工程师简历-V1.0、产品经理简历-通用版 </span>
           </template>
         </el-form-item>
       </el-form>
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancelCreateOnline" :disabled="isSubmitting">
-            取消
-          </el-button>
-          <el-button
-            type="primary"
-            @click="handleConfirmCreateOnline"
-            :loading="isSubmitting"
-          >
+          <el-button :disabled="isSubmitting" @click="handleCancelCreateOnline"> 取消 </el-button>
+          <el-button type="primary" :loading="isSubmitting" @click="handleConfirmCreateOnline">
             创建并进入编辑
           </el-button>
         </div>

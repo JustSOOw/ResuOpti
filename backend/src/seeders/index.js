@@ -49,7 +49,6 @@ async function runAllSeeders() {
     console.log('  邮箱: demo@resumopti.com');
     console.log('  密码: Demo1234');
     console.log('═══════════════════════════════════════\n');
-
   } catch (error) {
     console.error('❌ 种子数据执行失败:', error.message);
     console.error(error);
@@ -83,7 +82,6 @@ async function rollbackAllSeeders() {
     await demoUser.down(sequelize.getQueryInterface(), sequelize.Sequelize);
 
     console.log('\n✅ 所有种子数据已回滚\n');
-
   } catch (error) {
     console.error('❌ 回滚失败:', error.message);
     console.error(error);

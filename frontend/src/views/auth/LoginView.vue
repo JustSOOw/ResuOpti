@@ -2,42 +2,6 @@
   用户登录页面
   提供用户登录功能，支持邮箱密码登录
 -->
-<template>
-  <div class="login-view">
-    <!-- 登录容器 -->
-    <div class="login-container">
-      <!-- 标题区域 -->
-      <div class="login-header">
-        <h1 class="title">欢迎回来</h1>
-        <p class="subtitle">登录您的账户以继续使用 ResuOpti</p>
-      </div>
-
-      <!-- 登录卡片 -->
-      <el-card class="login-card" shadow="always">
-        <!-- 使用已有的LoginForm组件 -->
-        <LoginForm
-          ref="loginFormRef"
-          mode="login"
-          @submit="handleLogin"
-        />
-
-        <!-- 额外链接 -->
-        <div class="extra-links">
-          <span class="link-text">还没有账号？</span>
-          <el-link type="primary" @click="goToRegister">
-            立即注册
-          </el-link>
-        </div>
-      </el-card>
-
-      <!-- 页脚信息 -->
-      <div class="login-footer">
-        <p>&copy; 2025 ResuOpti. 保留所有权利。</p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -129,6 +93,36 @@ const goToRegister = () => {
 }
 </script>
 
+<template>
+  <div class="login-view">
+    <!-- 登录容器 -->
+    <div class="login-container">
+      <!-- 标题区域 -->
+      <div class="login-header">
+        <h1 class="title">欢迎回来</h1>
+        <p class="subtitle">登录您的账户以继续使用 ResuOpti</p>
+      </div>
+
+      <!-- 登录卡片 -->
+      <el-card class="login-card" shadow="always">
+        <!-- 使用已有的LoginForm组件 -->
+        <LoginForm ref="loginFormRef" mode="login" @submit="handleLogin" />
+
+        <!-- 额外链接 -->
+        <div class="extra-links">
+          <span class="link-text">还没有账号？</span>
+          <el-link type="primary" @click="goToRegister"> 立即注册 </el-link>
+        </div>
+      </el-card>
+
+      <!-- 页脚信息 -->
+      <div class="login-footer">
+        <p>&copy; 2025 ResuOpti. 保留所有权利。</p>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped>
 /**
  * 登录视图容器样式
@@ -182,7 +176,9 @@ const goToRegister = () => {
   overflow: hidden;
   backdrop-filter: blur(10px);
   background-color: var(--el-bg-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .login-card:hover {

@@ -113,11 +113,11 @@ export function parseFileSize(sizeString: string): number | null {
   const unit = match[2] || 'B'
 
   const multipliers: Record<string, number> = {
-    'B': 1,
-    'KB': 1024,
-    'MB': 1024 * 1024,
-    'GB': 1024 * 1024 * 1024,
-    'TB': 1024 * 1024 * 1024 * 1024
+    B: 1,
+    KB: 1024,
+    MB: 1024 * 1024,
+    GB: 1024 * 1024 * 1024,
+    TB: 1024 * 1024 * 1024 * 1024
   }
 
   return Math.floor(value * multipliers[unit])
@@ -168,14 +168,14 @@ export function isValidFileType(file: File, accept: string): boolean {
   if (!accept || typeof accept !== 'string') return true
 
   // 解析accept属性中的MIME类型和扩展名
-  const acceptTypes = accept.split(',').map(t => t.trim().toLowerCase())
+  const acceptTypes = accept.split(',').map((t) => t.trim().toLowerCase())
   if (acceptTypes.length === 0) return true
 
   const fileName = file.name.toLowerCase()
   const fileMimeType = file.type.toLowerCase()
 
   // 检查是否匹配任一接受类型
-  return acceptTypes.some(type => {
+  return acceptTypes.some((type) => {
     // 检查扩展名匹配
     if (type.startsWith('.')) {
       return fileName.endsWith(type)
@@ -521,7 +521,7 @@ export function validateFiles(
     return []
   }
 
-  return files.map(file => {
+  return files.map((file) => {
     // 验证文件类型
     if (!isValidFileType(file, accept)) {
       return {

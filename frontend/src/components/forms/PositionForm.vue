@@ -225,19 +225,10 @@ defineExpose({
 
       <!-- 操作按钮 -->
       <el-form-item class="form-actions">
-        <el-button
-          type="primary"
-          native-type="submit"
-          :loading="loading"
-        >
+        <el-button type="primary" native-type="submit" :loading="loading">
           {{ initialData ? '更新岗位' : '创建岗位' }}
         </el-button>
-        <el-button
-          @click="handleCancel"
-          :disabled="loading"
-        >
-          取消
-        </el-button>
+        <el-button :disabled="loading" @click="handleCancel"> 取消 </el-button>
       </el-form-item>
     </el-form>
   </div>

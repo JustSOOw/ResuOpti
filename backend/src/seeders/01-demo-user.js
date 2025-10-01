@@ -19,15 +19,19 @@ module.exports = {
     const now = new Date();
 
     // 插入用户数据
-    await queryInterface.bulkInsert('users', [
-      {
-        id: userId,
-        email: 'demo@resumopti.com',
-        password_hash: passwordHash,
-        created_at: now,
-        updated_at: now
-      }
-    ], {});
+    await queryInterface.bulkInsert(
+      'users',
+      [
+        {
+          id: userId,
+          email: 'demo@resumopti.com',
+          password_hash: passwordHash,
+          created_at: now,
+          updated_at: now
+        }
+      ],
+      {}
+    );
 
     console.log('✅ 演示用户创建成功');
     console.log('📧 邮箱: demo@resumopti.com');
@@ -38,9 +42,13 @@ module.exports = {
    * 回滚操作：删除演示用户
    */
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('users', {
-      email: 'demo@resumopti.com'
-    }, {});
+    await queryInterface.bulkDelete(
+      'users',
+      {
+        email: 'demo@resumopti.com'
+      },
+      {}
+    );
 
     console.log('🗑️  演示用户已删除');
   }

@@ -12,7 +12,7 @@
 
 const express = require('express');
 const resumeService = require('../../services/resumeService');
-const metadataService = require('../../services/metadataService');
+// const metadataService = require('../../services/metadataService'); // 暂未使用
 
 const router = express.Router();
 
@@ -111,7 +111,6 @@ router.post('/', async (req, res) => {
         title: title.trim(),
         content
       });
-
     } else if (type === 'file') {
       if (!filePath || !fileName || !fileSize) {
         return res.status(400).json({
@@ -133,7 +132,6 @@ router.post('/', async (req, res) => {
       message: '简历创建成功',
       data: resume
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
@@ -149,8 +147,12 @@ router.post('/', async (req, res) => {
       });
     }
 
-    if (error.message.includes('长度') || error.message.includes('字符') ||
-        error.message.includes('必须') || error.message.includes('不能为空')) {
+    if (
+      error.message.includes('长度') ||
+      error.message.includes('字符') ||
+      error.message.includes('必须') ||
+      error.message.includes('不能为空')
+    ) {
       return res.status(400).json({
         success: false,
         message: error.message
@@ -216,7 +218,6 @@ router.get('/:id', async (req, res) => {
       success: true,
       data: resume
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
@@ -323,7 +324,6 @@ router.put('/:id', async (req, res) => {
       message: '简历更新成功',
       data: resume
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
@@ -339,8 +339,11 @@ router.put('/:id', async (req, res) => {
       });
     }
 
-    if (error.message.includes('file') || error.message.includes('文件类型') ||
-        error.message.includes('online')) {
+    if (
+      error.message.includes('file') ||
+      error.message.includes('文件类型') ||
+      error.message.includes('online')
+    ) {
       return res.status(400).json({
         success: false,
         message: error.message
@@ -406,7 +409,6 @@ router.delete('/:id', async (req, res) => {
       success: true,
       message: '简历删除成功'
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
@@ -481,7 +483,6 @@ router.get('/target-positions/:positionId/resumes', async (req, res) => {
       success: true,
       data: resumes
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({

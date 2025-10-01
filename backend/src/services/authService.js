@@ -1,12 +1,14 @@
 /**
  * 用户认证服务
  * 提供用户注册、登录、密码加密和JWT token管理功能
+ * 性能优化：添加用户信息缓存，优化查询字段
  */
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const User = require('../models/User');
+const { userCache, LRUCache } = require('../utils/cache');
 
 // bcrypt加密轮次
 const SALT_ROUNDS = 10;
@@ -130,8 +132,12 @@ async function register(email, password) {
   // 验证密码格式
   validatePassword(password);
 
-  // 检查邮箱是否已存在
-  const existingUser = await User.findOne({ where: { email } });
+  // 检查邮箱是否已存在 - 优化：只查询id字段
+  const existingUser = await User.findOne({
+    where: { email },
+    attributes: ['id'] // 只查询需要的字段，减少数据传输
+  });
+
   if (existingUser) {
     throw new Error('该邮箱已被注册');
   }
@@ -153,6 +159,10 @@ async function register(email, password) {
     updated_at: newUser.updated_at
   };
 
+  // 将用户信息存入缓存
+  const cacheKey = LRUCache.generateKey('user', 'id', newUser.id);
+  userCache.set(cacheKey, userResponse);
+
   return userResponse;
 }
 
@@ -170,8 +180,12 @@ async function login(email, password) {
     throw new Error('邮箱和密码不能为空');
   }
 
-  // 查找用户
-  const user = await User.findOne({ where: { email } });
+  // 查找用户 - 优化：只查询需要的字段
+  const user = await User.findOne({
+    where: { email },
+    attributes: ['id', 'email', 'password_hash', 'created_at', 'updated_at']
+  });
+
   if (!user) {
     throw new Error('用户不存在');
   }
@@ -185,18 +199,47 @@ async function login(email, password) {
   // 生成JWT token
   const token = generateToken(user);
 
-  // 返回用户信息和token（不包含password_hash）
+  // 构建用户信息（不包含password_hash）
+  const userInfo = {
+    id: user.id,
+    email: user.email,
+    created_at: user.created_at,
+    updated_at: user.updated_at
+  };
+
+  // 将用户信息存入缓存
+  const cacheKey = LRUCache.generateKey('user', 'id', user.id);
+  userCache.set(cacheKey, userInfo);
+
+  // 返回用户信息和token
   const response = {
-    user: {
-      id: user.id,
-      email: user.email,
-      created_at: user.created_at,
-      updated_at: user.updated_at
-    },
+    user: userInfo,
     token
   };
 
   return response;
+}
+
+/**
+ * 根据用户ID获取用户信息（带缓存）
+ * @param {string} userId - 用户ID
+ * @returns {Promise<Object>} 用户信息
+ */
+async function getUserById(userId) {
+  const cacheKey = LRUCache.generateKey('user', 'id', userId);
+
+  // 使用缓存包装函数
+  return userCache.wrap(cacheKey, async () => {
+    const user = await User.findByPk(userId, {
+      attributes: ['id', 'email', 'created_at', 'updated_at']
+    });
+
+    if (!user) {
+      throw new Error('用户不存在');
+    }
+
+    return user.toJSON();
+  });
 }
 
 module.exports = {
@@ -205,5 +248,6 @@ module.exports = {
   generateToken,
   verifyToken,
   register,
-  login
+  login,
+  getUserById
 };

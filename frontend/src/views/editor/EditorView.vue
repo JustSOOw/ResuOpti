@@ -175,7 +175,6 @@ const loadResume = async () => {
 
     // 重置未保存状态
     hasUnsavedChanges.value = false
-
   } catch (error: any) {
     console.error('加载简历失败:', error)
     ElMessage.error(error.message || '加载简历失败')
@@ -209,7 +208,6 @@ const saveResume = async () => {
     lastSavedTime.value = new Date()
 
     ElMessage.success('保存成功')
-
   } catch (error: any) {
     console.error('保存简历失败:', error)
     ElMessage.error(error.message || '保存简历失败')
@@ -343,21 +341,16 @@ const clearFormat = () => {
 const goBack = async () => {
   if (hasUnsavedChanges.value) {
     try {
-      await ElMessageBox.confirm(
-        '你有未保存的修改，确定要离开吗？',
-        '提示',
-        {
-          confirmButtonText: '保存并离开',
-          cancelButtonText: '放弃修改',
-          distinguishCancelAndClose: true,
-          type: 'warning'
-        }
-      )
+      await ElMessageBox.confirm('你有未保存的修改，确定要离开吗？', '提示', {
+        confirmButtonText: '保存并离开',
+        cancelButtonText: '放弃修改',
+        distinguishCancelAndClose: true,
+        type: 'warning'
+      })
 
       // 用户选择保存
       await saveResume()
       router.back()
-
     } catch (action) {
       if (action === 'cancel') {
         // 用户选择放弃修改
@@ -437,7 +430,6 @@ const exportPDF = async () => {
 
     // 显示成功消息
     ElMessage.success('PDF导出成功')
-
   } catch (error: any) {
     console.error('导出PDF失败:', error)
     ElMessage.error(error.message || '导出PDF失败，请稍后重试')
@@ -459,12 +451,7 @@ const exportPDF = async () => {
       <div class="toolbar">
         <!-- 左侧：返回按钮和标题 -->
         <div class="toolbar-left">
-          <el-button
-            :icon="ArrowLeft"
-            circle
-            @click="goBack"
-            title="返回"
-          />
+          <el-button :icon="ArrowLeft" circle title="返回" @click="goBack" />
 
           <div class="resume-info">
             <h2 class="resume-title">
@@ -482,42 +469,32 @@ const exportPDF = async () => {
 
         <!-- 右侧：操作按钮 -->
         <div class="toolbar-right">
-          <el-button
-            type="primary"
-            :icon="Check"
-            :loading="isSaving"
-            @click="saveResume"
-          >
+          <el-button type="primary" :icon="Check" :loading="isSaving" @click="saveResume">
             保存
           </el-button>
 
-          <el-button
-            :icon="Download"
-            @click="exportPDF"
-          >
-            导出PDF
-          </el-button>
+          <el-button :icon="Download" @click="exportPDF"> 导出PDF </el-button>
         </div>
       </div>
 
       <!-- 编辑器工具栏 -->
-      <div class="editor-toolbar" v-if="editor">
+      <div v-if="editor" class="editor-toolbar">
         <!-- 撤销/重做 -->
         <div class="toolbar-group">
           <el-button
             size="small"
             :icon="RefreshLeft"
             :disabled="!canUndo"
-            @click="undo"
             title="撤销"
+            @click="undo"
           />
           <el-button
             size="small"
             :icon="RefreshLeft"
             :disabled="!canRedo"
-            @click="redo"
             title="重做"
             class="redo-icon"
+            @click="redo"
           />
         </div>
 
@@ -583,16 +560,16 @@ const exportPDF = async () => {
           <el-button
             size="small"
             :type="editor.isActive('bulletList') ? 'primary' : ''"
-            @click="toggleBulletList"
             title="无序列表"
+            @click="toggleBulletList"
           >
             •
           </el-button>
           <el-button
             size="small"
             :type="editor.isActive('orderedList') ? 'primary' : ''"
-            @click="toggleOrderedList"
             title="有序列表"
+            @click="toggleOrderedList"
           >
             1.
           </el-button>
@@ -603,28 +580,17 @@ const exportPDF = async () => {
           <el-button
             size="small"
             :type="editor.isActive('blockquote') ? 'primary' : ''"
-            @click="toggleBlockquote"
             title="引用"
+            @click="toggleBlockquote"
           >
             "
           </el-button>
-          <el-button
-            size="small"
-            @click="setHorizontalRule"
-            title="水平线"
-          >
-            —
-          </el-button>
+          <el-button size="small" title="水平线" @click="setHorizontalRule"> — </el-button>
         </div>
 
         <!-- 清除格式 -->
         <div class="toolbar-group">
-          <el-button
-            size="small"
-            :icon="Close"
-            @click="clearFormat"
-            title="清除格式"
-          >
+          <el-button size="small" :icon="Close" title="清除格式" @click="clearFormat">
             清除
           </el-button>
         </div>

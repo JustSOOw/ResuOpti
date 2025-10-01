@@ -177,15 +177,15 @@ describe('DELETE /api/v1/target-positions/{id} - 删除目标岗位', () => {
     expect(response.body).toHaveProperty('message');
 
     // 如果存在error对象，验证其结构
-    if (response.body.hasOwnProperty('error')) {
+    if (Object.prototype.hasOwnProperty.call(response.body, 'error')) {
       expect(typeof response.body.error).toBe('object');
 
       // error对象可能包含code和details
-      if (response.body.error.hasOwnProperty('code')) {
+      if (Object.prototype.hasOwnProperty.call(response.body.error, 'code')) {
         expect(typeof response.body.error.code).toBe('string');
       }
 
-      if (response.body.error.hasOwnProperty('details')) {
+      if (Object.prototype.hasOwnProperty.call(response.body.error, 'details')) {
         expect(typeof response.body.error.details).toBe('object');
       }
     }

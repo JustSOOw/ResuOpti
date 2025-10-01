@@ -58,9 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
    * 是否已认证
    * 基于token和user是否存在来判断
    */
-  const isAuthenticated = computed<boolean>(() => {
-    return !!token.value && !!user.value
-  })
+  const isAuthenticated = computed<boolean>(() => !!token.value && !!user.value)
 
   // ==================== Actions ====================
 

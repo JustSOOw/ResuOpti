@@ -166,7 +166,6 @@ router.post('/upload', async (req, res) => {
             }
           }
         });
-
       } catch (error) {
         // 如果创建简历记录失败，删除已上传的文件
         if (req.file && req.file.path) {
@@ -192,8 +191,12 @@ router.post('/upload', async (req, res) => {
           });
         }
 
-        if (error.message.includes('长度') || error.message.includes('字符') ||
-            error.message.includes('必须') || error.message.includes('不能为空')) {
+        if (
+          error.message.includes('长度') ||
+          error.message.includes('字符') ||
+          error.message.includes('必须') ||
+          error.message.includes('不能为空')
+        ) {
           return res.status(400).json({
             success: false,
             message: error.message
@@ -208,7 +211,6 @@ router.post('/upload', async (req, res) => {
         });
       }
     });
-
   } catch (error) {
     console.error('文件上传处理错误:', error);
     res.status(500).json({

@@ -214,6 +214,6 @@ export const useThemeStore = defineStore('theme', () => {
     applyTheme,
     loadThemeFromStorage,
     detectSystemTheme,
-    initTheme,
+    initTheme
   }
 })

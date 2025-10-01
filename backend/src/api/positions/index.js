@@ -47,7 +47,6 @@ router.get('/', async (req, res) => {
       success: true,
       data: positions
     });
-
   } catch (error) {
     console.error('获取岗位列表错误:', error);
     res.status(500).json({
@@ -120,7 +119,6 @@ router.post('/', async (req, res) => {
       message: '目标岗位创建成功',
       data: position
     });
-
   } catch (error) {
     // 处理业务逻辑错误
     if (error.message.includes('长度') || error.message.includes('字符')) {
@@ -196,7 +194,6 @@ router.get('/:id', async (req, res) => {
       success: true,
       data: position
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
@@ -304,7 +301,6 @@ router.put('/:id', async (req, res) => {
       message: '岗位更新成功',
       data: position
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
@@ -395,7 +391,6 @@ router.delete('/:id', async (req, res) => {
       message: '岗位删除成功',
       data: { deletedId: result.deletedId }
     });
-
   } catch (error) {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
