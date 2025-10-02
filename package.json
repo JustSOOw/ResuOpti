@@ -10,6 +10,7 @@
     "form-data": "^4.0.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
     "concurrently": "^9.2.1"
   }
 }

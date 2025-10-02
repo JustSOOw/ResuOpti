@@ -120,6 +120,26 @@ describe('POST /api/v1/resumes - 创建新简历版本', () => {
       expect(new Date(resumeData.updatedAt).toISOString()).toBe(resumeData.updatedAt);
     });
 
+    it('应该允许创建空内容的在线简历', async () => {
+      const requestBody = {
+        targetPositionId: testTargetPositionId || '123e4567-e89b-12d3-a456-426614174001',
+        type: 'online',
+        title: '空内容占位简历',
+        content: ''
+      };
+
+      const response = await request(API_BASE_URL)
+        .post(`${API_VERSION}/resumes`)
+        .set('Authorization', `Bearer ${authToken || 'mock-token'}`)
+        .send(requestBody)
+        .expect('Content-Type', /json/);
+
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('success', true);
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toHaveProperty('content', requestBody.content);
+    });
+
     it('应该在type=online时要求必填content字段', async () => {
       const requestBody = {
         targetPositionId: testTargetPositionId || '123e4567-e89b-12d3-a456-426614174001',

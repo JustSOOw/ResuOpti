@@ -81,7 +81,7 @@ const ResumeVersion = sequelize.define(
         if (this.type === 'file' && !this.file_path) {
           throw new Error('文件类型简历必须有文件路径');
         }
-        if (this.type === 'online' && !this.content) {
+        if (this.type === 'online' && (this.content === null || this.content === undefined)) {
           throw new Error('在线类型简历必须有内容');
         }
       }

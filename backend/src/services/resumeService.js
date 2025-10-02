@@ -131,9 +131,9 @@ async function createOnlineResume(targetPositionId, userId, resumeData) {
   // 验证标题
   validateTitle(title);
 
-  // 验证内容
-  if (!content || typeof content !== 'string' || content.trim().length === 0) {
-    throw new Error('在线简历内容不能为空');
+  // 验证内容字段存在（允许空字符串，用户创建后会在编辑器中填充内容）
+  if (content === undefined || content === null || typeof content !== 'string') {
+    throw new Error('在线简历必须提供content字段');
   }
 
   // 验证目标岗位
@@ -311,8 +311,9 @@ async function updateOnlineResume(resumeId, userId, updateData) {
   }
 
   if (content !== undefined) {
-    if (!content || typeof content !== 'string' || content.trim().length === 0) {
-      throw new Error('在线简历内容不能为空');
+    // 允许空字符串内容，但必须是字符串类型
+    if (typeof content !== 'string') {
+      throw new Error('在线简历内容必须是字符串');
     }
     updates.content = content;
   }

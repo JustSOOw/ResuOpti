@@ -124,9 +124,9 @@ export const getResumeById = async (id: string): Promise<ResumeDetail> => {
  */
 export const createResume = async (data: CreateResumeDto): Promise<ResumeVersion> => {
   try {
-    // 验证在线简历必须有内容
-    if (data.type === 'online' && !data.content) {
-      throw new Error('在线简历必须提供内容')
+    // 验证在线简历必须提供content字段（允许空字符串，用户可以在编辑器中填充）
+    if (data.type === 'online' && data.content === undefined) {
+      throw new Error('在线简历必须提供content字段')
     }
 
     // 验证文件简历必须有文件路径

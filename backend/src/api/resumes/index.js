@@ -166,10 +166,11 @@ router.post('/', async (req, res) => {
 
     // 根据类型调用不同的服务方法
     if (normalizedType === 'online') {
-      if (!content) {
+      // 验证content字段存在（允许空字符串，用户可以在编辑器中填充）
+      if (content === undefined || content === null) {
         return res.status(400).json({
           success: false,
-          message: '在线简历必须提供内容'
+          message: '在线简历必须提供content字段'
         });
       }
 

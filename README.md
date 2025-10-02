@@ -148,6 +148,7 @@ docker compose up --build -d
 - `ACCEPTANCE_TEST_REPORT.md` 记录最近一次回归结果：32 个断言全部通过。
 - 单元测试（Jest、Vitest）与 E2E（Cypress）脚手架已配置，可按需补充。
 
+-测试账号：wang22338014@gmail.com   密码：uZEZpCa5D6d2XcW
 ---
 
 ## 贡献指南

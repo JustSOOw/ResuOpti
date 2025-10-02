@@ -565,9 +565,9 @@ const resumeCreateSchema = {
     },
     content: {
       custom: (value, allData) => {
-        // online类型必须有content
-        if (allData.type === 'online' && !value) {
-          return '在线简历必须提供内容';
+        // online类型必须提供content字段（允许空字符串，用户可以在编辑器中填充）
+        if (allData.type === 'online' && (value === undefined || value === null)) {
+          return '在线简历必须提供content字段';
         }
         return true;
       }
