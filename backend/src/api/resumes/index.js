@@ -20,6 +20,7 @@ const router = express.Router();
 /**
  * 将简历实体统一转换为API响应格式
  * 确保同时暴露 type 和 resumeType 字段，兼容验收脚本
+ * 将数据库字段（下划线命名）转换为前端期望的驼峰命名
  * @param {Object} resume
  * @returns {Object}
  */
@@ -29,13 +30,19 @@ const mapResumeToResponse = (resume) => {
   }
 
   const plain = typeof resume.toJSON === 'function' ? resume.toJSON() : { ...resume };
-  const { metadata, ...rest } = plain;
+  const { metadata, target_position_id, file_path, file_name, file_size, created_at, updated_at, ...rest } = plain;
   const notes = metadata?.notes ?? null;
   const tags = Array.isArray(metadata?.tags) ? metadata.tags : [];
 
   return {
     ...rest,
+    targetPositionId: target_position_id,
     resumeType: rest.type,
+    filePath: file_path || undefined,
+    fileName: file_name || undefined,
+    fileSize: file_size || undefined,
+    createdAt: created_at,
+    updatedAt: updated_at,
     notes,
     tags,
     metadata: metadata || null

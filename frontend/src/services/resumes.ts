@@ -134,7 +134,24 @@ export const createResume = async (data: CreateResumeDto): Promise<ResumeVersion
       throw new Error('文件简历必须提供文件路径')
     }
 
-    const response = await apiClient.post<any, ApiResponse<ResumeVersion>>('/resumes', data)
+    // 显式构造一个干净的请求负载，避免序列化过程中把必须的键丢掉。
+    const payload: Record<string, unknown> = {
+      targetPositionId: data.targetPositionId,
+      type: data.type,
+      title: typeof data.title === 'string' ? data.title.trim() : data.title
+    }
+
+    if (data.type === 'online') {
+      payload.content = data.content ?? ''
+    }
+
+    if (data.type === 'file') {
+      if (data.filePath) payload.filePath = data.filePath
+      if (data.fileName) payload.fileName = data.fileName
+      if (data.fileSize !== undefined) payload.fileSize = data.fileSize
+    }
+
+    const response = await apiClient.post<any, ApiResponse<ResumeVersion>>('/resumes', payload)
     return response.data
   } catch (error: any) {
     console.error('创建简历失败:', error)

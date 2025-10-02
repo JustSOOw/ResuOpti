@@ -169,6 +169,21 @@ frontend/
 - [X] T081 [P] API文档生成：Swagger/OpenAPI文档自动化 在 backend/docs/
 - [X] T082 quickstart.md用户验收测试：端到端场景验证 在 根目录
 
+## Phase 3.15: 简历元数据编辑功能增强
+
+**背景**: 当前简历元数据（备注、标签）的显示功能已实现，但缺少编辑UI界面。用户无法在前端界面中添加或修改简历的备注和标签信息。
+
+**目标**: 为所有类型的简历（文件和在线）提供完整的元数据编辑功能，包括独立的编辑对话框和快捷编辑入口。
+
+- [X] T083 修复后端API响应字段映射：将下划线字段转换为驼峰命名 在 backend/src/api/resumes/index.js
+- [X] T084 [P] 创建简历元数据编辑对话框组件：ResumeMetadataDialog.vue 在 frontend/src/components/business/ResumeMetadataDialog.vue
+- [ ] T085 [P] 编写元数据编辑对话框单元测试：表单验证和提交逻辑 在 frontend/tests/unit/ResumeMetadataDialog.spec.ts
+- [ ] T086 在PositionDetailView中集成元数据编辑功能：添加编辑入口和对话框调用 在 frontend/src/views/positions/PositionDetailView.vue
+- [ ] T087 更新ResumeCard组件：添加标签和备注的快捷编辑按钮 在 frontend/src/components/business/ResumeCard.vue
+- [ ] T088 [P] 验证元数据更新API的前后端集成：确保字段映射正确 在 frontend/src/services/resumes.ts
+- [ ] T089 [P] E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2e/resume-metadata.cy.ts
+- [ ] T090 更新用户文档：添加元数据编辑功能使用说明 在 specs/001-/quickstart.md
+
 ## 依赖关系图
 
 ### 关键依赖链
@@ -178,6 +193,9 @@ frontend/
 - T043 (API基础配置) 阻塞所有前端API服务 (T044-T046)
 - T054 (编辑器页面) 阻塞 T055 (PDF导出)
 - T071-T075 (系统集成) 需要大部分核心功能完成
+- **T083 (字段映射修复) 阻塞 T084-T090 (元数据编辑功能)**
+- **T084 (元数据对话框组件) 阻塞 T086 (PositionDetailView集成)**
+- **T086 (PositionDetailView集成) 和 T087 (ResumeCard快捷入口) 可并行开发**
 
 ### 完全并行任务组
 ```bash
@@ -196,6 +214,12 @@ Task: "创建 ResumeVersion 模型迁移文件 在 backend/src/models/ResumeVers
 Task: "用户认证API契约测试：POST /api/v1/auth/register 在 backend/tests/contract/auth-register.test.js"
 Task: "用户认证API契约测试：POST /api/v1/auth/login 在 backend/tests/contract/auth-login.test.js"
 Task: "目标岗位API契约测试：GET /api/v1/target-positions 在 backend/tests/contract/target-positions-get.test.js"
+
+# 元数据编辑功能可并行开发：
+Task: "创建简历元数据编辑对话框组件：ResumeMetadataDialog.vue 在 frontend/src/components/business/ResumeMetadataDialog.vue"
+Task: "编写元数据编辑对话框单元测试：表单验证和提交逻辑 在 frontend/tests/unit/ResumeMetadataDialog.spec.ts"
+Task: "验证元数据更新API的前后端集成：确保字段映射正确 在 frontend/src/services/resumes.ts"
+Task: "E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2e/resume-metadata.cy.ts"
 ```
 
 ## 验证检查清单
@@ -214,7 +238,10 @@ Task: "目标岗位API契约测试：GET /api/v1/target-positions 在 backend/te
 - [ ] 用户可以注册登录并管理个人简历
 - [ ] 支持按目标岗位分类管理简历版本
 - [ ] 支持文件上传（PDF/Word）和在线富文本编辑
-- [ ] 支持简历元数据（备注、标签）和投递记录管理
+- [ ] 支持简历元数据（备注、标签）的查看和编辑
+- [ ] 所有类型简历（文件/在线）都可以编辑元数据
+- [ ] 简历卡片正确显示标签和备注信息
+- [ ] 支持投递记录管理
 - [ ] 界面采用暗黑主题设计，响应式布局
 - [ ] 所有API响应时间 < 200ms (p95)
 - [ ] 测试覆盖率 ≥ 80%

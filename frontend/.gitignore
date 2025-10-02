@@ -28,3 +28,4 @@ cypress/downloads
 cypress/screenshots
 cypress/videos
 .cypress_cache
+.VSCodeCounter/*
