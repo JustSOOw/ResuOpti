@@ -4,6 +4,7 @@
  * 优化了连接池配置以提升性能
  */
 
+const path = require('path');
 require('dotenv').config();
 
 /**
@@ -19,80 +20,105 @@ function slowQueryLogger(sql, timing) {
   }
 }
 
-module.exports = {
-  development: {
-    username: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_NAME || 'resumopti_dev',
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-    // 开发环境：使用慢查询日志
-    logging: slowQueryLogger,
-    // 启用查询性能基准测试
-    benchmark: true,
-    // 优化后的连接池配置
-    pool: {
-      max: 10, // 最大连接数：从5增加到10（开发环境支持更多并发请求）
-      min: 2, // 最小连接数：保持2个热连接
-      acquire: 30000, // 获取连接超时时间：30秒
-      idle: 10000, // 连接空闲时间：10秒后释放
-      evict: 5000 // 检查和移除空闲连接的频率：5秒
-    },
-    // 启用查询重试
-    retry: {
-      max: 3, // 最大重试次数
-      match: [
-        // 只重试这些错误
-        /ETIMEDOUT/,
-        /ECONNRESET/,
-        /ECONNREFUSED/,
-        /EHOSTUNREACH/
-      ]
-    }
-  },
-  test: {
-    username: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_NAME_TEST || 'resumopti_test',
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-    logging: false
-  },
-  production: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-    logging: false,
-    // 生产环境：优化连接池配置以支持更高并发
-    pool: {
-      max: 20, // 最大连接数：根据生产负载增加到20
-      min: 5, // 最小连接数：保持5个热连接
-      acquire: 30000, // 获取连接超时时间：30秒
-      idle: 10000, // 连接空闲时间：10秒后释放
-      evict: 5000 // 检查和移除空闲连接的频率：5秒
-    },
-    dialectOptions: {
-      ssl:
-        process.env.DB_SSL === 'true'
-          ? {
-              require: true,
-              rejectUnauthorized: false
-            }
-          : false,
-      // 设置语句超时（30秒）
-      statement_timeout: 30000,
-      // 空闲事务超时（10秒）
-      idle_in_transaction_session_timeout: 10000
-    },
-    // 启用查询重试
-    retry: {
-      max: 3,
-      match: [/ETIMEDOUT/, /ECONNRESET/, /ECONNREFUSED/, /EHOSTUNREACH/]
-    }
+const DIALECT = (process.env.DB_DIALECT || 'postgres').toLowerCase();
+const isSqlite = DIALECT === 'sqlite';
+
+/**
+ * 获取SQLite存储路径
+ * 测试环境默认使用独立文件，防止数据污染
+ */
+const resolveSqliteStorage = env => {
+  if (process.env.DB_STORAGE) {
+    return process.env.DB_STORAGE;
   }
+
+  const filename = env === 'test' ? 'resumopti.test.sqlite' : 'resumopti.sqlite';
+  return path.join(__dirname, '../../', filename);
+};
+
+/**
+ * 构建PostgreSQL配置
+ */
+const buildPostgresConfig = env => {
+  const base = {
+    username: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || 'postgres',
+    database: env === 'test' ? process.env.DB_NAME_TEST || 'resumopti_test' : process.env.DB_NAME || 'resumopti_dev',
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT, 10) || 5432,
+    dialect: 'postgres'
+  };
+
+  if (env === 'development') {
+    return {
+      ...base,
+      logging: slowQueryLogger,
+      benchmark: true,
+      pool: {
+        max: 10,
+        min: 2,
+        acquire: 30000,
+        idle: 10000,
+        evict: 5000
+      },
+      retry: {
+        max: 3,
+        match: [/ETIMEDOUT/, /ECONNRESET/, /ECONNREFUSED/, /EHOSTUNREACH/]
+      }
+    };
+  }
+
+  if (env === 'production') {
+    return {
+      ...base,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      host: process.env.DB_HOST,
+      logging: false,
+      pool: {
+        max: 20,
+        min: 5,
+        acquire: 30000,
+        idle: 10000,
+        evict: 5000
+      },
+      dialectOptions: {
+        ssl:
+          process.env.DB_SSL === 'true'
+            ? {
+                require: true,
+                rejectUnauthorized: false
+              }
+            : false,
+        statement_timeout: 30000,
+        idle_in_transaction_session_timeout: 10000
+      },
+      retry: {
+        max: 3,
+        match: [/ETIMEDOUT/, /ECONNRESET/, /ECONNREFUSED/, /EHOSTUNREACH/]
+      }
+    };
+  }
+
+  return {
+    ...base,
+    logging: false
+  };
+};
+
+/**
+ * 构建SQLite配置
+ */
+const buildSqliteConfig = env => ({
+  dialect: 'sqlite',
+  storage: resolveSqliteStorage(env),
+  logging: env === 'development' && process.env.LOG_ALL_QUERIES !== 'false' ? slowQueryLogger : false,
+  benchmark: env === 'development'
+});
+
+module.exports = {
+  development: isSqlite ? buildSqliteConfig('development') : buildPostgresConfig('development'),
+  test: isSqlite ? buildSqliteConfig('test') : buildPostgresConfig('test'),
+  production: isSqlite ? buildSqliteConfig('production') : buildPostgresConfig('production')
 };

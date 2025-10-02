@@ -3,14 +3,30 @@
  * 集成现有的 api-spec.yaml 规范文件
  */
 
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
+const fs = require('fs');
 const path = require('path');
+const YAML = require('yamljs');
+const swaggerUi = require('swagger-ui-express');
 
 // 加载现有的 OpenAPI 规范文件
-const swaggerDocument = YAML.load(
-  path.join(__dirname, '../../../specs/001-/contracts/api-spec.yaml')
-);
+const candidates = [
+  path.join(__dirname, '../../../specs/001-/contracts/api-spec.yaml'),
+  path.join(process.cwd(), 'specs/001-/contracts/api-spec.yaml')
+];
+
+const specPath = candidates.find((file) => {
+  try {
+    return fs.existsSync(file);
+  } catch (_err) {
+    return false;
+  }
+});
+
+if (!specPath) {
+  throw new Error('未找到 API 规范文件 specs/001-/contracts/api-spec.yaml，请确认路径挂载');
+}
+
+const swaggerDocument = YAML.load(specPath);
 
 // Swagger UI 自定义配置选项
 const swaggerOptions = {

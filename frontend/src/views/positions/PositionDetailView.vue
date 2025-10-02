@@ -546,12 +546,7 @@ const handleDeleteResume = async (resumeId: string) => {
           </div>
 
           <!-- 空状态 -->
-          <el-empty v-else description="暂无简历版本，点击上方按钮创建或上传" :image-size="120">
-            <el-button type="primary" @click="handleOpenUploadDialog"> 上传简历 </el-button>
-            <el-button type="success" @click="handleOpenCreateOnlineDialog">
-              创建在线简历
-            </el-button>
-          </el-empty>
+          <el-empty v-else description="暂无简历版本，点击上方按钮创建或上传" :image-size="120" />
         </div>
       </div>
     </div>

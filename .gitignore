@@ -37,6 +37,7 @@ coverage-*
 # 后端运行时数据
 backend/uploads/
 backend/storage/
+backend/*.sqlite
 
 # 前端构建产物
 frontend/dist/

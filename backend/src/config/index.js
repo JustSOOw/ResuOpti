@@ -10,14 +10,38 @@ const env = process.env.NODE_ENV || 'development';
 const dbConfig = config[env];
 
 // 创建Sequelize实例
-const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
-  host: dbConfig.host,
-  port: dbConfig.port,
+const baseOptions = {
   dialect: dbConfig.dialect,
   logging: dbConfig.logging,
   pool: dbConfig.pool,
-  dialectOptions: dbConfig.dialectOptions || {}
-});
+  dialectOptions: dbConfig.dialectOptions || {},
+  benchmark: dbConfig.benchmark,
+  retry: dbConfig.retry
+};
+
+if (dbConfig.host) {
+  baseOptions.host = dbConfig.host;
+}
+
+if (dbConfig.port) {
+  baseOptions.port = dbConfig.port;
+}
+
+if (dbConfig.storage) {
+  baseOptions.storage = dbConfig.storage;
+}
+
+let sequelize;
+
+if (dbConfig.url) {
+  sequelize = new Sequelize(dbConfig.url, baseOptions);
+} else if (dbConfig.dialect === 'sqlite') {
+  sequelize = new Sequelize({
+    ...baseOptions
+  });
+} else {
+  sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, baseOptions);
+}
 
 // 测试数据库连接
 const testConnection = async () => {

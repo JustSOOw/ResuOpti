@@ -341,6 +341,99 @@ async function updateOnlineResume(resumeId, userId, updateData) {
 }
 
 /**
+ * 更新简历的元数据（备注、标签）
+ * @param {string} resumeId - 简历ID
+ * @param {string} userId - 用户ID
+ * @param {Object} metadataUpdates - 元数据更新内容
+ * @param {string|null} [metadataUpdates.notes] - 备注
+ * @param {Array<string>} [metadataUpdates.tags] - 标签数组
+ * @returns {Promise<Object>} 更新后的元数据
+ */
+async function updateResumeMetadata(resumeId, userId, metadataUpdates) {
+  const { notes, tags } = metadataUpdates;
+
+  if (notes === undefined && tags === undefined) {
+    return null;
+  }
+
+  const resume = await ResumeVersion.findByPk(resumeId, {
+    attributes: ['id'],
+    include: [
+      {
+        model: TargetPosition,
+        as: 'targetPosition',
+        required: true,
+        attributes: ['user_id'],
+        where: { user_id: userId }
+      },
+      {
+        model: ResumeMetadata,
+        as: 'metadata',
+        required: false,
+        attributes: ['id', 'resume_id', 'notes', 'tags', 'created_at', 'updated_at']
+      }
+    ]
+  });
+
+  if (!resume) {
+    throw new Error('简历不存在或您无权访问');
+  }
+
+  let metadata = resume.metadata;
+  if (!metadata) {
+    metadata = await ResumeMetadata.create({
+      resume_id: resume.id,
+      notes: null,
+      tags: []
+    });
+  }
+
+  const updates = {};
+
+  if (notes !== undefined) {
+    if (notes !== null && typeof notes !== 'string') {
+      throw new Error('备注必须是字符串');
+    }
+
+    updates.notes = notes === null ? null : notes.trim();
+
+    if (updates.notes && updates.notes.length > 2000) {
+      throw new Error('备注长度不能超过2000字符');
+    }
+  }
+
+  if (tags !== undefined) {
+    if (!Array.isArray(tags)) {
+      throw new Error('标签必须是数组');
+    }
+
+    const cleanedTags = tags
+      .map((tag) => (typeof tag === 'string' ? tag.trim() : ''))
+      .filter((tag) => tag.length > 0);
+
+    if (cleanedTags.length > 20) {
+      throw new Error('标签数量不能超过20个');
+    }
+
+    for (const tag of cleanedTags) {
+      if (tag.length > 50) {
+        throw new Error('每个标签长度不能超过50字符');
+      }
+    }
+
+    updates.tags = cleanedTags;
+  }
+
+  if (Object.keys(updates).length === 0) {
+    return metadata.toJSON();
+  }
+
+  await metadata.update(updates);
+
+  return metadata.toJSON();
+}
+
+/**
  * 删除简历
  * @param {string} resumeId - 简历ID
  * @param {string} userId - 用户ID
@@ -408,5 +501,6 @@ module.exports = {
   getResumesByPosition,
   getResumeById,
   updateOnlineResume,
+  updateResumeMetadata,
   deleteResume
 };

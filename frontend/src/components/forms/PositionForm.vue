@@ -100,25 +100,6 @@ const rules: FormRules = {
   description: descriptionRules
 }
 
-// ==================== 监听初始数据变化 ====================
-
-/**
- * 监听initialData变化，自动填充表单
- */
-watch(
-  () => props.initialData,
-  (newData) => {
-    if (newData) {
-      formData.name = newData.name || ''
-      formData.description = newData.description || ''
-    } else {
-      // 如果没有初始数据，重置表单
-      resetForm()
-    }
-  },
-  { immediate: true }
-)
-
 // ==================== 方法 ====================
 
 /**
@@ -169,6 +150,25 @@ const resetForm = () => {
   formData.name = ''
   formData.description = ''
 }
+
+// ==================== 监听初始数据变化 ====================
+
+/**
+ * 监听initialData变化，自动填充表单
+ */
+watch(
+  () => props.initialData,
+  (newData) => {
+    if (newData) {
+      formData.name = newData.name || ''
+      formData.description = newData.description || ''
+    } else {
+      // 如果没有初始数据，重置表单
+      resetForm()
+    }
+  },
+  { immediate: true }
+)
 
 // ==================== 暴露的方法 ====================
 

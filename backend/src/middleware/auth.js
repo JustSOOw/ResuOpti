@@ -69,7 +69,11 @@ function authenticate(req, res, next) {
     const decoded = authService.verifyToken(token);
 
     // 6. 将解码后的用户信息附加到请求对象
-    req.user = decoded;
+    req.user = {
+      ...decoded,
+      id: decoded.userId
+    };
+    req.userId = decoded.userId;
 
     // 7. 继续下一个中间件或路由处理器
     next();
@@ -143,7 +147,11 @@ function optionalAuth(req, res, next) {
     const decoded = authService.verifyToken(token);
 
     // 6. 验证成功，附加用户信息
-    req.user = decoded;
+    req.user = {
+      ...decoded,
+      id: decoded.userId
+    };
+    req.userId = decoded.userId;
 
     // 7. 继续下一个中间件或路由处理器
     next();

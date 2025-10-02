@@ -7,10 +7,31 @@
  */
 
 const express = require('express');
+const path = require('path');
+const fs = require('fs').promises;
 const fileService = require('../../services/fileService');
 const resumeService = require('../../services/resumeService');
 
 const router = express.Router();
+
+const mapResumeToResponse = (resume) => {
+  if (!resume) {
+    return resume;
+  }
+
+  const plain = typeof resume.toJSON === 'function' ? resume.toJSON() : { ...resume };
+  const { metadata, ...rest } = plain;
+  const notes = metadata?.notes ?? null;
+  const tags = Array.isArray(metadata?.tags) ? metadata.tags : [];
+
+  return {
+    ...rest,
+    resumeType: rest.type,
+    notes,
+    tags,
+    metadata: metadata || null
+  };
+};
 
 /**
  * POST /api/v1/resumes/upload
@@ -48,7 +69,7 @@ const router = express.Router();
  * - 404: 目标岗位不存在
  * - 500: 服务器错误
  */
-router.post('/upload', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const userId = req.user?.id || req.userId;
 
@@ -59,35 +80,8 @@ router.post('/upload', async (req, res) => {
       });
     }
 
-    // 获取表单字段
-    const { targetPositionId, title } = req.body;
-
-    // 验证必需字段
-    if (!targetPositionId) {
-      return res.status(400).json({
-        success: false,
-        message: '目标岗位ID是必需字段'
-      });
-    }
-
-    if (!title || typeof title !== 'string' || title.trim() === '') {
-      return res.status(400).json({
-        success: false,
-        message: '简历标题是必需字段且不能为空'
-      });
-    }
-
-    // 验证UUID格式
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(targetPositionId)) {
-      return res.status(400).json({
-        success: false,
-        message: '无效的岗位ID格式'
-      });
-    }
-
     // 配置并应用multer中间件
-    const upload = fileService.getMulterConfig(userId, targetPositionId);
+    const upload = fileService.getMulterConfig(userId);
 
     // 使用multer处理文件上传
     upload.single('file')(req, res, async (err) => {
@@ -100,10 +94,10 @@ router.post('/upload', async (req, res) => {
           });
         }
 
-        if (err.message && err.message.includes('INVALID_FILE_TYPE')) {
+        if (err.code === 'INVALID_FILE_TYPE') {
           return res.status(400).json({
             success: false,
-            message: '不支持的文件类型，仅支持PDF、DOC、DOCX格式'
+            message: `不支持的文件类型，仅支持${fileService.ALLOWED_EXTENSIONS.join(', ')}格式`
           });
         }
 
@@ -112,6 +106,35 @@ router.post('/upload', async (req, res) => {
           success: false,
           message: '文件上传失败',
           error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
+      }
+
+      // 获取表单字段（此时multer已解析完成）
+      const { targetPositionId, title } = req.body;
+
+      // 验证必需字段
+      if (!targetPositionId) {
+        return res.status(400).json({
+          success: false,
+          message: '目标岗位ID是必需字段'
+        });
+      }
+
+      if (!title || typeof title !== 'string' || title.trim() === '') {
+        return res.status(400).json({
+          success: false,
+          message: '简历标题是必需字段且不能为空'
+        });
+      }
+
+      const normalizedTargetPositionId = targetPositionId.trim();
+
+      // 验证UUID格式
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(normalizedTargetPositionId)) {
+        return res.status(400).json({
+          success: false,
+          message: '无效的岗位ID格式'
         });
       }
 
@@ -124,43 +147,61 @@ router.post('/upload', async (req, res) => {
       }
 
       try {
+        const tempFilePath = path.resolve(req.file.path);
+
         // 验证文件类型和大小
         if (!fileService.validateFileType(req.file)) {
           // 删除已上传的文件
-          await fileService.deleteFile(req.file.path);
+          await fileService.deleteFile(tempFilePath);
           return res.status(400).json({
             success: false,
-            message: '不支持的文件类型，仅支持PDF、DOC、DOCX格式'
+            message: `不支持的文件类型，仅支持${fileService.ALLOWED_EXTENSIONS.join(', ')}格式`
           });
         }
 
         if (!fileService.validateFileSize(req.file)) {
           // 删除已上传的文件
-          await fileService.deleteFile(req.file.path);
+          await fileService.deleteFile(tempFilePath);
           return res.status(400).json({
             success: false,
             message: `文件大小超过限制（最大${fileService.MAX_FILE_SIZE / 1024 / 1024}MB）`
           });
         }
 
+        // 将文件移动到目标岗位目录
+        const finalFilePath = await fileService.generateFilePath(
+          userId,
+          normalizedTargetPositionId,
+          req.file.filename
+        );
+
+        if (finalFilePath !== tempFilePath) {
+          await fs.rename(tempFilePath, finalFilePath);
+          req.file.path = finalFilePath;
+        } else {
+          req.file.path = tempFilePath;
+        }
+
         // 创建文件类型简历记录
-        const resume = await resumeService.createFileResume(targetPositionId, userId, {
+        const resume = await resumeService.createFileResume(normalizedTargetPositionId, userId, {
           title: title.trim(),
-          filePath: req.file.path,
+          filePath: finalFilePath,
           fileName: req.file.originalname,
           fileSize: req.file.size
         });
+
+        const resumeResponse = mapResumeToResponse(resume);
 
         // 返回成功响应
         res.status(201).json({
           success: true,
           message: '文件上传成功',
           data: {
-            resume,
+            ...resumeResponse,
             file: {
               originalName: req.file.originalname,
               fileName: req.file.filename,
-              filePath: req.file.path,
+              filePath: finalFilePath,
               size: req.file.size,
               mimetype: req.file.mimetype
             }

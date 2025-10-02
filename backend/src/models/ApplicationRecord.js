@@ -74,10 +74,12 @@ const ApplicationRecord = sequelize.define(
     validate: {
       // 验证投递日期不能为未来日期
       applyDateValidation() {
+        const DAY_IN_MS = 24 * 60 * 60 * 1000;
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const applyDate = new Date(this.apply_date);
-        if (applyDate > today) {
+        const diffMs = applyDate - today;
+        if (diffMs > DAY_IN_MS) {
           throw new Error('投递日期不能为未来日期');
         }
       }

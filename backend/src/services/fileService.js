@@ -13,9 +13,10 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-  'application/msword' // .doc
+  'application/msword', // .doc
+  'text/plain'
 ];
-const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc'];
+const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc', '.txt'];
 const UPLOAD_BASE_DIR = path.join(__dirname, '../../uploads');
 
 /**
@@ -104,7 +105,7 @@ const deleteFile = async (filePath) => {
 /**
  * 获取Multer配置
  * @param {number} userId - 用户ID
- * @param {number} targetPositionId - 目标职位ID
+ * @param {number|string} [targetPositionId] - 可选的目标职位ID
  * @returns {Object} - 配置好的multer实例
  */
 const getMulterConfig = (userId, targetPositionId) => {
@@ -112,8 +113,16 @@ const getMulterConfig = (userId, targetPositionId) => {
   const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
       try {
+        const effectiveTargetId =
+          targetPositionId ||
+          req.body?.targetPositionId ||
+          req.body?.target_position_id ||
+          req.query?.targetPositionId;
+
+        const dirName = effectiveTargetId ? String(effectiveTargetId) : 'tmp';
+
         // 构建目录路径
-        const dirPath = path.join(UPLOAD_BASE_DIR, String(userId), String(targetPositionId));
+        const dirPath = path.join(UPLOAD_BASE_DIR, String(userId), dirName);
 
         // 确保目录存在
         await fs.mkdir(dirPath, { recursive: true });

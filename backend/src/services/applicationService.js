@@ -8,6 +8,8 @@ const { Op } = require('sequelize');
 const { ApplicationRecord, ResumeVersion, TargetPosition } = require('../models');
 const { statsCache, LRUCache } = require('../utils/cache');
 
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
 /**
  * 创建投递记录
  * @param {string} resumeId - 简历版本ID
@@ -36,7 +38,8 @@ async function createApplication(resumeId, userId, data) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const applyDateObj = new Date(applyDate);
-  if (applyDateObj > today) {
+  const diffMs = applyDateObj - today;
+  if (diffMs > DAY_IN_MS) {
     throw new Error('投递日期不能为未来日期');
   }
 
@@ -275,7 +278,8 @@ async function updateApplication(applicationId, userId, updateData) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const applyDateObj = new Date(updateData.applyDate);
-    if (applyDateObj > today) {
+    const diffMs = applyDateObj - today;
+    if (diffMs > DAY_IN_MS) {
       throw new Error('投递日期不能为未来日期');
     }
     updates.apply_date = updateData.applyDate;

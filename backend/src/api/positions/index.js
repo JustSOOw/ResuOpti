@@ -18,6 +18,23 @@ const router = express.Router();
 // 注意: 所有路由都需要JWT认证中间件，需要在主app.js中配置
 
 /**
+ * 将数据库实体转换为API响应格式
+ * 兼容历史字段 name，并新增 title 以满足验收脚本
+ * @param {Object} position - 原始岗位对象
+ * @returns {Object}
+ */
+const mapPositionToResponse = (position) => {
+  if (!position) {
+    return position;
+  }
+
+  return {
+    ...position,
+    title: position.name
+  };
+};
+
+/**
  * GET /api/v1/target-positions
  * 获取当前用户所有目标岗位
  *
@@ -45,7 +62,7 @@ router.get('/', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: positions
+      data: positions.map(mapPositionToResponse)
     });
   } catch (error) {
     console.error('获取岗位列表错误:', error);
@@ -93,10 +110,12 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const { name, description } = req.body;
+    const { name, title, description } = req.body;
+
+    const finalName = typeof name === 'string' && name.trim() !== '' ? name : title;
 
     // 验证必需字段
-    if (!name) {
+    if (!finalName) {
       return res.status(400).json({
         success: false,
         message: '岗位名称是必需字段'
@@ -104,7 +123,7 @@ router.post('/', async (req, res) => {
     }
 
     // 验证name是非空字符串
-    if (typeof name !== 'string' || name.trim() === '') {
+    if (typeof finalName !== 'string' || finalName.trim() === '') {
       return res.status(400).json({
         success: false,
         message: '岗位名称不能为空'
@@ -112,12 +131,12 @@ router.post('/', async (req, res) => {
     }
 
     // 调用服务层创建岗位
-    const position = await positionService.createPosition(userId, name.trim(), description);
+    const position = await positionService.createPosition(userId, finalName.trim(), description);
 
     res.status(201).json({
       success: true,
       message: '目标岗位创建成功',
-      data: position
+      data: mapPositionToResponse(position)
     });
   } catch (error) {
     // 处理业务逻辑错误
@@ -192,7 +211,7 @@ router.get('/:id', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: position
+      data: mapPositionToResponse(position)
     });
   } catch (error) {
     if (error.message.includes('不存在')) {
@@ -260,7 +279,7 @@ router.put('/:id', async (req, res) => {
     }
 
     const { id } = req.params;
-    const { name, description } = req.body;
+    const { name, title, description } = req.body;
 
     // 验证UUID格式
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -272,7 +291,9 @@ router.put('/:id', async (req, res) => {
     }
 
     // 至少提供一个更新字段
-    if (name === undefined && description === undefined) {
+    const hasNameOrTitle = name !== undefined || title !== undefined;
+
+    if (!hasNameOrTitle && description === undefined) {
       return res.status(400).json({
         success: false,
         message: '至少需要提供一个更新字段'
@@ -281,14 +302,16 @@ router.put('/:id', async (req, res) => {
 
     // 构建更新数据对象
     const updateData = {};
-    if (name !== undefined) {
-      if (typeof name !== 'string' || name.trim() === '') {
+    const finalName = name !== undefined ? name : title;
+
+    if (finalName !== undefined) {
+      if (typeof finalName !== 'string' || finalName.trim() === '') {
         return res.status(400).json({
           success: false,
           message: '岗位名称不能为空'
         });
       }
-      updateData.name = name.trim();
+      updateData.name = finalName.trim();
     }
     if (description !== undefined) {
       updateData.description = description;
@@ -299,7 +322,7 @@ router.put('/:id', async (req, res) => {
     res.status(200).json({
       success: true,
       message: '岗位更新成功',
-      data: position
+      data: mapPositionToResponse(position)
     });
   } catch (error) {
     if (error.message.includes('不存在')) {

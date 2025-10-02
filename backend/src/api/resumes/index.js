@@ -12,9 +12,62 @@
 
 const express = require('express');
 const resumeService = require('../../services/resumeService');
+const applicationService = require('../../services/applicationService');
 // const metadataService = require('../../services/metadataService'); // 暂未使用
 
 const router = express.Router();
+
+/**
+ * 将简历实体统一转换为API响应格式
+ * 确保同时暴露 type 和 resumeType 字段，兼容验收脚本
+ * @param {Object} resume
+ * @returns {Object}
+ */
+const mapResumeToResponse = (resume) => {
+  if (!resume) {
+    return resume;
+  }
+
+  const plain = typeof resume.toJSON === 'function' ? resume.toJSON() : { ...resume };
+  const { metadata, ...rest } = plain;
+  const notes = metadata?.notes ?? null;
+  const tags = Array.isArray(metadata?.tags) ? metadata.tags : [];
+
+  return {
+    ...rest,
+    resumeType: rest.type,
+    notes,
+    tags,
+    metadata: metadata || null
+  };
+};
+
+const mapApplicationToResponse = (application) => {
+  if (!application) {
+    return application;
+  }
+
+  const plain = typeof application.toJSON === 'function' ? application.toJSON() : { ...application };
+  const { resume, ...rest } = plain;
+
+  const response = {
+    id: rest.id,
+    resumeId: rest.resume_id,
+    companyName: rest.company_name,
+    positionTitle: rest.position_title,
+    applicationDate: rest.apply_date,
+    status: rest.status,
+    notes: rest.notes ?? null,
+    createdAt: rest.created_at,
+    updatedAt: rest.updated_at
+  };
+
+  if (resume) {
+    response.resume = mapResumeToResponse(resume);
+  }
+
+  return response;
+};
 
 /**
  * POST /api/v1/resumes
@@ -65,7 +118,16 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const { targetPositionId, type, title, content, filePath, fileName, fileSize } = req.body;
+    const {
+      targetPositionId,
+      type,
+      resumeType,
+      title,
+      content,
+      filePath,
+      fileName,
+      fileSize
+    } = req.body;
 
     // 验证必需字段
     if (!targetPositionId) {
@@ -75,14 +137,18 @@ router.post('/', async (req, res) => {
       });
     }
 
-    if (!type) {
+    const rawType = typeof type === 'string' && type.trim() !== '' ? type : resumeType;
+
+    if (!rawType) {
       return res.status(400).json({
         success: false,
         message: '简历类型是必需字段'
       });
     }
 
-    if (type !== 'online' && type !== 'file') {
+    const normalizedType = rawType.trim().toLowerCase();
+
+    if (normalizedType !== 'online' && normalizedType !== 'file') {
       return res.status(400).json({
         success: false,
         message: '简历类型必须是online或file'
@@ -99,7 +165,7 @@ router.post('/', async (req, res) => {
     let resume;
 
     // 根据类型调用不同的服务方法
-    if (type === 'online') {
+    if (normalizedType === 'online') {
       if (!content) {
         return res.status(400).json({
           success: false,
@@ -111,7 +177,7 @@ router.post('/', async (req, res) => {
         title: title.trim(),
         content
       });
-    } else if (type === 'file') {
+    } else if (normalizedType === 'file') {
       if (!filePath || !fileName || !fileSize) {
         return res.status(400).json({
           success: false,
@@ -130,7 +196,7 @@ router.post('/', async (req, res) => {
     res.status(201).json({
       success: true,
       message: '简历创建成功',
-      data: resume
+      data: mapResumeToResponse(resume)
     });
   } catch (error) {
     if (error.message.includes('不存在')) {
@@ -163,6 +229,89 @@ router.post('/', async (req, res) => {
     res.status(500).json({
       success: false,
       message: '创建简历失败',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/**
+ * GET /api/v1/resumes?positionId=xxx
+ * 通过查询参数获取指定岗位下的所有简历
+ *
+ * 需要认证: 是
+ *
+ * 查询参数:
+ * - positionId: 目标岗位UUID (可选)
+ *
+ * 成功响应 (200):
+ * {
+ *   success: true,
+ *   data: ResumeVersion[] (包含metadata)
+ * }
+ *
+ * 错误响应:
+ * - 400: 无效的UUID格式
+ * - 401: 未授权
+ * - 403: 无权限访问该岗位
+ * - 404: 岗位不存在
+ * - 500: 服务器错误
+ */
+router.get('/', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: '未授权访问，请先登录'
+      });
+    }
+
+    const { positionId } = req.query;
+
+    // 如果提供了positionId，获取该岗位下的简历
+    if (positionId) {
+      // 验证UUID格式
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(positionId)) {
+        return res.status(400).json({
+          success: false,
+          message: '无效的岗位ID格式'
+        });
+      }
+
+      const resumes = await resumeService.getResumesByPosition(positionId, userId);
+
+      return res.status(200).json({
+        success: true,
+        data: resumes.map(mapResumeToResponse)
+      });
+    }
+
+    // 如果没有提供positionId，返回错误（或者可以返回用户所有简历）
+    return res.status(400).json({
+      success: false,
+      message: '缺少必需的查询参数: positionId'
+    });
+  } catch (error) {
+    if (error.message.includes('不存在')) {
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    if (error.message.includes('无权限')) {
+      return res.status(403).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    console.error('获取简历列表错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '获取简历列表失败',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
@@ -216,7 +365,7 @@ router.get('/:id', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: resume
+      data: mapResumeToResponse(resume)
     });
   } catch (error) {
     if (error.message.includes('不存在')) {
@@ -283,7 +432,7 @@ router.put('/:id', async (req, res) => {
     }
 
     const { id } = req.params;
-    const { title, content } = req.body;
+    const { title, content, notes, tags } = req.body;
 
     // 验证UUID格式
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -295,7 +444,7 @@ router.put('/:id', async (req, res) => {
     }
 
     // 至少提供一个更新字段
-    if (title === undefined && content === undefined) {
+    if (title === undefined && content === undefined && notes === undefined && tags === undefined) {
       return res.status(400).json({
         success: false,
         message: '至少需要提供一个更新字段'
@@ -317,12 +466,25 @@ router.put('/:id', async (req, res) => {
       updateData.content = content;
     }
 
-    const resume = await resumeService.updateOnlineResume(id, userId, updateData);
+    let resume = null;
+
+    if (title !== undefined || content !== undefined) {
+      resume = await resumeService.updateOnlineResume(id, userId, updateData);
+    }
+
+    if (notes !== undefined || tags !== undefined) {
+      await resumeService.updateResumeMetadata(id, userId, { notes, tags });
+      resume = await resumeService.getResumeById(id, userId);
+    }
+
+    if (!resume) {
+      resume = await resumeService.getResumeById(id, userId);
+    }
 
     res.status(200).json({
       success: true,
       message: '简历更新成功',
-      data: resume
+      data: mapResumeToResponse(resume)
     });
   } catch (error) {
     if (error.message.includes('不存在')) {
@@ -481,7 +643,7 @@ router.get('/target-positions/:positionId/resumes', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: resumes
+      data: resumes.map(mapResumeToResponse)
     });
   } catch (error) {
     if (error.message.includes('不存在')) {
@@ -502,6 +664,200 @@ router.get('/target-positions/:positionId/resumes', async (req, res) => {
     res.status(500).json({
       success: false,
       message: '获取岗位简历列表失败',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/**
+ * POST /api/v1/resumes/:id/applications
+ * 为指定简历创建投递记录
+ */
+router.post('/:id/applications', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: '未授权访问，请先登录'
+      });
+    }
+
+    const { id } = req.params;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      return res.status(400).json({
+        success: false,
+        message: '无效的简历ID格式'
+      });
+    }
+
+    const { companyName, positionTitle, applicationDate, status, notes } = req.body;
+
+    if (!companyName || typeof companyName !== 'string' || companyName.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: '公司名称不能为空'
+      });
+    }
+
+    const applyDate = applicationDate
+      ? new Date(applicationDate).toISOString().slice(0, 10)
+      : new Date().toISOString().slice(0, 10);
+
+    const application = await applicationService.createApplication(id, userId, {
+      companyName: companyName.trim(),
+      positionTitle,
+      applyDate,
+      status,
+      notes
+    });
+
+    const detailed = await applicationService.getApplicationById(application.id, userId);
+
+    res.status(201).json({
+      success: true,
+      message: '投递记录创建成功',
+      data: mapApplicationToResponse(detailed)
+    });
+  } catch (error) {
+    if (error.message.includes('不存在')) {
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    if (error.message.includes('无权')) {
+      return res.status(403).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    if (
+      error.message.includes('不能为空') ||
+      error.message.includes('不能超过') ||
+      error.message.includes('无效') ||
+      error.message.includes('不能为未来')
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    console.error('创建投递记录错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '创建投递记录失败',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/**
+ * PUT /api/v1/resumes/:id/applications/:applicationId
+ * 更新指定投递记录
+ */
+router.put('/:id/applications/:applicationId', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: '未授权访问，请先登录'
+      });
+    }
+
+    const { id, applicationId } = req.params;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id) || !uuidRegex.test(applicationId)) {
+      return res.status(400).json({
+        success: false,
+        message: '无效的ID格式'
+      });
+    }
+
+    const { companyName, positionTitle, applicationDate, status, notes } = req.body;
+
+    if (
+      companyName === undefined &&
+      positionTitle === undefined &&
+      applicationDate === undefined &&
+      status === undefined &&
+      notes === undefined
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: '至少需要提供一个更新字段'
+      });
+    }
+
+    const updates = {};
+    if (companyName !== undefined) {
+      updates.companyName = companyName;
+    }
+    if (positionTitle !== undefined) {
+      updates.positionTitle = positionTitle;
+    }
+    if (applicationDate !== undefined) {
+      updates.applyDate = new Date(applicationDate).toISOString().slice(0, 10);
+    }
+    if (status !== undefined) {
+      updates.status = status;
+    }
+    if (notes !== undefined) {
+      updates.notes = notes;
+    }
+
+    const updated = await applicationService.updateApplication(applicationId, userId, updates);
+
+    if (updated.resume && updated.resume.id !== id) {
+      return res.status(404).json({
+        success: false,
+        message: '投递记录不属于指定简历'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: '投递记录更新成功',
+      data: mapApplicationToResponse(updated)
+    });
+  } catch (error) {
+    if (error.message.includes('不存在')) {
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    if (error.message.includes('无权')) {
+      return res.status(403).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    if (
+      error.message.includes('不能为空') ||
+      error.message.includes('不能超过') ||
+      error.message.includes('无效') ||
+      error.message.includes('不能为未来')
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    console.error('更新投递记录错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '更新投递记录失败',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
