@@ -28,6 +28,12 @@ const ResumeCard = createAsyncComponent(() => import('@/components/business/Resu
 const PositionForm = createAsyncComponent(() => import('@/components/forms/PositionForm.vue'), {
   loadingText: '加载表单中...'
 })
+const ResumeMetadataDialog = createAsyncComponent(
+  () => import('@/components/business/ResumeMetadataDialog.vue'),
+  {
+    loadingText: '加载元数据编辑器中...'
+  }
+)
 
 import type { PositionFormData } from '@/components/forms/PositionForm.vue'
 
@@ -74,6 +80,12 @@ const isSubmitting = ref(false)
 /** 岗位是否存在（404错误） */
 const positionNotFound = ref(false)
 
+/** 是否显示元数据编辑对话框 */
+const showMetadataDialog = ref(false)
+
+/** 正在编辑元数据的简历ID */
+const editingResumeId = ref<string | null>(null)
+
 // ==================== 计算属性 ====================
 
 /**
@@ -110,6 +122,14 @@ const formattedCreatedAt = computed(() => {
 const formattedUpdatedAt = computed(() => {
   if (!currentPosition.value) return ''
   return formatDateTime(currentPosition.value.updated_at)
+})
+
+/**
+ * 正在编辑的简历对象
+ */
+const editingResume = computed(() => {
+  if (!editingResumeId.value) return null
+  return resumesStore.getResumeById(editingResumeId.value)
 })
 
 // ==================== 生命周期钩子 ====================
@@ -430,6 +450,33 @@ const handleDeleteResume = async (resumeId: string) => {
     ElMessage.error(error.message || '删除简历失败，请重试')
   }
 }
+
+/**
+ * 处理编辑简历元数据
+ * @param resumeId 简历ID
+ */
+const handleEditMetadata = (resumeId: string) => {
+  editingResumeId.value = resumeId
+  showMetadataDialog.value = true
+}
+
+/**
+ * 处理元数据更新成功
+ */
+const handleMetadataUpdateSuccess = async () => {
+  // 刷新简历列表以获取最新的元数据
+  await resumesStore.fetchResumes(positionId.value)
+  showMetadataDialog.value = false
+  editingResumeId.value = null
+}
+
+/**
+ * 处理取消编辑元数据
+ */
+const handleCancelMetadataEdit = () => {
+  showMetadataDialog.value = false
+  editingResumeId.value = null
+}
 </script>
 
 <template>
@@ -540,6 +587,7 @@ const handleDeleteResume = async (resumeId: string) => {
               :resume="resume"
               @view="handleViewResume"
               @edit="handleEditResume"
+              @edit-metadata="handleEditMetadata"
               @download="handleDownloadResume"
               @delete="handleDeleteResume"
             />
@@ -655,6 +703,18 @@ const handleDeleteResume = async (resumeId: string) => {
         </div>
       </template>
     </el-dialog>
+
+    <!-- 简历元数据编辑对话框 -->
+    <ResumeMetadataDialog
+      v-if="editingResume"
+      v-model:visible="showMetadataDialog"
+      :resume-id="editingResume.id"
+      :resume-title="editingResume.title"
+      :initial-notes="editingResume.notes || ''"
+      :initial-tags="editingResume.tags || []"
+      @success="handleMetadataUpdateSuccess"
+      @cancel="handleCancelMetadataEdit"
+    />
   </div>
 </template>
 

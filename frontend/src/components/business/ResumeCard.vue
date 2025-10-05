@@ -39,6 +39,8 @@ const emit = defineEmits<{
   view: [id: string]
   /** 编辑简历 */
   edit: [id: string]
+  /** 编辑元数据（备注和标签） */
+  'edit-metadata': [id: string]
   /** 删除简历 */
   delete: [id: string]
   /** 下载简历 */
@@ -146,6 +148,9 @@ const handleCommand = (command: string) => {
     case 'edit':
       emit('edit', props.resume.id)
       break
+    case 'edit-metadata':
+      emit('edit-metadata', props.resume.id)
+      break
     case 'download':
       emit('download', props.resume.id)
       break
@@ -204,7 +209,10 @@ const handleDelete = async () => {
             <el-button size="small" :icon="More"> </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item command="edit" :icon="Edit"> 编辑 </el-dropdown-item>
+                <el-dropdown-item command="edit" :icon="Edit"> 编辑简历 </el-dropdown-item>
+                <el-dropdown-item command="edit-metadata" :icon="Collection">
+                  编辑元数据
+                </el-dropdown-item>
                 <el-dropdown-item v-if="resume.type === 'file'" command="download" :icon="Download">
                   下载
                 </el-dropdown-item>
@@ -252,6 +260,18 @@ const handleDelete = async () => {
             +{{ remainingTagsCount }}
           </el-tag>
         </div>
+        <!-- 快捷编辑按钮 -->
+        <el-button
+          v-if="showActions && isHovering"
+          class="quick-edit-btn"
+          size="small"
+          type="primary"
+          text
+          :icon="Edit"
+          circle
+          @click.stop="emit('edit-metadata', resume.id)"
+          title="编辑标签"
+        />
       </div>
 
       <!-- 备注摘要 -->
@@ -260,6 +280,31 @@ const handleDelete = async () => {
         <span class="notes-text" :title="metadata.notes">
           {{ truncateNotes(metadata.notes) }}
         </span>
+        <!-- 快捷编辑按钮 -->
+        <el-button
+          v-if="showActions && isHovering"
+          class="quick-edit-btn"
+          size="small"
+          type="primary"
+          text
+          :icon="Edit"
+          circle
+          @click.stop="emit('edit-metadata', resume.id)"
+          title="编辑备注"
+        />
+      </div>
+
+      <!-- 空状态提示：添加元数据入口 -->
+      <div v-if="showActions && !metadata?.tags?.length && !metadata?.notes" class="empty-metadata">
+        <el-button
+          size="small"
+          type="primary"
+          text
+          :icon="Collection"
+          @click.stop="emit('edit-metadata', resume.id)"
+        >
+          添加标签和备注
+        </el-button>
       </div>
     </div>
   </el-card>
@@ -350,6 +395,7 @@ const handleDelete = async () => {
   display: flex;
   align-items: flex-start;
   gap: 8px;
+  position: relative;
 
   .info-icon {
     flex-shrink: 0;
@@ -367,6 +413,21 @@ const handleDelete = async () => {
       flex-shrink: 0;
     }
   }
+
+  .quick-edit-btn {
+    flex-shrink: 0;
+    margin-left: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      background-color: var(--el-color-primary-light-9);
+    }
+  }
+
+  &:hover .quick-edit-btn {
+    opacity: 1;
+  }
 }
 
 // 备注区域样式
@@ -377,6 +438,7 @@ const handleDelete = async () => {
   padding: 8px;
   background-color: var(--el-fill-color-light);
   border-radius: 4px;
+  position: relative;
 
   .info-icon {
     flex-shrink: 0;
@@ -390,6 +452,40 @@ const handleDelete = async () => {
     font-size: 13px;
     line-height: 1.5;
     cursor: help;
+  }
+
+  .quick-edit-btn {
+    flex-shrink: 0;
+    margin-left: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      background-color: var(--el-color-primary-light-9);
+    }
+  }
+
+  &:hover .quick-edit-btn {
+    opacity: 1;
+  }
+}
+
+// 空元数据状态样式
+.empty-metadata {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--el-fill-color-lighter);
+  border: 1px dashed var(--el-border-color);
+  border-radius: 4px;
+
+  .el-button {
+    font-size: 13px;
+
+    &:hover {
+      background-color: var(--el-color-primary-light-9);
+    }
   }
 }
 
@@ -412,6 +508,11 @@ html.dark {
 
   .notes-section {
     background-color: var(--el-fill-color-darker);
+  }
+
+  .empty-metadata {
+    background-color: var(--el-fill-color-dark);
+    border-color: var(--el-border-color-darker);
   }
 }
 

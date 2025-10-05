@@ -30,7 +30,20 @@ const mapResumeToResponse = (resume) => {
   }
 
   const plain = typeof resume.toJSON === 'function' ? resume.toJSON() : { ...resume };
-  const { metadata, target_position_id, file_path, file_name, file_size, created_at, updated_at, ...rest } = plain;
+
+  // 提取并排除关联对象和下划线字段
+  const {
+    metadata,
+    targetPosition,  // 排除关联对象
+    target_position_id,
+    file_path,
+    file_name,
+    file_size,
+    created_at,
+    updated_at,
+    ...rest
+  } = plain;
+
   const notes = metadata?.notes ?? null;
   const tags = Array.isArray(metadata?.tags) ? metadata.tags : [];
 
@@ -44,8 +57,8 @@ const mapResumeToResponse = (resume) => {
     createdAt: created_at,
     updatedAt: updated_at,
     notes,
-    tags,
-    metadata: metadata || null
+    tags
+    // 注意: metadata和targetPosition已从响应中排除，notes和tags提升到顶层
   };
 };
 
@@ -491,7 +504,7 @@ router.put('/:id', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: '简历更新成功',
+      message: '[DEBUG-VERSION] 简历更新成功',
       data: mapResumeToResponse(resume)
     });
   } catch (error) {

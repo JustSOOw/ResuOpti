@@ -177,12 +177,12 @@ frontend/
 
 - [X] T083 修复后端API响应字段映射：将下划线字段转换为驼峰命名 在 backend/src/api/resumes/index.js
 - [X] T084 [P] 创建简历元数据编辑对话框组件：ResumeMetadataDialog.vue 在 frontend/src/components/business/ResumeMetadataDialog.vue
-- [ ] T085 [P] 编写元数据编辑对话框单元测试：表单验证和提交逻辑 在 frontend/tests/unit/ResumeMetadataDialog.spec.ts
-- [ ] T086 在PositionDetailView中集成元数据编辑功能：添加编辑入口和对话框调用 在 frontend/src/views/positions/PositionDetailView.vue
-- [ ] T087 更新ResumeCard组件：添加标签和备注的快捷编辑按钮 在 frontend/src/components/business/ResumeCard.vue
-- [ ] T088 [P] 验证元数据更新API的前后端集成：确保字段映射正确 在 frontend/src/services/resumes.ts
-- [ ] T089 [P] E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2e/resume-metadata.cy.ts
-- [ ] T090 更新用户文档：添加元数据编辑功能使用说明 在 specs/001-/quickstart.md
+- [X] T085 [P] 编写元数据编辑对话框单元测试：表单验证和提交逻辑 在 frontend/tests/unit/ResumeMetadataDialog.spec.ts
+- [X] T086 在PositionDetailView中集成元数据编辑功能：添加编辑入口和对话框调用 在 frontend/src/views/positions/PositionDetailView.vue
+- [X] T087 更新ResumeCard组件：添加标签和备注的快捷编辑按钮 在 frontend/src/components/business/ResumeCard.vue
+- [X] T088 [P] 验证元数据更新API的前后端集成：确保字段映射正确 在 frontend/src/services/resumes.ts
+- [X] T089 [P] E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2e/resume-metadata.cy.ts
+- [X] T090 更新用户文档：添加元数据编辑功能使用说明 在 specs/001-/quickstart.md
 
 ## 依赖关系图
 
@@ -225,12 +225,12 @@ Task: "E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2
 ## 验证检查清单
 
 在开始实施前验证：
-- [ ] 所有API契约都有对应的测试任务
-- [ ] 所有数据模型实体都有创建任务
-- [ ] 所有测试在实现任务之前
-- [ ] 并行任务确实独立无依赖
-- [ ] 每个任务都指定了确切的文件路径
-- [ ] 没有任务修改与其他 [P] 任务相同的文件
+- [X] 所有API契约都有对应的测试任务
+- [X] 所有数据模型实体都有创建任务
+- [X] 所有测试在实现任务之前
+- [X] 并行任务确实独立无依赖
+- [X] 每个任务都指定了确切的文件路径
+- [X] 没有任务修改与其他 [P] 任务相同的文件
 
 ## 成功标准
 
