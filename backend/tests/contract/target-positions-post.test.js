@@ -14,9 +14,17 @@
 
 const request = require('supertest');
 const app = require('../../src/app');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
 
 describe('POST /api/v1/target-positions - 创建目标岗位', () => {
-  const validToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
+  let validToken;
+  let testUser;
+
+  beforeAll(() => {
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    validToken = auth.token;
+  });
 
   /**
    * 测试场景1: 成功创建岗位 - 仅提供必需字段name

@@ -184,6 +184,83 @@ frontend/
 - [X] T089 [P] E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2e/resume-metadata.cy.ts
 - [X] T090 更新用户文档：添加元数据编辑功能使用说明 在 specs/001-/quickstart.md
 
+## Phase 3.16: 测试质量提升和问题修复
+
+**背景**: 2025-10-07测试报告显示：测试用例完整但通过率不足（后端49%，前端92.5%），代码覆盖率仅30%（目标80%），存在严重的认证和权限隔离问题。
+
+**目标**: 修复所有测试失败问题，提升代码覆盖率至80%，确保系统安全性和稳定性。
+
+### 3.16.1 认证机制修复（阻塞性）
+
+- [X] T091 修复契约测试的JWT token生成机制 在 backend/tests/utils/auth-helper.js
+- [X] T092 [P] 创建测试环境专用的token工具函数 在 backend/tests/utils/token-generator.js
+- [X] T093 [P] 更新所有契约测试使用新的token生成器 在 backend/tests/contract/
+- [X] T094 验证所有契约测试能够正确通过认证 在 backend/tests/contract/
+
+### 3.16.2 权限隔离实施（安全关键）
+
+- [ ] T095 在positionService中实施严格的用户资源所有权验证 在 backend/src/services/positionService.js
+- [ ] T096 在resumeService中实施用户资源所有权验证 在 backend/src/services/resumeService.js
+- [ ] T097 [P] 在metadataService中实施用户资源所有权验证 在 backend/src/services/metadataService.js
+- [ ] T098 [P] 在applicationService中实施用户资源所有权验证 在 backend/src/services/applicationService.js
+- [ ] T099 添加权限验证的集成测试 在 backend/tests/integration/permissions.test.js
+- [ ] T100 运行所有权限相关测试并验证通过 在 backend/tests/integration/
+
+### 3.16.3 单元测试Mock修复
+
+- [ ] T101 [P] 修复authService单元测试的Sequelize mock配置 在 backend/tests/unit/services/authService.test.js
+- [ ] T102 [P] 修复positionService单元测试的mock配置 在 backend/tests/unit/services/positionService.test.js
+- [ ] T103 [P] 修复前端Header组件的Element Plus mock 在 frontend/tests/unit/common/Header.spec.ts
+- [ ] T104 优化前端测试工具的mock配置 在 frontend/tests/unit/utils/test-utils.ts
+- [ ] T105 验证所有单元测试100%通过 在 backend/tests/unit/ 和 frontend/tests/unit/
+
+### 3.16.4 提升API层测试覆盖率
+
+- [ ] T106 [P] 补充auth API控制器的单元测试 在 backend/tests/unit/api/auth.test.js
+- [ ] T107 [P] 补充positions API控制器的单元测试 在 backend/tests/unit/api/positions.test.js
+- [ ] T108 [P] 补充resumes API控制器的单元测试 在 backend/tests/unit/api/resumes.test.js
+- [ ] T109 [P] 补充upload API控制器的单元测试 在 backend/tests/unit/api/upload.test.js
+- [ ] T110 验证API层测试覆盖率达到80% 在 backend/src/api/
+
+### 3.16.5 服务层测试补充
+
+- [ ] T111 补充metadataService完整测试（当前0%覆盖率） 在 backend/tests/unit/services/metadataService.test.js
+- [ ] T112 补充applicationService完整测试（当前4.85%覆盖率） 在 backend/tests/unit/services/applicationService.test.js
+- [ ] T113 补充resumeService完整测试（当前3.41%覆盖率） 在 backend/tests/unit/services/resumeService.test.js
+- [ ] T114 补充fileService测试覆盖边界情况 在 backend/tests/unit/services/fileService.test.js
+- [ ] T115 验证服务层测试覆盖率达到80% 在 backend/src/services/
+
+### 3.16.6 中间件测试补充
+
+- [ ] T116 补充validation中间件完整测试（当前0%覆盖率） 在 backend/tests/unit/middleware/validation.test.js
+- [ ] T117 补充error中间件边界情况测试 在 backend/tests/unit/middleware/error.test.js
+- [ ] T118 补充auth中间件的权限测试场景 在 backend/tests/unit/middleware/auth.test.js
+- [ ] T119 验证中间件测试覆盖率达到80% 在 backend/src/middleware/
+
+### 3.16.7 集成测试修复和增强
+
+- [ ] T120 修复文件上传集成测试的ECONNRESET错误 在 backend/tests/integration/upload.test.js
+- [ ] T121 修复positions集成测试的resumeCount字段问题 在 backend/tests/integration/positions.test.js
+- [ ] T122 补充简历元数据更新的集成测试 在 backend/tests/integration/metadata.test.js
+- [ ] T123 补充投递记录管理的集成测试 在 backend/tests/integration/applications.test.js
+- [ ] T124 验证所有集成测试通过率达到90% 在 backend/tests/integration/
+
+### 3.16.8 E2E测试执行
+
+- [ ] T125 配置E2E测试环境（前后端同时运行） 在 根目录/docker-compose.test.yml
+- [ ] T126 执行用户完整流程E2E测试 在 frontend/tests/e2e/user-journey.cy.ts
+- [ ] T127 执行简历管理E2E测试 在 frontend/tests/e2e/resume-management.cy.ts
+- [ ] T128 执行元数据编辑E2E测试 在 frontend/tests/e2e/resume-metadata.cy.ts
+- [ ] T129 验证所有E2E测试通过 在 frontend/tests/e2e/
+
+### 3.16.9 测试覆盖率验证
+
+- [ ] T130 生成后端完整测试覆盖率报告 在 backend/coverage/
+- [ ] T131 生成前端完整测试覆盖率报告 在 frontend/coverage/
+- [ ] T132 验证后端代码覆盖率≥80% 在 backend/
+- [ ] T133 验证前端代码覆盖率≥80% 在 frontend/
+- [ ] T134 更新测试报告文档 在 specs/001-/test-report-final.md
+
 ## 依赖关系图
 
 ### 关键依赖链
@@ -196,6 +273,14 @@ frontend/
 - **T083 (字段映射修复) 阻塞 T084-T090 (元数据编辑功能)**
 - **T084 (元数据对话框组件) 阻塞 T086 (PositionDetailView集成)**
 - **T086 (PositionDetailView集成) 和 T087 (ResumeCard快捷入口) 可并行开发**
+- **Phase 3.16测试质量提升依赖关系**:
+  - **T091 (token机制修复) 阻塞 T093-T094 (契约测试更新)**
+  - **T095-T098 (权限验证实施) 阻塞 T099-T100 (权限测试)**
+  - **T101-T104 (Mock修复) 阻塞 T105 (单元测试验证)**
+  - **所有API/服务测试任务可并行开发 (T106-T119)**
+  - **T120-T123 (集成测试修复) 必须在T091-T100完成后执行**
+  - **T125-T129 (E2E测试) 依赖所有功能和测试修复完成**
+  - **T130-T134 (覆盖率验证) 必须在所有测试任务完成后执行**
 
 ### 完全并行任务组
 ```bash
@@ -220,6 +305,19 @@ Task: "创建简历元数据编辑对话框组件：ResumeMetadataDialog.vue 在
 Task: "编写元数据编辑对话框单元测试：表单验证和提交逻辑 在 frontend/tests/unit/ResumeMetadataDialog.spec.ts"
 Task: "验证元数据更新API的前后端集成：确保字段映射正确 在 frontend/src/services/resumes.ts"
 Task: "E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2e/resume-metadata.cy.ts"
+
+# Phase 3.16测试质量提升可并行任务：
+Task: "创建测试环境专用的token工具函数 在 backend/tests/utils/token-generator.js"
+Task: "更新所有契约测试使用新的token生成器 在 backend/tests/contract/"
+Task: "在metadataService中实施用户资源所有权验证 在 backend/src/services/metadataService.js"
+Task: "在applicationService中实施用户资源所有权验证 在 backend/src/services/applicationService.js"
+Task: "修复authService单元测试的Sequelize mock配置 在 backend/tests/unit/services/authService.test.js"
+Task: "修复positionService单元测试的mock配置 在 backend/tests/unit/services/positionService.test.js"
+Task: "修复前端Header组件的Element Plus mock 在 frontend/tests/unit/common/Header.spec.ts"
+Task: "补充auth API控制器的单元测试 在 backend/tests/unit/api/auth.test.js"
+Task: "补充positions API控制器的单元测试 在 backend/tests/unit/api/positions.test.js"
+Task: "补充resumes API控制器的单元测试 在 backend/tests/unit/api/resumes.test.js"
+Task: "补充upload API控制器的单元测试 在 backend/tests/unit/api/upload.test.js"
 ```
 
 ## 验证检查清单
@@ -244,8 +342,25 @@ Task: "E2E测试：简历元数据完整编辑流程测试 在 frontend/tests/e2
 - [ ] 支持投递记录管理
 - [ ] 界面采用暗黑主题设计，响应式布局
 - [ ] 所有API响应时间 < 200ms (p95)
-- [ ] 测试覆盖率 ≥ 80%
+- [ ] **测试覆盖率 ≥ 80%（后端和前端）**
+- [ ] **所有契约测试100%通过（无401错误）**
+- [ ] **所有单元测试100%通过**
+- [ ] **集成测试通过率 ≥ 90%**
+- [ ] **E2E测试100%通过**
+- [ ] **权限隔离正确实施（用户无法访问他人资源）**
 - [ ] 通过quickstart.md中的所有验收场景
+
+### Phase 3.16特定成功标准
+
+- [ ] 后端代码覆盖率：Statements ≥ 80%, Branches ≥ 80%, Functions ≥ 80%, Lines ≥ 80%
+- [ ] 前端代码覆盖率：Statements ≥ 80%, Branches ≥ 80%, Functions ≥ 80%, Lines ≥ 80%
+- [ ] 后端单元测试：100%通过（当前92.6%）
+- [ ] 后端集成测试：≥90%通过（当前51.9%）
+- [ ] 后端契约测试：100%通过（当前15.2%）
+- [ ] 前端单元测试：100%通过（当前92.5%）
+- [ ] 前端E2E测试：100%通过（当前未执行）
+- [ ] 无安全漏洞：所有用户资源正确隔离
+- [ ] 测试环境完善：自动化测试可一键执行
 
 ---
 *基于ResuOpti项目宪法v1.0.0和Phase 1设计文档生成的详细实施任务*

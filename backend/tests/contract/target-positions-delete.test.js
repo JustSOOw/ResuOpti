@@ -14,13 +14,22 @@
 
 const request = require('supertest');
 const app = require('../../src/app');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+const { v4: uuidv4 } = require('uuid');
 
 describe('DELETE /api/v1/target-positions/{id} - 删除目标岗位', () => {
-  const validToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
-  const validPositionId = '123e4567-e89b-12d3-a456-426614174001';
-  const positionWithResumesId = '123e4567-e89b-12d3-a456-426614174003'; // 有简历的岗位
-  const nonExistentId = '123e4567-e89b-12d3-a456-426614174999';
+  let validToken;
+  let testUser;
+  const validPositionId = uuidv4();
+  const positionWithResumesId = uuidv4(); // 有简历的岗位
+  const nonExistentId = uuidv4();
   const invalidId = 'invalid-uuid-format';
+
+  beforeAll(() => {
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    validToken = auth.token;
+  });
 
   /**
    * 测试场景1: 成功删除岗位（无简历版本）

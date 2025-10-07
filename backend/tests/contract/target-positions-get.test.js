@@ -11,12 +11,25 @@
  */
 
 const request = require('supertest');
-const app = require('../../src/app'); // 假设这是Express app的入口
+const app = require('../../src/app');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+const { generateInvalidToken } = require('../utils/token-generator');
 
 describe('GET /api/v1/target-positions - 获取目标岗位列表', () => {
-  // 测试用的JWT token (在实际测试中应该通过登录获取)
-  const validToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
-  const invalidToken = 'Bearer invalid.token.here';
+  // 使用token生成器生成有效的测试token
+  let validToken;
+  let testUser;
+  let invalidToken;
+
+  beforeAll(() => {
+    // 生成测试用户和有效token
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    validToken = auth.token;
+
+    // 生成无效token
+    invalidToken = generateInvalidToken({ userId: testUser.userId, email: testUser.email });
+  });
 
   /**
    * 测试场景1: 成功获取目标岗位列表 - 空列表
