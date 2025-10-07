@@ -6,45 +6,21 @@
 1. **target-positions-get.test.js** - 已添加token生成器，使用generateQuickTestAuth()
 2. **target-positions-post.test.js** - 已添加token生成器，使用generateQuickTestAuth()
 3. **target-positions-delete.test.js** - 已添加token生成器和UUID生成，使用generateQuickTestAuth()
-
-### 需要更新的文件模式
-
-所有剩余文件需要以下更改：
-
-#### 1. 添加imports（在文件顶部）
-```javascript
-const { generateQuickTestAuth } = require('../utils/auth-helper');
-// 如果需要生成UUID，还要添加：
-const { v4: uuidv4 } = require('uuid');
-```
-
-#### 2. 替换硬编码token（在describe块内）
-```javascript
-// 旧代码（删除）：
-const validToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
-
-// 新代码（添加）：
-let validToken;
-let testUser;
-
-beforeAll(() => {
-  const auth = generateQuickTestAuth();
-  testUser = auth.user;
-  validToken = auth.token;
-});
-```
-
-### ⏳ 待更新文件列表
-
-4. target-positions-get-by-id.test.js
-5. target-positions-put.test.js
-6. resumes-post.test.js
-7. resumes-upload.test.js
-8. resumes-put-metadata.test.js
+4. **target-positions-get-by-id.test.js** - 已添加token生成器和UUID生成，使用generateQuickTestAuth()
+5. **target-positions-put.test.js** - 已添加token生成器和UUID生成，使用generateQuickTestAuth()
+6. **resumes-post.test.js** - 已简化beforeAll，使用generateQuickTestAuth()替代动态注册登录
+7. **resumes-upload.test.js** - 已简化beforeAll，使用generateQuickTestAuth()替代动态注册登录
+8. **resumes-put-metadata.test.js** - 已简化beforeAll，使用generateQuickTestAuth()替代动态注册登录
 
 ### ✅ 无需更新
 - auth-register.test.js （注册API不需要token）
 - auth-login.test.js （登录API不需要token）
+
+## 更新总结
+
+**所有需要token的契约测试文件已全部更新完成！**
+
+共更新了8个文件，全部已采用新的token生成机制。
 
 ## 更新原理
 

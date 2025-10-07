@@ -14,12 +14,21 @@
 
 const request = require('supertest');
 const app = require('../../src/app');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+const { v4: uuidv4 } = require('uuid');
 
 describe('GET /api/v1/target-positions/{id} - 获取目标岗位详情', () => {
-  const validToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
-  const validPositionId = '123e4567-e89b-12d3-a456-426614174001'; // 测试用的有效UUID
-  const nonExistentId = '123e4567-e89b-12d3-a456-426614174999'; // 不存在的UUID
+  let validToken;
+  let testUser;
+  const validPositionId = uuidv4(); // 测试用的有效UUID
+  const nonExistentId = uuidv4(); // 不存在的UUID
   const invalidId = 'invalid-uuid-format'; // 无效的UUID格式
+
+  beforeAll(() => {
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    validToken = auth.token;
+  });
 
   /**
    * 测试场景1: 成功获取岗位详情

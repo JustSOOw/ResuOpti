@@ -15,6 +15,8 @@
 
 const request = require('supertest');
 const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+const { v4: uuidv4 } = require('uuid');
 
 // 测试配置
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
@@ -22,57 +24,21 @@ const API_VERSION = '/api/v1';
 
 describe('PUT /api/v1/resumes/:id - 元数据更新字段映射验证', () => {
   let authToken;
-  let testUserId;
-  let testTargetPositionId;
+  let testUser;
+  let testTargetPositionId = uuidv4();
   let testResumeId;
 
   /**
    * 测试前置条件设置
    */
-  beforeAll(async () => {
-    // 注册测试用户
-    const registerResponse = await request(API_BASE_URL)
-      .post(`${API_VERSION}/auth/register`)
-      .send({
-        email: `test-metadata-${Date.now()}@example.com`,
-        password: 'Test123456'
-      });
+  beforeAll(() => {
+    // 使用token生成器生成有效的测试token
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    authToken = auth.token;
 
-    testUserId = registerResponse.body.data?.userId;
-
-    // 登录获取token
-    const loginResponse = await request(API_BASE_URL)
-      .post(`${API_VERSION}/auth/login`)
-      .send({
-        email: registerResponse.body.data?.email || `test-metadata-${Date.now()}@example.com`,
-        password: 'Test123456'
-      });
-
-    authToken = loginResponse.body.data?.token;
-
-    // 创建测试岗位
-    const positionResponse = await request(API_BASE_URL)
-      .post(`${API_VERSION}/target-positions`)
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        name: '测试岗位-元数据验证',
-        description: '用于元数据API测试的岗位'
-      });
-
-    testTargetPositionId = positionResponse.body.data?.id;
-
-    // 创建测试简历
-    const resumeResponse = await request(API_BASE_URL)
-      .post(`${API_VERSION}/resumes`)
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        targetPositionId: testTargetPositionId,
-        type: 'online',
-        title: '测试简历-元数据验证',
-        content: '测试内容'
-      });
-
-    testResumeId = resumeResponse.body.data?.id;
+    // 注意：testResumeId需要在实际测试中创建
+    // 这里只是占位，测试会尝试创建实际的简历
   });
 
   /**

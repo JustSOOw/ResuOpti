@@ -18,6 +18,8 @@ const request = require('supertest');
 const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals');
 const fs = require('fs');
 const path = require('path');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+const { v4: uuidv4 } = require('uuid');
 
 // 测试配置
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
@@ -26,8 +28,8 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
   let authToken;
-  let _testUserId; // 使用 _ 前缀表示暂未使用
-  let testTargetPositionId;
+  let testUser;
+  let testTargetPositionId = uuidv4(); // 使用UUID作为测试岗位ID
   let testFilesDir;
 
   /**
@@ -57,53 +59,17 @@ describe('POST /api/v1/resumes/upload - 上传简历文件', () => {
   /**
    * 测试前置条件设置
    */
-  beforeAll(async () => {
+  beforeAll(() => {
     // 创建测试文件目录
     testFilesDir = path.join(__dirname, 'test-files');
     if (!fs.existsSync(testFilesDir)) {
       fs.mkdirSync(testFilesDir, { recursive: true });
     }
 
-    // TODO: 注册测试用户并获取token
-    try {
-      const registerResponse = await request(API_BASE_URL)
-        .post(`${API_VERSION}/auth/register`)
-        .send({
-          email: `test-upload-${Date.now()}@example.com`,
-          password: 'Test123456'
-        });
-
-      if (registerResponse.body.data) {
-        _testUserId = registerResponse.body.data.userId;
-      }
-
-      // 登录获取token
-      const loginResponse = await request(API_BASE_URL)
-        .post(`${API_VERSION}/auth/login`)
-        .send({
-          email: `test-upload-${Date.now()}@example.com`,
-          password: 'Test123456'
-        });
-
-      if (loginResponse.body.data) {
-        authToken = loginResponse.body.data.token;
-      }
-
-      // 创建测试用的目标岗位
-      const positionResponse = await request(API_BASE_URL)
-        .post(`${API_VERSION}/target-positions`)
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          name: '测试后端岗位',
-          description: '用于文件上传测试的岗位'
-        });
-
-      if (positionResponse.body.data) {
-        testTargetPositionId = positionResponse.body.data.id;
-      }
-    } catch (error) {
-      console.log('测试前置条件设置失败(预期行为-API未实现):', error.message);
-    }
+    // 使用token生成器生成有效的测试token
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    authToken = auth.token.replace('Bearer ', ''); // 移除Bearer前缀，因为下面会手动添加
   });
 
   /**

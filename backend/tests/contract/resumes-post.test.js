@@ -14,6 +14,8 @@
 
 const request = require('supertest');
 const { describe, it, expect, beforeAll } = require('@jest/globals');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+const { v4: uuidv4 } = require('uuid');
 
 // 测试配置
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
@@ -21,55 +23,17 @@ const API_VERSION = '/api/v1';
 
 describe('POST /api/v1/resumes - 创建新简历版本', () => {
   let authToken;
-  let _testUserId; // 使用 _ 前缀表示暂未使用
-  let testTargetPositionId;
+  let testUser;
+  let testTargetPositionId = uuidv4(); // 使用UUID作为测试岗位ID
 
   /**
    * 测试前置条件设置
-   * 注意: 在实际API实现之前,这些设置会失败,这是符合TDD原则的
    */
-  beforeAll(async () => {
-    // TODO: 注册测试用户并获取token
-    // 当前测试会失败,因为API尚未实现
-    try {
-      const registerResponse = await request(API_BASE_URL)
-        .post(`${API_VERSION}/auth/register`)
-        .send({
-          email: `test-resumes-${Date.now()}@example.com`,
-          password: 'Test123456'
-        });
-
-      if (registerResponse.body.data) {
-        _testUserId = registerResponse.body.data.userId;
-      }
-
-      // 登录获取token
-      const loginResponse = await request(API_BASE_URL)
-        .post(`${API_VERSION}/auth/login`)
-        .send({
-          email: `test-resumes-${Date.now()}@example.com`,
-          password: 'Test123456'
-        });
-
-      if (loginResponse.body.data) {
-        authToken = loginResponse.body.data.token;
-      }
-
-      // 创建测试用的目标岗位
-      const positionResponse = await request(API_BASE_URL)
-        .post(`${API_VERSION}/target-positions`)
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          name: '测试前端岗位',
-          description: '用于简历测试的岗位'
-        });
-
-      if (positionResponse.body.data) {
-        testTargetPositionId = positionResponse.body.data.id;
-      }
-    } catch (error) {
-      console.log('测试前置条件设置失败(预期行为-API未实现):', error.message);
-    }
+  beforeAll(() => {
+    // 使用token生成器生成有效的测试token
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    authToken = auth.token.replace('Bearer ', ''); // 移除Bearer前缀，因为下面会手动添加
   });
 
   /**

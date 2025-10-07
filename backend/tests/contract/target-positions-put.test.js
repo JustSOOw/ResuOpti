@@ -16,12 +16,21 @@
 
 const request = require('supertest');
 const app = require('../../src/app');
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+const { v4: uuidv4 } = require('uuid');
 
 describe('PUT /api/v1/target-positions/{id} - 更新目标岗位', () => {
-  const validToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
-  const validPositionId = '123e4567-e89b-12d3-a456-426614174001';
-  const nonExistentId = '123e4567-e89b-12d3-a456-426614174999';
+  let validToken;
+  let testUser;
+  const validPositionId = uuidv4();
+  const nonExistentId = uuidv4();
   const invalidId = 'invalid-uuid-format';
+
+  beforeAll(() => {
+    const auth = generateQuickTestAuth();
+    testUser = auth.user;
+    validToken = auth.token;
+  });
 
   /**
    * 测试场景1: 成功更新岗位名称
