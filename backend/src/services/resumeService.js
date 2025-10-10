@@ -16,17 +16,21 @@ const path = require('path');
  * @throws {Error} 岗位不存在或无权限
  */
 async function validateTargetPosition(targetPositionId, userId) {
-  // 优化：只查询需要验证的字段
-  const targetPosition = await TargetPosition.findOne({
-    where: { id: targetPositionId, user_id: userId },
+  // 第一步：检查岗位是否存在
+  const positionExists = await TargetPosition.findByPk(targetPositionId, {
     attributes: ['id', 'user_id', 'name']
   });
 
-  if (!targetPosition) {
-    throw new Error('目标岗位不存在或您无权访问');
+  if (!positionExists) {
+    throw new Error('目标岗位不存在');
   }
 
-  return targetPosition;
+  // 第二步：检查用户权限
+  if (positionExists.user_id !== userId) {
+    throw new Error('您无权访问此目标岗位');
+  }
+
+  return positionExists;
 }
 
 /**
@@ -226,8 +230,16 @@ async function getResumesByPosition(targetPositionId, userId) {
  * @throws {Error} 简历不存在或无权限
  */
 async function getResumeById(resumeId, userId) {
-  // 优化：直接通过关联查询验证所有权，减少一次查询
-  // 使用findByPk代替findOne提升性能
+  // 第一步：检查简历是否存在
+  const resumeExists = await ResumeVersion.findByPk(resumeId, {
+    attributes: ['id', 'target_position_id']
+  });
+
+  if (!resumeExists) {
+    throw new Error('简历不存在');
+  }
+
+  // 第二步：检查用户权限
   const resume = await ResumeVersion.findByPk(resumeId, {
     attributes: [
       'id',
@@ -253,13 +265,13 @@ async function getResumeById(resumeId, userId) {
         as: 'targetPosition',
         required: true,
         attributes: ['id', 'user_id', 'name', 'description'],
-        where: { user_id: userId } // 通过targetPosition验证所有权
+        where: { user_id: userId }
       }
     ]
   });
 
   if (!resume) {
-    throw new Error('简历不存在或您无权访问');
+    throw new Error('您无权访问此简历');
   }
 
   return resume.toJSON();
@@ -278,8 +290,16 @@ async function getResumeById(resumeId, userId) {
 async function updateOnlineResume(resumeId, userId, updateData) {
   const { title, content } = updateData;
 
-  // 先获取简历并验证所有权和类型
-  // 优化：使用findByPk，只查询必要字段
+  // 第一步：检查简历是否存在
+  const resumeExists = await ResumeVersion.findByPk(resumeId, {
+    attributes: ['id', 'type', 'title', 'content', 'target_position_id']
+  });
+
+  if (!resumeExists) {
+    throw new Error('简历不存在');
+  }
+
+  // 第二步：检查用户权限
   const resume = await ResumeVersion.findByPk(resumeId, {
     attributes: ['id', 'type', 'title', 'content', 'target_position_id'],
     include: [
@@ -294,7 +314,7 @@ async function updateOnlineResume(resumeId, userId, updateData) {
   });
 
   if (!resume) {
-    throw new Error('简历不存在或您无权访问');
+    throw new Error('您无权访问此简历');
   }
 
   // 验证类型
@@ -442,8 +462,16 @@ async function updateResumeMetadata(resumeId, userId, metadataUpdates) {
  * @throws {Error} 简历不存在或无权限
  */
 async function deleteResume(resumeId, userId) {
-  // 先获取简历并验证所有权
-  // 优化：使用findByPk，只查询必要字段
+  // 第一步：检查简历是否存在
+  const resumeExists = await ResumeVersion.findByPk(resumeId, {
+    attributes: ['id', 'type', 'file_path']
+  });
+
+  if (!resumeExists) {
+    throw new Error('简历不存在');
+  }
+
+  // 第二步：检查用户权限
   const resume = await ResumeVersion.findByPk(resumeId, {
     attributes: ['id', 'type', 'file_path'],
     include: [
@@ -458,7 +486,7 @@ async function deleteResume(resumeId, userId) {
   });
 
   if (!resume) {
-    throw new Error('简历不存在或您无权访问');
+    throw new Error('您无权访问此简历');
   }
 
   const resumeType = resume.type;

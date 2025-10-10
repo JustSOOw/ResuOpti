@@ -19,6 +19,7 @@ const authRoutes = require('./api/auth');
 const positionRoutes = require('./api/positions');
 const resumeRoutes = require('./api/resumes');
 const uploadRoutes = require('./api/upload');
+const applicationRoutes = require('./api/applications');
 
 // 导入 Swagger 配置
 const { swaggerUi, swaggerDocument, swaggerOptions } = require('./config/swagger');
@@ -115,8 +116,15 @@ app.use('/api/v1/target-positions', authenticate);
 app.use('/api/v1/target-positions', positionRoutes);
 
 // 简历版本路由 (需要JWT认证)
+// 注意：这个路由也处理 /api/v1/target-positions/:positionId/resumes
 app.use('/api/v1/resumes', authenticate);
 app.use('/api/v1/resumes', resumeRoutes);
+app.use('/api/v1/target-positions/:positionId/resumes', authenticate);
+app.use('/api/v1/target-positions', resumeRoutes);
+
+// 投递记录路由 (需要JWT认证)
+app.use('/api/v1/applications', authenticate);
+app.use('/api/v1/applications', applicationRoutes);
 
 // ==================== 404处理 ====================
 

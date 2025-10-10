@@ -263,6 +263,77 @@ async function updateTags(resumeId, userId, tags) {
 }
 
 /**
+ * 更新简历元数据（备注和/或标签）
+ * @param {string} resumeId - 简历版本ID
+ * @param {string} userId - 用户ID
+ * @param {Object} updates - 更新内容
+ * @param {string} [updates.notes] - 备注内容
+ * @param {Array<string>} [updates.tags] - 标签数组
+ * @returns {Promise<Object>} 更新后的元数据对象
+ */
+async function updateMetadata(resumeId, userId, updates) {
+  // 验证简历存在性和所有权
+  await validateResumeOwnership(resumeId, userId);
+
+  const { notes, tags } = updates;
+
+  // 至少提供一个更新字段
+  if (notes === undefined && tags === undefined) {
+    throw new Error('至少需要提供一个更新字段');
+  }
+
+  // 查找或创建元数据
+  let metadata = await ResumeMetadata.findOne({
+    where: { resume_id: resumeId }
+  });
+
+  if (!metadata) {
+    // 如果不存在，创建新记录
+    metadata = await ResumeMetadata.create({
+      resume_id: resumeId,
+      notes: notes || null,
+      tags: tags || []
+    });
+  } else {
+    // 更新字段
+    if (notes !== undefined) {
+      if (notes && notes.length > 2000) {
+        throw new Error('备注长度不能超过2000字符');
+      }
+      metadata.notes = notes;
+    }
+
+    if (tags !== undefined) {
+      if (!Array.isArray(tags)) {
+        throw new Error('标签必须是数组格式');
+      }
+      if (tags.length > 20) {
+        throw new Error('标签数量不能超过20个');
+      }
+      for (const tag of tags) {
+        if (typeof tag !== 'string' || tag.trim() === '') {
+          throw new Error('每个标签必须是非空字符串');
+        }
+        if (tag.length > 50) {
+          throw new Error('每个标签长度不能超过50字符');
+        }
+      }
+      metadata.tags = tags;
+    }
+
+    await metadata.save();
+  }
+
+  const result = metadata.toJSON();
+
+  // 更新缓存
+  const cacheKey = LRUCache.generateKey('metadata', resumeId);
+  metadataCache.set(cacheKey, result);
+
+  return result;
+}
+
+/**
  * 根据标签搜索简历
  * @param {string} userId - 用户ID
  * @param {string} tag - 标签内容
@@ -324,5 +395,6 @@ module.exports = {
   addTag,
   removeTag,
   updateTags,
+  updateMetadata,
   searchByTag
 };

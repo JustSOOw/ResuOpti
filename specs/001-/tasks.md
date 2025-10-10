@@ -199,12 +199,12 @@ frontend/
 
 ### 3.16.2 权限隔离实施（安全关键）
 
-- [ ] T095 在positionService中实施严格的用户资源所有权验证 在 backend/src/services/positionService.js
-- [ ] T096 在resumeService中实施用户资源所有权验证 在 backend/src/services/resumeService.js
-- [ ] T097 [P] 在metadataService中实施用户资源所有权验证 在 backend/src/services/metadataService.js
-- [ ] T098 [P] 在applicationService中实施用户资源所有权验证 在 backend/src/services/applicationService.js
-- [ ] T099 添加权限验证的集成测试 在 backend/tests/integration/permissions.test.js
-- [ ] T100 运行所有权限相关测试并验证通过 在 backend/tests/integration/
+- [X] T095 在positionService中实施严格的用户资源所有权验证 在 backend/src/services/positionService.js
+- [X] T096 在resumeService中实施用户资源所有权验证 在 backend/src/services/resumeService.js
+- [X] T097 [P] 在metadataService中实施用户资源所有权验证 在 backend/src/services/metadataService.js
+- [X] T098 [P] 在applicationService中实施用户资源所有权验证 在 backend/src/services/applicationService.js
+- [X] T099 添加权限验证的集成测试 在 backend/tests/integration/permissions.test.js
+- [X] T100 运行所有权限相关测试并验证通过 在 backend/tests/integration/
 
 ### 3.16.3 单元测试Mock修复
 

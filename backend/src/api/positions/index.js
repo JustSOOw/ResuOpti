@@ -217,14 +217,14 @@ router.get('/:id', async (req, res) => {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
     if (error.message.includes('无权限')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -328,14 +328,14 @@ router.put('/:id', async (req, res) => {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
     if (error.message.includes('无权限')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -418,14 +418,14 @@ router.delete('/:id', async (req, res) => {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
     if (error.message.includes('无权限')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 

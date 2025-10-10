@@ -13,7 +13,7 @@
 const express = require('express');
 const resumeService = require('../../services/resumeService');
 const applicationService = require('../../services/applicationService');
-// const metadataService = require('../../services/metadataService'); // 暂未使用
+const metadataService = require('../../services/metadataService');
 
 const router = express.Router();
 
@@ -227,10 +227,10 @@ router.post('/', async (req, res) => {
       });
     }
 
-    if (error.message.includes('无权限')) {
+    if (error.message.includes('无权')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -322,10 +322,10 @@ router.get('/', async (req, res) => {
       });
     }
 
-    if (error.message.includes('无权限')) {
+    if (error.message.includes('无权')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -396,10 +396,10 @@ router.get('/:id', async (req, res) => {
       });
     }
 
-    if (error.message.includes('无权限')) {
+    if (error.message.includes('无权')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -515,10 +515,10 @@ router.put('/:id', async (req, res) => {
       });
     }
 
-    if (error.message.includes('无权限')) {
+    if (error.message.includes('无权')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -600,10 +600,10 @@ router.delete('/:id', async (req, res) => {
       });
     }
 
-    if (error.message.includes('无权限')) {
+    if (error.message.includes('无权')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -638,7 +638,7 @@ router.delete('/:id', async (req, res) => {
  * - 404: 岗位不存在
  * - 500: 服务器错误
  */
-router.get('/target-positions/:positionId/resumes', async (req, res) => {
+router.get('/:positionId/resumes', async (req, res) => {
   try {
     const userId = req.user?.id || req.userId;
 
@@ -674,10 +674,10 @@ router.get('/target-positions/:positionId/resumes', async (req, res) => {
       });
     }
 
-    if (error.message.includes('无权限')) {
+    if (error.message.includes('无权')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -746,14 +746,14 @@ router.post('/:id/applications', async (req, res) => {
     if (error.message.includes('不存在')) {
       return res.status(404).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
     if (error.message.includes('无权')) {
       return res.status(403).json({
         success: false,
-        message: error.message
+        error: error.message
       });
     }
 
@@ -879,6 +879,250 @@ router.put('/:id/applications/:applicationId', async (req, res) => {
     res.status(500).json({
       success: false,
       message: '更新投递记录失败',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/**
+ * GET /api/v1/resumes/:id/metadata
+ * 获取简历元数据
+ */
+router.get('/:id/metadata', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId;
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: '未授权访问，请先登录'
+      });
+    }
+
+    const { id } = req.params;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      return res.status(400).json({
+        success: false,
+        message: '无效的简历ID格式'
+      });
+    }
+
+    const metadata = await metadataService.getMetadataByResumeId(id, userId);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        resumeId: metadata.resume_id,
+        notes: metadata.notes,
+        tags: metadata.tags || []
+      }
+    });
+  } catch (error) {
+    if (error.message.includes('不存在')) {
+      return res.status(404).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    if (error.message.includes('无权')) {
+      return res.status(403).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    console.error('获取元数据错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '获取元数据失败',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/**
+ * PUT /api/v1/resumes/:id/metadata
+ * 更新简历元数据
+ */
+router.put('/:id/metadata', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId;
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: '未授权访问，请先登录'
+      });
+    }
+
+    const { id } = req.params;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      return res.status(400).json({
+        success: false,
+        message: '无效的简历ID格式'
+      });
+    }
+
+    const { notes, tags } = req.body;
+
+    if (notes === undefined && tags === undefined) {
+      return res.status(400).json({
+        success: false,
+        message: '至少需要提供一个更新字段'
+      });
+    }
+
+    const metadata = await metadataService.updateMetadata(id, userId, { notes, tags });
+
+    res.status(200).json({
+      success: true,
+      message: '元数据更新成功',
+      data: {
+        resumeId: metadata.resume_id,
+        notes: metadata.notes,
+        tags: metadata.tags || []
+      }
+    });
+  } catch (error) {
+    if (error.message.includes('不存在')) {
+      return res.status(404).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    if (error.message.includes('无权')) {
+      return res.status(403).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    console.error('更新元数据错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '更新元数据失败',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/**
+ * POST /api/v1/resumes/:id/metadata/tags
+ * 为简历添加标签
+ */
+router.post('/:id/metadata/tags', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId;
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: '未授权访问，请先登录'
+      });
+    }
+
+    const { id } = req.params;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      return res.status(400).json({
+        success: false,
+        message: '无效的简历ID格式'
+      });
+    }
+
+    const { tag } = req.body;
+
+    if (!tag || typeof tag !== 'string' || tag.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: '标签不能为空'
+      });
+    }
+
+    const metadata = await metadataService.addTag(id, userId, tag.trim());
+
+    res.status(200).json({
+      success: true,
+      message: '标签添加成功',
+      data: {
+        resumeId: metadata.resume_id,
+        notes: metadata.notes,
+        tags: metadata.tags || []
+      }
+    });
+  } catch (error) {
+    if (error.message.includes('不存在')) {
+      return res.status(404).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    if (error.message.includes('无权')) {
+      return res.status(403).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    console.error('添加标签错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '添加标签失败',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/**
+ * GET /api/v1/resumes/:id/applications
+ * 获取简历的所有投递记录
+ */
+router.get('/:id/applications', async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId;
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: '未授权访问，请先登录'
+      });
+    }
+
+    const { id } = req.params;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      return res.status(400).json({
+        success: false,
+        message: '无效的简历ID格式'
+      });
+    }
+
+    const applications = await applicationService.getApplicationsByResumeId(id, userId);
+
+    res.status(200).json({
+      success: true,
+      data: applications.map(mapApplicationToResponse)
+    });
+  } catch (error) {
+    if (error.message.includes('不存在')) {
+      return res.status(404).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    if (error.message.includes('无权')) {
+      return res.status(403).json({
+        success: false,
+        error: error.message
+      });
+    }
+
+    console.error('获取投递记录错误:', error);
+    res.status(500).json({
+      success: false,
+      message: '获取投递记录失败',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
