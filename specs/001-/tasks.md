@@ -224,11 +224,11 @@ frontend/
 
 ### 3.16.5 服务层测试补充
 
-- [ ] T111 补充metadataService完整测试（当前0%覆盖率） 在 backend/tests/unit/services/metadataService.test.js
-- [ ] T112 补充applicationService完整测试（当前4.85%覆盖率） 在 backend/tests/unit/services/applicationService.test.js
-- [ ] T113 补充resumeService完整测试（当前3.41%覆盖率） 在 backend/tests/unit/services/resumeService.test.js
-- [ ] T114 补充fileService测试覆盖边界情况 在 backend/tests/unit/services/fileService.test.js
-- [ ] T115 验证服务层测试覆盖率达到80% 在 backend/src/services/
+- [X] T111 补充metadataService完整测试（当前0%覆盖率） 在 backend/tests/unit/services/metadataService.test.js
+- [X] T112 补充applicationService完整测试（当前4.85%覆盖率） 在 backend/tests/unit/services/applicationService.test.js
+- [X] T113 补充resumeService完整测试（当前3.41%覆盖率） 在 backend/tests/unit/services/resumeService.test.js
+- [X] T114 补充fileService测试覆盖边界情况 在 backend/tests/unit/services/fileService.test.js
+- [X] T115 验证服务层测试覆盖率达到80% 在 backend/src/services/
 
 ### 3.16.6 中间件测试补充
 
