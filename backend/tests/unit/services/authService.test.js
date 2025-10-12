@@ -205,7 +205,10 @@ describe('authService - 用户认证服务', () => {
       const result = await authService.register(email, password);
 
       // 验证结果
-      expect(User.findOne).toHaveBeenCalledWith({ where: { email } });
+      expect(User.findOne).toHaveBeenCalledWith({
+        where: { email },
+        attributes: ['id'] // 性能优化：只查询id字段
+      });
       expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
       expect(User.create).toHaveBeenCalledWith({
         email,
@@ -283,7 +286,10 @@ describe('authService - 用户认证服务', () => {
       const result = await authService.login(email, password);
 
       // 验证结果
-      expect(User.findOne).toHaveBeenCalledWith({ where: { email } });
+      expect(User.findOne).toHaveBeenCalledWith({
+        where: { email },
+        attributes: ['id', 'email', 'password_hash', 'created_at', 'updated_at'] // 性能优化：只查询需要的字段
+      });
       expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password_hash);
       expect(jwt.sign).toHaveBeenCalled();
       expect(result).toEqual({

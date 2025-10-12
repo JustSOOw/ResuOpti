@@ -8,7 +8,6 @@ import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import type { Router } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
-import ElementPlus from 'element-plus'
 
 /**
  * 创建测试用的Pinia实例
@@ -60,10 +59,10 @@ export interface MountOptions {
  * @param options - 挂载选项
  * @returns VueWrapper实例
  */
-export async function mountComponent(
+export function mountComponent(
   component: any,
   options: MountOptions = {}
-): Promise<VueWrapper<any>> {
+): VueWrapper<any> {
   const { withPlugins = true, pinia, router, initialRoute, ...mountOptions } = options
 
   const globalPlugins = []
@@ -82,17 +81,14 @@ export async function mountComponent(
     const testRouter = router || createTestRouter()
     globalPlugins.push(testRouter)
 
-    // 导航到初始路由
+    // 如果需要导航到初始路由，在挂载后处理
     if (initialRoute) {
-      await testRouter.push(initialRoute)
-      await testRouter.isReady()
+      testRouter.push(initialRoute)
     }
   }
 
-  // 添加Element Plus（带默认配置）
-  if (withPlugins) {
-    globalPlugins.push(ElementPlus)
-  }
+  // 注意：Element Plus不在这里全局添加，因为大多数测试会mock它
+  // 如果需要真实的Element Plus，请在测试中显式添加到global.plugins
 
   // 合并全局配置
   const finalOptions = {

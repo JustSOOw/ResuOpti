@@ -208,19 +208,19 @@ frontend/
 
 ### 3.16.3 单元测试Mock修复
 
-- [ ] T101 [P] 修复authService单元测试的Sequelize mock配置 在 backend/tests/unit/services/authService.test.js
-- [ ] T102 [P] 修复positionService单元测试的mock配置 在 backend/tests/unit/services/positionService.test.js
-- [ ] T103 [P] 修复前端Header组件的Element Plus mock 在 frontend/tests/unit/common/Header.spec.ts
-- [ ] T104 优化前端测试工具的mock配置 在 frontend/tests/unit/utils/test-utils.ts
-- [ ] T105 验证所有单元测试100%通过 在 backend/tests/unit/ 和 frontend/tests/unit/
+- [X] T101 [P] 修复authService单元测试的Sequelize mock配置 在 backend/tests/unit/services/authService.test.js
+- [X] T102 [P] 修复positionService单元测试的mock配置 在 backend/tests/unit/services/positionService.test.js
+- [X] T103 [P] 修复前端Header组件的Element Plus mock 在 frontend/tests/unit/common/Header.spec.ts
+- [X] T104 优化前端测试工具的mock配置 在 frontend/tests/unit/utils/test-utils.ts
+- [X] T105 验证所有单元测试100%通过 在 backend/tests/unit/ 和 frontend/tests/unit/
 
 ### 3.16.4 提升API层测试覆盖率
 
-- [ ] T106 [P] 补充auth API控制器的单元测试 在 backend/tests/unit/api/auth.test.js
-- [ ] T107 [P] 补充positions API控制器的单元测试 在 backend/tests/unit/api/positions.test.js
-- [ ] T108 [P] 补充resumes API控制器的单元测试 在 backend/tests/unit/api/resumes.test.js
-- [ ] T109 [P] 补充upload API控制器的单元测试 在 backend/tests/unit/api/upload.test.js
-- [ ] T110 验证API层测试覆盖率达到80% 在 backend/src/api/
+- [X] T106 [P] 补充auth API控制器的单元测试 在 backend/tests/unit/api/auth.test.js
+- [X] T107 [P] 补充positions API控制器的单元测试 在 backend/tests/unit/api/positions.test.js
+- [X] T108 [P] 补充resumes API控制器的单元测试 在 backend/tests/unit/api/resumes.test.js
+- [X] T109 [P] 补充upload API控制器的单元测试 在 backend/tests/unit/api/upload.test.js
+- [X] T110 验证API层测试覆盖率达到80% 在 backend/src/api/
 
 ### 3.16.5 服务层测试补充
 

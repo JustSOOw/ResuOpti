@@ -56,7 +56,8 @@ describe('positionService - 目标岗位管理服务', () => {
 
       // 验证结果
       expect(TargetPosition.findOne).toHaveBeenCalledWith({
-        where: { user_id: userId, name: name }
+        where: { user_id: userId, name: name },
+        attributes: ['id'] // 性能优化：只查询id字段
       });
       expect(TargetPosition.create).toHaveBeenCalledWith({
         user_id: userId,
@@ -181,15 +182,14 @@ describe('positionService - 目标岗位管理服务', () => {
       };
 
       // Mock 依赖
-      TargetPosition.findOne.mockResolvedValue(position);
+      TargetPosition.findByPk.mockResolvedValue(position);
       ResumeVersion.count.mockResolvedValue(5); // 5个简历
 
       // 执行测试
       const result = await positionService.getPositionById(positionId, userId);
 
       // 验证结果
-      expect(TargetPosition.findOne).toHaveBeenCalledWith({
-        where: { id: positionId },
+      expect(TargetPosition.findByPk).toHaveBeenCalledWith(positionId, {
         attributes: ['id', 'user_id', 'name', 'description', 'created_at', 'updated_at']
       });
       expect(ResumeVersion.count).toHaveBeenCalledWith({
@@ -204,7 +204,7 @@ describe('positionService - 目标岗位管理服务', () => {
         user_id: 'user-123',
         toJSON: jest.fn().mockReturnValue({ id: 'position-123' })
       };
-      TargetPosition.findOne.mockResolvedValue(position);
+      TargetPosition.findByPk.mockResolvedValue(position);
 
       const result = await positionService.getPositionById('position-123', 'user-123', false);
 
@@ -213,7 +213,7 @@ describe('positionService - 目标岗位管理服务', () => {
     });
 
     test('当岗位不存在时应该抛出错误', async () => {
-      TargetPosition.findOne.mockResolvedValue(null);
+      TargetPosition.findByPk.mockResolvedValue(null);
 
       await expect(positionService.getPositionById('nonexistent', 'user-123')).rejects.toThrow(
         '目标岗位不存在'
@@ -225,7 +225,7 @@ describe('positionService - 目标岗位管理服务', () => {
         id: 'position-123',
         user_id: 'other-user'
       };
-      TargetPosition.findOne.mockResolvedValue(position);
+      TargetPosition.findByPk.mockResolvedValue(position);
 
       await expect(positionService.getPositionById('position-123', 'user-123')).rejects.toThrow(
         '无权限访问该目标岗位'
@@ -253,6 +253,7 @@ describe('positionService - 目标岗位管理服务', () => {
 
       // Mock 依赖
       TargetPosition.findByPk.mockResolvedValue(position);
+      TargetPosition.findOne.mockResolvedValue(null); // 名称不重复
 
       // 执行测试
       const updateData = { name: '高级前端工程师', description: '新描述' };

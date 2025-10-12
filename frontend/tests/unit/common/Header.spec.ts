@@ -62,9 +62,10 @@ describe('Header组件', () => {
     })
 
     it('未登录时应该显示登录按钮', () => {
-      // 设置未登录状态
+      // 设置未登录状态 - 通过清空user和token来实现
       const authStore = useAuthStore()
-      authStore.isAuthenticated = false
+      authStore.user = null
+      authStore.token = null
 
       const wrapper = mountComponent(Header)
 
@@ -75,21 +76,19 @@ describe('Header组件', () => {
     })
 
     it('登录后应该显示用户信息和退出按钮', () => {
-      // 设置登录状态
+      // 设置登录状态 - 通过设置user和token来实现
       const authStore = useAuthStore()
-      authStore.isAuthenticated = true
       authStore.user = {
         id: '123',
-        username: '测试用户',
         email: 'test@example.com',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        createdAt: new Date().toISOString()
       }
+      authStore.token = 'test-token-123'
 
       const wrapper = mountComponent(Header)
 
       // 验证用户信息显示
-      expect(wrapper.text()).toContain('测试用户')
+      expect(wrapper.text()).toContain('test@example.com')
 
       // 验证退出按钮存在
       const logoutButton = wrapper.find('[data-testid="logout-button"]')
@@ -104,7 +103,8 @@ describe('Header组件', () => {
   describe('登录功能', () => {
     it('点击登录按钮应该跳转到登录页面', async () => {
       const authStore = useAuthStore()
-      authStore.isAuthenticated = false
+      authStore.user = null
+      authStore.token = null
 
       const wrapper = mountComponent(Header)
 
@@ -123,16 +123,14 @@ describe('Header组件', () => {
    */
   describe('退出功能', () => {
     it('点击退出按钮应该调用退出接口并跳转', async () => {
-      // 设置登录状态
+      // 设置登录状态 - 通过设置user和token来实现
       const authStore = useAuthStore()
-      authStore.isAuthenticated = true
       authStore.user = {
         id: '123',
-        username: '测试用户',
         email: 'test@example.com',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        createdAt: new Date().toISOString()
       }
+      authStore.token = 'test-token-123'
 
       // Mock logout方法
       const mockLogout = vi.fn().mockResolvedValue(undefined)
@@ -158,16 +156,14 @@ describe('Header组件', () => {
     })
 
     it('退出失败时应该显示错误提示', async () => {
-      // 设置登录状态
+      // 设置登录状态 - 通过设置user和token来实现
       const authStore = useAuthStore()
-      authStore.isAuthenticated = true
       authStore.user = {
         id: '123',
-        username: '测试用户',
         email: 'test@example.com',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        createdAt: new Date().toISOString()
       }
+      authStore.token = 'test-token-123'
 
       // Mock logout方法抛出错误
       const mockLogout = vi.fn().mockRejectedValue(new Error('退出失败'))
