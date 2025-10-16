@@ -1,0 +1,26 @@
+/**
+ * 共享常量 - 统一导出
+ *
+ * @module shared/constants
+ */
+
+// API端点常量
+export {
+  API_BASE,
+  AUTH_ENDPOINTS,
+  USER_ENDPOINTS,
+  POSITION_ENDPOINTS,
+  RESUME_ENDPOINTS,
+  METADATA_ENDPOINTS,
+  APPLICATION_ENDPOINTS,
+} from './api'
+
+// 验证规则常量
+export {
+  USER_VALIDATION,
+  POSITION_VALIDATION,
+  RESUME_VALIDATION,
+  METADATA_VALIDATION,
+  APPLICATION_VALIDATION,
+  PAGINATION_DEFAULTS,
+} from './validation'

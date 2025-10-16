@@ -1,0 +1,22 @@
+需要在以下文件开头添加imports并更新token生成：
+
+1. 添加imports（在文件顶部const app行后）:
+const { generateQuickTestAuth } = require('../utils/auth-helper');
+
+2. 在describe块内添加（替换硬编码token）:
+let validToken;
+let testUser;
+
+beforeAll(() => {
+  const auth = generateQuickTestAuth();
+  testUser = auth.user;
+  validToken = auth.token;
+});
+
+需要更新的文件：
+- target-positions-get-by-id.test.js
+- target-positions-put.test.js
+- target-positions-delete.test.js
+- resumes-post.test.js
+- resumes-upload.test.js
+- resumes-put-metadata.test.js

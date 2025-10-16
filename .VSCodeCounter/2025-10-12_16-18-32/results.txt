@@ -1,0 +1,67 @@
+Date : 2025-10-12 16:18:32
+Directory : d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests
+Total : 34 files,  10403 codes, 1830 comments, 2524 blanks, all 14757 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         32 |     10,304 |      1,830 |      2,493 |     14,627 |
+| Markdown   |          2 |         99 |          0 |         31 |        130 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |         34 |     10,403 |      1,830 |      2,524 |     14,757 |
+| . (Files)                                                                                                  |          1 |          6 |          7 |          4 |         17 |
+| contract                                                                                                   |         11 |      2,118 |        869 |        517 |      3,504 |
+| integration                                                                                                |          6 |      2,113 |        625 |        618 |      3,356 |
+| unit                                                                                                       |         14 |      5,991 |        191 |      1,343 |      7,525 |
+| unit\api                                                                                                   |          5 |      2,634 |         51 |        582 |      3,267 |
+| unit\services                                                                                              |          6 |      2,871 |        118 |        641 |      3,630 |
+| unit\utils                                                                                                 |          3 |        486 |         22 |        120 |        628 |
+| utils                                                                                                      |          2 |        175 |        138 |         42 |        355 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                   | language   | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\TOKEN_UPDATE_STATUS.md             | Markdown   |         30 |          0 |         13 |         43 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\auth-login.test.js                 | JavaScript |        191 |        165 |         61 |        417 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\auth-register.test.js              | JavaScript |        130 |        126 |         44 |        300 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\resumes-post.test.js               | JavaScript |        302 |         52 |         58 |        412 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\resumes-put-metadata.test.js       | JavaScript |        166 |         72 |         47 |        285 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\resumes-upload.test.js             | JavaScript |        435 |         84 |         90 |        609 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-delete.test.js    | JavaScript |        153 |         79 |         38 |        270 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-get-by-id.test.js | JavaScript |        154 |         74 |         38 |        266 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-get.test.js       | JavaScript |        107 |         53 |         26 |        186 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-post.test.js      | JavaScript |        209 |         76 |         47 |        332 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\contract\target-positions-put.test.js       | JavaScript |        241 |         88 |         55 |        384 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\README.md                       | Markdown   |         69 |          0 |         18 |         87 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\auth.test.js                    | JavaScript |        289 |        305 |        106 |        700 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\permissions.test.js             | JavaScript |        325 |         24 |         68 |        417 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\positions.test.js               | JavaScript |        476 |         97 |        166 |        739 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\resumes.test.js                 | JavaScript |        493 |         89 |        107 |        689 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\integration\upload.test.js                  | JavaScript |        461 |        110 |        153 |        724 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\setup.js                                    | JavaScript |          6 |          7 |          4 |         17 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\api\applications.test.js               | JavaScript |        361 |          6 |         80 |        447 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\api\auth.test.js                       | JavaScript |        271 |         14 |         59 |        344 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\api\positions.test.js                  | JavaScript |        387 |          6 |         91 |        484 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\api\resumes.test.js                    | JavaScript |      1,235 |         11 |        267 |      1,513 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\api\upload.test.js                     | JavaScript |        380 |         14 |         85 |        479 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\services\applicationService.test.js    | JavaScript |        539 |          7 |        115 |        661 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\services\authService.test.js           | JavaScript |        232 |         57 |         55 |        344 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\services\fileService.test.js           | JavaScript |        432 |         12 |        164 |        608 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\services\metadataService.test.js       | JavaScript |        621 |          6 |        120 |        747 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\services\positionService.test.js       | JavaScript |        308 |         29 |         57 |        394 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\services\resumeService.test.js         | JavaScript |        739 |          7 |        130 |        876 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\utils\crypto.test.js                   | JavaScript |        173 |         10 |         46 |        229 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\utils\logger.test.js                   | JavaScript |        140 |          6 |         29 |        175 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\unit\utils\response.test.js                 | JavaScript |        173 |          6 |         45 |        224 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\utils\auth-helper.js                        | JavaScript |         84 |         66 |         19 |        169 |
+| d:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\backend\tests\utils\token-generator.js                    | JavaScript |         91 |         72 |         23 |        186 |
+| Total                                                                                                      |            |     10,403 |      1,830 |      2,524 |     14,757 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

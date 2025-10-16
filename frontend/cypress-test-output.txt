@@ -1,0 +1,905 @@
+
+
+DevTools listening on ws://127.0.0.1:52658/devtools/browser/f55b6822-8f2f-4247-bad5-c785c6eb85a0
+(node:328776) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("file%3A///C%3A/Users/JUSTsoo/AppData/Local/Cypress/Cache/13.17.0/Cypress/resources/app/node_modules/ts-node/esm/transpile-only.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:328776) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        13.17.0                                                                        │
+  │ Browser:        Electron 118 (headless)                                                        │
+  │ Node Version:   v22.15.1 (D:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          3 found (resume-management.cy.ts, resume-metadata.cy.ts, user-journey.cy.ts)   │
+  │ Searched:       D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\*.cy.ts    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  resume-management.cy.ts                                                         (1 of 3)
+
+Oops...we found an error preparing this test file:
+
+  > tests\e2e\resume-management.cy.ts
+
+The error was:
+
+Error: Webpack Compilation Error
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(1,1)
+      TS1490: File appears to be binary.
+
+Module parse failed: Unterminated string constant (42:25)
+File was processed with these loaders:
+ * C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\@packages\server\node_modules\ts-loader\index.js
+You may need an additional loader to handle the result of these loaders.
+(Source code omitted for this binary file)
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(46,31)
+      TS1002: Unterminated string literal.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(47,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(183,37)
+      TS1002: Unterminated string literal.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(184,1)
+      TS1127: Invalid character.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(184,6)
+      TS1002: Unterminated string literal.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(187,1)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(187,10)
+      TS1002: Unterminated string literal.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(188,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(189,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(192,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(195,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(196,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(197,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(198,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(201,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(202,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(205,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(206,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(208,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(209,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(210,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(213,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(216,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(217,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(220,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(221,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(223,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(224,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(225,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(228,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(229,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(230,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(231,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(234,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(235,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(236,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(237,7)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(238,5)
+      TS1005: ',' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(242,1)
+      TS1127: Invalid character.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(242,2)
+      TS1109: Expression expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(242,4)
+      TS1005: ';' expected.
+
+[tsl] ERROR in D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\tests\e2e\resume-management.cy.ts(769,4)
+      TS1005: '}' expected.
+    at handle (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\@packages\server\node_modules\@cypress\webpack-preprocessor\dist\index.js:212:23)
+    at finalCallback (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:441:32)
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:505:17
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\HookWebpackError.js:68:3
+    at Hook.eval [as callAsync] (eval at create (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:6:1)
+    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\tapable\lib\Hook.js:18:14)
+    at Cache.storeBuildDependencies (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Cache.js:122:37)
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:501:19
+    at Hook.eval [as callAsync] (eval at create (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:6:1)
+    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\tapable\lib\Hook.js:18:14)
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:498:23
+    at Compiler.emitRecords (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:919:5)
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:490:11
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:885:14
+    at Hook.eval [as callAsync] (eval at create (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:6:1)
+    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\tapable\lib\Hook.js:18:14)
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:882:27
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\neo-async\async.js:2818:7
+    at done (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\neo-async\async.js:3522:9)
+    at alreadyWritten (C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:714:8)
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\webpack\lib\Compiler.js:802:19
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\graceful-fs\graceful-fs.js:123:16
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\@packages\server\node_modules\graceful-fs\graceful-fs.js:123:16
+    at C:\Users\JUSTsoo\AppData\Local\Cypress\Cache\13.17.0\Cypress\resources\app\node_modules\@packages\server\node_modules\graceful-fs\graceful-fs.js:123:16
+    at FSReqCallback.readFileAfterClose [as oncomplete] (node:internal/fs/read/context:68:3)
+
+This occurred while Cypress was compiling and bundling your test code. This is usually caused by:
+
+- A missing file or dependency
+- A syntax error in the file or one of its dependencies
+
+Fix the error in your code and re-run your tests.
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        0                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        true                                                                             │
+  │ Duration:     0 seconds                                                                        │
+  │ Spec Ran:     resume-management.cy.ts                                                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Video)
+
+  -  Video output: D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\videos\resume-management.cy.ts.mp4
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  resume-metadata.cy.ts                                                           (2 of 3)
+{
+  "stats": {
+    "suites": 3,
+    "tests": 3,
+    "passes": 0,
+    "pending": 0,
+    "failures": 2,
+    "start": "2025-10-14T12:43:46.421Z",
+    "end": "2025-10-14T12:44:34.578Z",
+    "duration": 48157
+  },
+  "tests": [
+    {
+      "title": "应该能够打开元数据编辑对话框",
+      "fullTitle": "简历元数据编辑 - E2E测试 场景1: 基础元数据编辑功能 应该能够打开元数据编辑对话框",
+      "duration": 10474,
+      "currentRetry": 0,
+      "err": {
+        "message": "Timed out retrying after 10000ms: Expected to find content: '/创建.*岗位|添加.*岗位|新建.*岗位/i' within the selector: 'button' but never did.\n\nBecause this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `场景1: 基础元数据编辑功能`\n\nAlthough you have test retries enabled, we do not retry tests when `before all` or `after all` hooks fail",
+        "type": "existence",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '/创建.*岗位|添加.*岗位|新建.*岗位/i' within the selector: 'button' but never did.\n\nBecause this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `场景1: 基础元数据编辑功能`\n\nAlthough you have test retries enabled, we do not retry tests when `before all` or `after all` hooks fail\n    at createTestPosition (webpack://frontend/./tests/e2e/resume-metadata.cy.ts:88:0)\n    at Context.eval (webpack://frontend/./tests/e2e/resume-metadata.cy.ts:153:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '/创建.*岗位|添加.*岗位|新建.*岗位/i' within the selector: 'button' but never did.",
+            "whitespace": ""
+          },
+          {
+            "function": "createTestPosition",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\resume-metadata.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/resume-metadata.cy.ts",
+            "relativeFile": "tests/e2e/resume-metadata.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+            "line": 88,
+            "column": 0,
+            "whitespace": "    "
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\resume-metadata.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/resume-metadata.cy.ts",
+            "relativeFile": "tests/e2e/resume-metadata.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+            "line": 153,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 88,
+          "column": 1,
+          "originalFile": "tests/e2e/resume-metadata.cy.ts",
+          "relativeFile": "frontend/tests/e2e/resume-metadata.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+          "frame": "  86 |         cy.visit('/dashboard');\n  87 |         // 点击创建岗位按钮\n> 88 |         cy.contains('button', /创建.*岗位|添加.*岗位|新建.*岗位/i).click();\n     | ^\n  89 |         // 填写岗位表单\n  90 |         cy.get('input').filter(':visible').first().clear().type(testData.position.company);\n  91 |         cy.get('input').filter(':visible').eq(1).clear().type(testData.position.title);",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "应该能够添加标签",
+      "fullTitle": "简历元数据编辑 - E2E测试 场景2: 标签管理功能 应该能够添加标签",
+      "duration": 12385,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: expected 'http://localhost:5173/login' to include '/dashboard'\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `简历元数据编辑 - E2E测试`",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/login' to include '/dashboard'\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `简历元数据编辑 - E2E测试`\n    at Context.eval (webpack://frontend/./tests/e2e/resume-metadata.cy.ts:72:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/login' to include '/dashboard'",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\resume-metadata.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/resume-metadata.cy.ts",
+            "relativeFile": "tests/e2e/resume-metadata.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+            "line": 72,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 72,
+          "column": 1,
+          "originalFile": "tests/e2e/resume-metadata.cy.ts",
+          "relativeFile": "frontend/tests/e2e/resume-metadata.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+          "frame": "  70 |         cy.contains('button', /登录|提交/).click();\n  71 |         cy.wait('@loginRequest');\n> 72 |         cy.url().should('include', '/dashboard');\n     | ^\n  73 |         // 设置API拦截器\n  74 |         cy.intercept('GET', '**/api/v1/resumes*').as('getResumes');\n  75 |         cy.intercept('GET', '**/api/v1/resumes/*').as('getResumeById');",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "应该能够完成完整的元数据编辑流程",
+      "fullTitle": "简历元数据编辑 - E2E测试 场景5: 完整元数据编辑工作流程 应该能够完成完整的元数据编辑流程",
+      "currentRetry": 0,
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [
+    {
+      "title": "\"before all\" hook for \"应该能够打开元数据编辑对话框\"",
+      "fullTitle": "简历元数据编辑 - E2E测试 场景1: 基础元数据编辑功能 \"before all\" hook for \"应该能够打开元数据编辑对话框\"",
+      "currentRetry": 0,
+      "err": {
+        "message": "Timed out retrying after 10000ms: Expected to find content: '/创建.*岗位|添加.*岗位|新建.*岗位/i' within the selector: 'button' but never did.\n\nBecause this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `场景1: 基础元数据编辑功能`\n\nAlthough you have test retries enabled, we do not retry tests when `before all` or `after all` hooks fail",
+        "type": "existence",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '/创建.*岗位|添加.*岗位|新建.*岗位/i' within the selector: 'button' but never did.\n\nBecause this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `场景1: 基础元数据编辑功能`\n\nAlthough you have test retries enabled, we do not retry tests when `before all` or `after all` hooks fail\n    at createTestPosition (webpack://frontend/./tests/e2e/resume-metadata.cy.ts:88:0)\n    at Context.eval (webpack://frontend/./tests/e2e/resume-metadata.cy.ts:153:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '/创建.*岗位|添加.*岗位|新建.*岗位/i' within the selector: 'button' but never did.",
+            "whitespace": ""
+          },
+          {
+            "function": "createTestPosition",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\resume-metadata.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/resume-metadata.cy.ts",
+            "relativeFile": "tests/e2e/resume-metadata.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+            "line": 88,
+            "column": 0,
+            "whitespace": "    "
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\resume-metadata.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/resume-metadata.cy.ts",
+            "relativeFile": "tests/e2e/resume-metadata.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+            "line": 153,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 88,
+          "column": 1,
+          "originalFile": "tests/e2e/resume-metadata.cy.ts",
+          "relativeFile": "frontend/tests/e2e/resume-metadata.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+          "frame": "  86 |         cy.visit('/dashboard');\n  87 |         // 点击创建岗位按钮\n> 88 |         cy.contains('button', /创建.*岗位|添加.*岗位|新建.*岗位/i).click();\n     | ^\n  89 |         // 填写岗位表单\n  90 |         cy.get('input').filter(':visible').first().clear().type(testData.position.company);\n  91 |         cy.get('input').filter(':visible').eq(1).clear().type(testData.position.title);",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "\"before each\" hook for \"应该能够添加标签\"",
+      "fullTitle": "简历元数据编辑 - E2E测试 场景2: 标签管理功能 \"before each\" hook for \"应该能够添加标签\"",
+      "duration": 12243,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: expected 'http://localhost:5173/login' to include '/dashboard'\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `简历元数据编辑 - E2E测试`",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/login' to include '/dashboard'\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `简历元数据编辑 - E2E测试`\n    at Context.eval (webpack://frontend/./tests/e2e/resume-metadata.cy.ts:72:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/login' to include '/dashboard'",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\resume-metadata.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/resume-metadata.cy.ts",
+            "relativeFile": "tests/e2e/resume-metadata.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+            "line": 72,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 72,
+          "column": 1,
+          "originalFile": "tests/e2e/resume-metadata.cy.ts",
+          "relativeFile": "frontend/tests/e2e/resume-metadata.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/resume-metadata.cy.ts",
+          "frame": "  70 |         cy.contains('button', /登录|提交/).click();\n  71 |         cy.wait('@loginRequest');\n> 72 |         cy.url().should('include', '/dashboard');\n     | ^\n  73 |         // 设置API拦截器\n  74 |         cy.intercept('GET', '**/api/v1/resumes*').as('getResumes');\n  75 |         cy.intercept('GET', '**/api/v1/resumes/*').as('getResumeById');",
+          "language": "ts"
+        }
+      }
+    }
+  ],
+  "passes": []
+}
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        16                                                                               │
+  │ Passing:      0                                                                                │
+  │ Failing:      2                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      14                                                                               │
+  │ Screenshots:  4                                                                                │
+  │ Video:        true                                                                             │
+  │ Duration:     48 seconds                                                                       │
+  │ Spec Ran:     resume-metadata.cy.ts                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\re     (1280x720)
+     sume-metadata.cy.ts\简历元数据编辑 - E2E测试 -- 场景1 基础元数据编辑功能 -- 应…                
+      all hook (failed).png                                                                         
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\re     (1280x720)
+     sume-metadata.cy.ts\简历元数据编辑 - E2E测试 -- 场景2 标签管理功能 -- 应该能够…                
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\re     (1280x720)
+     sume-metadata.cy.ts\简历元数据编辑 - E2E测试 -- 场景2 标签管理功能 -- 应该能够…                
+     2).png                                                                                         
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\re     (1280x720)
+     sume-metadata.cy.ts\简历元数据编辑 - E2E测试 -- 应该能够添加标签 -- before each…               
+     tempt 3).png                                                                                   
+
+
+  (Video)
+
+  -  Video output: D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\videos\resume-metadata.cy.ts.mp4
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  user-journey.cy.ts                                                              (3 of 3)
+{
+  "stats": {
+    "suites": 3,
+    "tests": 9,
+    "passes": 5,
+    "pending": 0,
+    "failures": 4,
+    "start": "2025-10-14T12:44:37.523Z",
+    "end": "2025-10-14T12:47:23.204Z",
+    "duration": 165681
+  },
+  "tests": [
+    {
+      "title": "步骤1: 访问注册页面",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤1: 访问注册页面",
+      "duration": 669,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "步骤2-4: 完成注册并自动登录",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤2-4: 完成注册并自动登录",
+      "duration": 5105,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "步骤5-6: 验证进入仪表板并查看空状态",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤5-6: 验证进入仪表板并查看空状态",
+      "duration": 1471,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "步骤7-10: 创建目标岗位",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤7-10: 创建目标岗位",
+      "duration": 15760,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: Expected <div.el-dialog> not to exist in the DOM, but it was continuously found.",
+        "type": "existence",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: Expected <div.el-dialog> not to exist in the DOM, but it was continuously found.\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:172:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: Expected <div.el-dialog> not to exist in the DOM, but it was continuously found.",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 172,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 172,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  170 |             // 验证岗位出现在列表中\n  171 |             // 等待对话框关闭\n> 172 |             cy.get('.el-dialog').should('not.exist');\n      | ^\n  173 |             // 直接验证岗位显示（可能需要等待UI更新）\n  174 |             cy.contains(testPosition.name, { timeout: 10000 }).should('be.visible');\n  175 |         });",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "步骤11-16: 创建在线简历",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤11-16: 创建在线简历",
+      "duration": 13275,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:191:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 191,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 191,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  189 |             cy.contains(testPosition.name).click();\n  190 |             // 验证进入岗位详情页\n> 191 |             cy.url().should('match', /\\/positions\\/\\d+/);\n      | ^\n  192 |             // 设置创建简历API拦截器\n  193 |             cy.intercept('POST', '**/api/v1/resumes').as('createResume');\n  194 |             // 点击创建在线简历按钮",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "步骤17: 验证简历出现在岗位的简历列表中",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤17: 验证简历出现在岗位的简历列表中",
+      "duration": 13178,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:244:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 244,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 244,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  242 |             // 返回岗位详情页，直接点击岗位\n  243 |             cy.contains(testPosition.name, { timeout: 10000 }).click();\n> 244 |             cy.url().should('match', /\\/positions\\/\\d+/);\n      | ^\n  245 |             // 等待简历列表加载并验证\n  246 |             cy.contains(testResume.title, { timeout: 10000 }).should('be.visible');\n  247 |         });",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "登录并查看已有的岗位和简历",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景2: 用户登录后的操作流程（可选） 登录并查看已有的岗位和简历",
+      "duration": 2267,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "编辑已有简历",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景2: 用户登录后的操作流程（可选） 编辑已有简历",
+      "duration": 13307,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: Expected to find content: '我的第一份简历-1760445877539' but never did.",
+        "type": "existence",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '我的第一份简历-1760445877539' but never did.\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:284:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '我的第一份简历-1760445877539' but never did.",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 284,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 284,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  282 |             cy.contains(testPosition.name, { timeout: 10000 }).click();\n  283 |             // 点击简历进入编辑\n> 284 |             cy.contains(testResume.title, { timeout: 10000 }).click();\n      | ^\n  285 |             // 验证进入编辑器\n  286 |             cy.url().should('include', '/editor');\n  287 |             // 等待编辑器加载",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "退出登录",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景2: 用户登录后的操作流程（可选） 退出登录",
+      "duration": 3031,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [
+    {
+      "title": "步骤7-10: 创建目标岗位",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤7-10: 创建目标岗位",
+      "duration": 15019,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: Expected <div.el-dialog> not to exist in the DOM, but it was continuously found.",
+        "type": "existence",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: Expected <div.el-dialog> not to exist in the DOM, but it was continuously found.\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:172:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: Expected <div.el-dialog> not to exist in the DOM, but it was continuously found.",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 172,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 172,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  170 |             // 验证岗位出现在列表中\n  171 |             // 等待对话框关闭\n> 172 |             cy.get('.el-dialog').should('not.exist');\n      | ^\n  173 |             // 直接验证岗位显示（可能需要等待UI更新）\n  174 |             cy.contains(testPosition.name, { timeout: 10000 }).should('be.visible');\n  175 |         });",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "步骤11-16: 创建在线简历",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤11-16: 创建在线简历",
+      "duration": 13034,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:191:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 191,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 191,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  189 |             cy.contains(testPosition.name).click();\n  190 |             // 验证进入岗位详情页\n> 191 |             cy.url().should('match', /\\/positions\\/\\d+/);\n      | ^\n  192 |             // 设置创建简历API拦截器\n  193 |             cy.intercept('POST', '**/api/v1/resumes').as('createResume');\n  194 |             // 点击创建在线简历按钮",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "步骤17: 验证简历出现在岗位的简历列表中",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤17: 验证简历出现在岗位的简历列表中",
+      "duration": 13118,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:244:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: expected 'http://localhost:5173/dashboard' to match /\\/positions\\/\\d+/",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 244,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 244,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  242 |             // 返回岗位详情页，直接点击岗位\n  243 |             cy.contains(testPosition.name, { timeout: 10000 }).click();\n> 244 |             cy.url().should('match', /\\/positions\\/\\d+/);\n      | ^\n  245 |             // 等待简历列表加载并验证\n  246 |             cy.contains(testResume.title, { timeout: 10000 }).should('be.visible');\n  247 |         });",
+          "language": "ts"
+        }
+      }
+    },
+    {
+      "title": "编辑已有简历",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景2: 用户登录后的操作流程（可选） 编辑已有简历",
+      "duration": 13119,
+      "currentRetry": 2,
+      "err": {
+        "message": "Timed out retrying after 10000ms: Expected to find content: '我的第一份简历-1760445877539' but never did.",
+        "type": "existence",
+        "name": "AssertionError",
+        "stack": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '我的第一份简历-1760445877539' but never did.\n    at Context.eval (webpack://frontend/./tests/e2e/user-journey.cy.ts:284:0)",
+        "parsedStack": [
+          {
+            "message": "AssertionError: Timed out retrying after 10000ms: Expected to find content: '我的第一份简历-1760445877539' but never did.",
+            "whitespace": ""
+          },
+          {
+            "function": "Context.eval",
+            "fileUrl": "http://localhost:5173/__cypress/tests?p=tests\\e2e\\user-journey.cy.ts",
+            "originalFile": "webpack://frontend/./tests/e2e/user-journey.cy.ts",
+            "relativeFile": "tests/e2e/user-journey.cy.ts",
+            "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+            "line": 284,
+            "column": 0,
+            "whitespace": "    "
+          }
+        ],
+        "codeFrame": {
+          "line": 284,
+          "column": 1,
+          "originalFile": "tests/e2e/user-journey.cy.ts",
+          "relativeFile": "frontend/tests/e2e/user-journey.cy.ts",
+          "absoluteFile": "D:\\Users\\JUSTsoo\\Documents\\aprojectCODE\\ResuOpti\\frontend/tests/e2e/user-journey.cy.ts",
+          "frame": "  282 |             cy.contains(testPosition.name, { timeout: 10000 }).click();\n  283 |             // 点击简历进入编辑\n> 284 |             cy.contains(testResume.title, { timeout: 10000 }).click();\n      | ^\n  285 |             // 验证进入编辑器\n  286 |             cy.url().should('include', '/editor');\n  287 |             // 等待编辑器加载",
+          "language": "ts"
+        }
+      }
+    }
+  ],
+  "passes": [
+    {
+      "title": "步骤1: 访问注册页面",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤1: 访问注册页面",
+      "duration": 669,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "步骤2-4: 完成注册并自动登录",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤2-4: 完成注册并自动登录",
+      "duration": 5105,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "步骤5-6: 验证进入仪表板并查看空状态",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景1: 新用户注册到创建第一个简历 步骤5-6: 验证进入仪表板并查看空状态",
+      "duration": 1471,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "登录并查看已有的岗位和简历",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景2: 用户登录后的操作流程（可选） 登录并查看已有的岗位和简历",
+      "duration": 2267,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "退出登录",
+      "fullTitle": "用户完整旅程：从注册到创建简历 场景2: 用户登录后的操作流程（可选） 退出登录",
+      "duration": 3031,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ]
+}
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        9                                                                                │
+  │ Passing:      5                                                                                │
+  │ Failing:      4                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  12                                                                               │
+  │ Video:        true                                                                             │
+  │ Duration:     2 minutes, 45 seconds                                                            │
+  │ Spec Ran:     user-journey.cy.ts                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+     png                                                                                            
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+     (attempt 2).png                                                                                
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+     (attempt 3).png                                                                                
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+     .png                                                                                           
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+      (attempt 2).png                                                                               
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+      (attempt 3).png                                                                               
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+     ailed).png                                                                                     
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+     ailed) (attempt 2).png                                                                         
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景1 新用户注册到创建第一个…               
+     ailed) (attempt 3).png                                                                         
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景2 用户登录后的操作流程（…               
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景2 用户登录后的操作流程（…               
+     pt 2).png                                                                                      
+  -  D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\screenshots\us     (1280x720)
+     er-journey.cy.ts\用户完整旅程：从注册到创建简历 -- 场景2 用户登录后的操作流程（…               
+     pt 3).png                                                                                      
+
+
+  (Video)
+
+  -  Video output: D:\Users\JUSTsoo\Documents\aprojectCODE\ResuOpti\frontend\cypress\videos\user-journey.cy.ts.mp4
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✖  resume-management.cy.ts                    0ms        -        -        1        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  resume-metadata.cy.ts                    00:48       16        -        2        -       14 │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  user-journey.cy.ts                       02:45        9        5        4        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✖  3 of 3 failed (100%)                     03:33       25        5        7        -       14  
+
