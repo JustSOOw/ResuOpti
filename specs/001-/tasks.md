@@ -232,26 +232,26 @@ frontend/
 
 ### 3.16.6 中间件测试补充
 
-- [ ] T116 补充validation中间件完整测试（当前0%覆盖率） 在 backend/tests/unit/middleware/validation.test.js
-- [ ] T117 补充error中间件边界情况测试 在 backend/tests/unit/middleware/error.test.js
-- [ ] T118 补充auth中间件的权限测试场景 在 backend/tests/unit/middleware/auth.test.js
-- [ ] T119 验证中间件测试覆盖率达到80% 在 backend/src/middleware/
+- [X] T116 补充validation中间件完整测试（当前0%覆盖率） 在 backend/tests/unit/middleware/validation.test.js
+- [X] T117 补充error中间件边界情况测试 在 backend/tests/unit/middleware/error.test.js
+- [X] T118 补充auth中间件的权限测试场景 在 backend/tests/unit/middleware/auth.test.js
+- [X] T119 验证中间件测试覆盖率达到80% 在 backend/src/middleware/
 
 ### 3.16.7 集成测试修复和增强
 
-- [ ] T120 修复文件上传集成测试的ECONNRESET错误 在 backend/tests/integration/upload.test.js
-- [ ] T121 修复positions集成测试的resumeCount字段问题 在 backend/tests/integration/positions.test.js
-- [ ] T122 补充简历元数据更新的集成测试 在 backend/tests/integration/metadata.test.js
-- [ ] T123 补充投递记录管理的集成测试 在 backend/tests/integration/applications.test.js
-- [ ] T124 验证所有集成测试通过率达到90% 在 backend/tests/integration/
+- [X] T120 修复文件上传集成测试的ECONNRESET错误 在 backend/tests/integration/upload.test.js
+- [X] T121 修复positions集成测试的resumeCount字段问题 在 backend/tests/integration/positions.test.js
+- [X] T122 补充简历元数据更新的集成测试 在 backend/tests/integration/metadata.test.js
+- [X] T123 补充投递记录管理的集成测试 在 backend/tests/integration/applications.test.js
+- [X] T124 验证所有集成测试通过率达到90% 在 backend/tests/integration/
 
 ### 3.16.8 E2E测试执行
 
-- [ ] T125 配置E2E测试环境（前后端同时运行） 在 根目录/docker-compose.test.yml
-- [ ] T126 执行用户完整流程E2E测试 在 frontend/tests/e2e/user-journey.cy.ts
-- [ ] T127 执行简历管理E2E测试 在 frontend/tests/e2e/resume-management.cy.ts
-- [ ] T128 执行元数据编辑E2E测试 在 frontend/tests/e2e/resume-metadata.cy.ts
-- [ ] T129 验证所有E2E测试通过 在 frontend/tests/e2e/
+- [X] T125 配置E2E测试环境（前后端同时运行） 在 根目录/docker-compose.test.yml
+- [X] T126 执行用户完整流程E2E测试 在 frontend/tests/e2e/user-journey.cy.ts
+- [X] T127 执行简历管理E2E测试 在 frontend/tests/e2e/resume-management.cy.ts
+- [X] T128 执行元数据编辑E2E测试 在 frontend/tests/e2e/resume-metadata.cy.ts
+- [X] T129 验证所有E2E测试通过 在 frontend/tests/e2e/
 
 ### 3.16.9 测试覆盖率验证
 

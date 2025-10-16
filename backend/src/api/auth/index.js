@@ -67,14 +67,23 @@ router.post('/register', async (req, res) => {
     // 调用认证服务进行注册
     const user = await authService.register(email.trim(), password);
 
-    // 返回成功响应
+    // 注册成功后自动生成token，实现自动登录
+    const token = authService.generateToken(user.id);
+
+    // 返回成功响应，包含token
     res.status(201).json({
       success: true,
       message: '用户注册成功',
       data: {
-        userId: user.id,
-        email: user.email
-      }
+        token: token,
+        user: {
+          id: user.id,
+          email: user.email,
+          createdAt: user.created_at
+        }
+      },
+      // 为了向后兼容，也在顶层返回token
+      token: token
     });
   } catch (error) {
     // 处理业务逻辑错误
@@ -179,7 +188,9 @@ router.post('/login', async (req, res) => {
           email: result.user.email,
           createdAt: result.user.created_at
         }
-      }
+      },
+      // 为了向后兼容，也在顶层返回token
+      token: result.token
     });
   } catch (error) {
     // 处理业务逻辑错误

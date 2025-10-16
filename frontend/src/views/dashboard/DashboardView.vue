@@ -326,7 +326,7 @@ const getEditFormData = computed((): PositionFormData | null => {
               :lg="8"
               :xl="6"
             >
-              <el-card class="position-card" shadow="hover">
+              <el-card class="position-card" shadow="hover" @click="handleViewPosition(position.id)">
                 <!-- 卡片头部 -->
                 <template #header>
                   <div class="card-header">
@@ -360,7 +360,7 @@ const getEditFormData = computed((): PositionFormData | null => {
 
                 <!-- 卡片操作按钮 -->
                 <template #footer>
-                  <div class="card-actions">
+                  <div class="card-actions" @click.stop>
                     <el-button
                       type="primary"
                       :icon="View"
@@ -532,6 +532,7 @@ const getEditFormData = computed((): PositionFormData | null => {
   flex-direction: column;
   transition: all 0.3s ease;
   border-radius: 8px;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-4px);

@@ -13,10 +13,9 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-  'application/msword', // .doc
-  'text/plain'
+  'application/msword' // .doc
 ];
-const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc', '.txt'];
+const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc'];
 const UPLOAD_BASE_DIR = path.join(__dirname, '../../uploads');
 
 /**

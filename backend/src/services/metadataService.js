@@ -297,28 +297,37 @@ async function updateMetadata(resumeId, userId, updates) {
   } else {
     // 更新字段
     if (notes !== undefined) {
-      if (notes && notes.length > 2000) {
+      // Trim备注并验证长度
+      const trimmedNotes = notes === null ? null : (typeof notes === 'string' ? notes.trim() : notes);
+
+      if (trimmedNotes && trimmedNotes.length > 2000) {
         throw new Error('备注长度不能超过2000字符');
       }
-      metadata.notes = notes;
+      metadata.notes = trimmedNotes;
     }
 
     if (tags !== undefined) {
       if (!Array.isArray(tags)) {
         throw new Error('标签必须是数组格式');
       }
-      if (tags.length > 20) {
+
+      // Trim每个标签
+      const trimmedTags = tags.map(tag =>
+        typeof tag === 'string' ? tag.trim() : tag
+      );
+
+      if (trimmedTags.length > 20) {
         throw new Error('标签数量不能超过20个');
       }
-      for (const tag of tags) {
-        if (typeof tag !== 'string' || tag.trim() === '') {
+      for (const tag of trimmedTags) {
+        if (typeof tag !== 'string' || tag === '') {
           throw new Error('每个标签必须是非空字符串');
         }
         if (tag.length > 50) {
           throw new Error('每个标签长度不能超过50字符');
         }
       }
-      metadata.tags = tags;
+      metadata.tags = trimmedTags;
     }
 
     await metadata.save();

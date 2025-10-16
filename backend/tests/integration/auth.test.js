@@ -43,11 +43,9 @@ describe('用户认证集成测试', () => {
       throw error;
     }
 
-    // 同步数据库表结构（使用force: false避免删除已有数据）
-    await sequelize.sync();
+    // 同步数据库表结构（使用force: true确保表结构正确）
+    await sequelize.sync({ force: true });
 
-    // 清空users表
-    await User.destroy({ where: {}, truncate: true });
     console.log('✅ 测试环境准备完成');
   });
 
@@ -56,7 +54,7 @@ describe('用户认证集成测试', () => {
    * 确保测试用例之间相互独立
    */
   beforeEach(async () => {
-    await User.destroy({ where: {}, truncate: true });
+    await User.destroy({ where: {}, force: true });
   });
 
   /**
@@ -66,9 +64,6 @@ describe('用户认证集成测试', () => {
    * 2. 关闭数据库连接
    */
   afterAll(async () => {
-    // 清空所有测试数据
-    await User.destroy({ where: {}, truncate: true });
-
     // 关闭数据库连接
     await sequelize.close();
     console.log('✅ 测试环境清理完成');
@@ -308,7 +303,7 @@ describe('用户认证集成测试', () => {
 
     beforeEach(async () => {
       // 清空表后重新创建测试用户
-      await User.destroy({ where: {}, truncate: true });
+      await User.destroy({ where: {}, force: true });
       await authService.register(testUser.email, testUser.password);
     });
 

@@ -34,7 +34,7 @@ describe('简历元数据编辑 - E2E测试', () => {
   let testPositionId: string
   let testOnlineResumeId: string
   let testFileResumeId: string
-  const testUser = Cypress.env('testUser')
+  let testUser: { email: string; password: string }
 
   // 测试数据
   const testData = {
@@ -61,6 +61,13 @@ describe('简历元数据编辑 - E2E测试', () => {
   // ==================== 测试前置设置 ====================
 
   before(() => {
+    // 生成唯一测试数据
+    const timestamp = Date.now()
+    testUser = {
+      email: `metadata.test.${timestamp}@example.com`,
+      password: 'Test123456!'
+    }
+
     // 确保测试从首页开始
     cy.visit('/')
   })
@@ -93,30 +100,64 @@ describe('简历元数据编辑 - E2E测试', () => {
   // ==================== 辅助函数 ====================
 
   /**
+   * 注册并登录测试用户
+   */
+  const registerAndLogin = () => {
+    cy.visit('/register')
+    cy.intercept('POST', '**/api/v1/auth/register').as('register')
+    cy.get('input[type="email"]').type(testUser.email)
+    cy.get('input[type="password"]').first().type(testUser.password)
+    cy.get('input[type="password"]').then(($inputs) => {
+      if ($inputs.length > 1) {
+        cy.wrap($inputs[1]).type(testUser.password)
+      }
+    })
+    cy.contains('button', /注册|提交/).click()
+    cy.wait('@register')
+
+    // 确保到达dashboard
+    cy.url().should('match', /\/(dashboard|login)/, { timeout: 10000 })
+    cy.url().then((url) => {
+      if (url.includes('/login')) {
+        cy.intercept('POST', '**/api/v1/auth/login').as('login')
+        cy.get('input[type="email"]').type(testUser.email)
+        cy.get('input[type="password"]').type(testUser.password)
+        cy.contains('button', /登录|提交/).click()
+        cy.wait('@login')
+      }
+    })
+    cy.url().should('include', '/dashboard')
+  }
+
+  /**
    * 创建测试岗位
    */
   const createTestPosition = () => {
-    cy.visit('/dashboard')
-
     // 点击创建岗位按钮
-    cy.contains('button', /创建.*岗位|添加.*岗位|新建.*岗位/i).click()
+    cy.contains('button', '创建新岗位').click()
 
-    // 填写岗位表单
-    cy.get('input').filter(':visible').first().clear().type(testData.position.company)
-    cy.get('input').filter(':visible').eq(1).clear().type(testData.position.title)
-    cy.get('textarea').filter(':visible').first().clear().type(testData.position.description)
+    // 等待对话框出现
+    cy.get('.el-dialog').should('be.visible')
+
+    // 填写岗位表单 - 根据实际表单结构调整
+    cy.get('.el-dialog .el-form-item').eq(0).find('.el-input__inner').type(testData.position.title)
+    cy.get('.el-dialog .el-form-item').eq(1).find('textarea').type(testData.position.description)
 
     // 提交表单
-    cy.contains('button', /确定|提交|保存|创建/i).click()
+    cy.get('.el-dialog').contains('button', /确定|提交|保存|创建/i).click()
 
     // 等待API响应
     cy.wait('@createPosition').then((interception) => {
-      testPositionId = interception.response?.body.data.id
+      testPositionId =
+        interception.response?.body.data?.id || interception.response?.body.id
       expect(testPositionId).to.exist
     })
 
+    // 等待对话框消失
+    cy.get('.el-dialog').should('not.be.visible', { timeout: 10000 })
+
     // 验证创建成功
-    cy.contains(testData.position.title).should('be.visible')
+    cy.contains(testData.position.title, { timeout: 10000 }).should('be.visible')
   }
 
   /**
@@ -176,6 +217,9 @@ describe('简历元数据编辑 - E2E测试', () => {
 
   describe('场景1: 基础元数据编辑功能', () => {
     before(() => {
+      // 注册并登录测试用户
+      registerAndLogin()
+
       // 创建测试数据
       createTestPosition()
       createTestOnlineResume()
