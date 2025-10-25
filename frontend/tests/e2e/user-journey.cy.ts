@@ -236,25 +236,33 @@ describe('用户完整旅程：从注册到创建简历', () => {
       cy.contains(testPosition.name).click()
 
       // 验证进入岗位详情页
-      cy.url().should('match', /\/positions\/\d+/)
+      cy.url().should('match', /\/positions\/[a-f0-9-]+/)
 
       // 设置创建简历API拦截器
       cy.intercept('POST', '**/api/v1/resumes').as('createResume')
 
       // 点击创建在线简历按钮
-      // TODO: 根据实际UI调整选择器
       cy.contains('button', /创建.*简历|新建.*简历|在线简历/i).click()
 
-      // 可能会弹出对话框要求输入简历标题
-      // 或者直接跳转到编辑器页面
-      cy.url().then((url) => {
-        if (!url.includes('/editor')) {
-          // 如果还在岗位详情页，说明弹出了对话框
-          cy.get('input').filter(':visible').first().clear().type(testResume.title)
-          cy.contains('button', /确定|创建|保存/i).click()
-          cy.wait('@createResume')
-        }
+      // 等待对话框出现
+      cy.get('.el-dialog', { timeout: 10000 }).should('be.visible')
+
+      // 填写简历标题
+      cy.get('.el-dialog input').filter(':visible').first().clear().type(testResume.title)
+
+      // 等待一下确保输入完成
+      cy.wait(500)
+
+      // 点击确认按钮
+      cy.get('.el-dialog').contains('button', /确定|创建|保存/i).click()
+
+      // 等待创建API响应
+      cy.wait('@createResume', { timeout: 10000 }).then((interception) => {
+        expect(interception.response?.statusCode).to.be.oneOf([200, 201])
       })
+
+      // 等待对话框关闭
+      cy.get('.el-dialog').should('not.be.visible', { timeout: 10000 })
 
       // 验证进入编辑器页面
       cy.url().should('include', '/editor', { timeout: 10000 })
@@ -293,6 +301,7 @@ describe('用户完整旅程：从注册到创建简历', () => {
       // 登录
       cy.visit('/login')
       cy.intercept('POST', '**/api/v1/auth/login').as('loginRequest')
+      cy.intercept('GET', '**/api/v1/resumes*').as('getResumes')
 
       cy.get('input[type="email"]').clear().type(testUser.email)
       cy.get('input[type="password"]').clear().type(testUser.password)
@@ -303,7 +312,10 @@ describe('用户完整旅程：从注册到创建简历', () => {
 
       // 返回岗位详情页，直接点击岗位
       cy.contains(testPosition.name, { timeout: 10000 }).click()
-      cy.url().should('match', /\/positions\/\d+/)
+      cy.url().should('match', /\/positions\/[a-f0-9-]+/)
+
+      // 等待简历列表API加载
+      cy.wait('@getResumes', { timeout: 10000 })
 
       // 等待简历列表加载并验证
       cy.contains(testResume.title, { timeout: 10000 }).should('be.visible')
@@ -345,6 +357,7 @@ describe('用户完整旅程：从注册到创建简历', () => {
       // 使用登录命令快速登录
       cy.visit('/login')
       cy.intercept('POST', '**/api/v1/auth/login').as('loginRequest')
+      cy.intercept('GET', '**/api/v1/resumes*').as('getResumes')
 
       cy.get('input[type="email"]').clear().type(testUser.email)
       cy.get('input[type="password"]').clear().type(testUser.password)
@@ -355,11 +368,18 @@ describe('用户完整旅程：从注册到创建简历', () => {
       // 进入岗位详情
       cy.contains(testPosition.name, { timeout: 10000 }).click()
 
-      // 点击简历进入编辑
-      cy.contains(testResume.title, { timeout: 10000 }).click()
+      // 等待简历列表加载
+      cy.wait('@getResumes', { timeout: 10000 })
+
+      // 点击简历卡片上的"查看"按钮进入编辑
+      cy.contains(testResume.title, { timeout: 10000 })
+        .parents('.resume-card')
+        .within(() => {
+          cy.contains('button', '查看').click()
+        })
 
       // 验证进入编辑器
-      cy.url().should('include', '/editor')
+      cy.url().should('include', '/editor', { timeout: 10000 })
 
       // 等待编辑器加载
       cy.get('.ProseMirror', { timeout: 10000 }).should('be.visible')
