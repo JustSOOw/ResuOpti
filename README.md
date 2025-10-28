@@ -1,6 +1,6 @@
 ﻿# ResuOpti – 个人简历管理平台
 
-ResuOpti 是一套“目标岗位驱动”的个人简历管理平台：针对不同岗位维护多份简历版本，记录投递状态，并提供快速验收脚本。项目支持 Docker Compose 一键启动，也能在本地以 PostgreSQL 或 SQLite 模式开发。
+ResuOpti 是一套"目标岗位驱动"的个人简历管理平台：针对不同岗位维护多份简历版本，记录投递状态，并提供快速验收脚本。**项目完全 Docker 化，一键启动所有服务（前端、后端、数据库），真正实现跨平台一致性。**
 
 ---
 
@@ -61,54 +61,49 @@ ResuOpti/
 
 ---
 
-## 快速启动
+## 快速启动（完全 Docker 化）
 
-### 1. Docker Compose（推荐）
+### 一键启动所有服务
 
 ```bash
-npm install                # 安装根目录脚本依赖（可选）
-docker compose up --build -d
+npm start
 ```
 
+这个命令会自动使用 Docker Compose 构建并启动所有服务（前端、后端、数据库）。
+
+**首次启动或代码更新后**，建议使用：
+```bash
+npm start
+```
+
+**后台运行模式**（不显示日志）：
+```bash
+npm run start:detach
+```
+
+### 访问地址
+
 启动后：
-- 前端：<http://localhost:5173>
-- 后端 API：<http://localhost:3000>
-- Swagger：<http://localhost:3000/api-docs>
+- 前端：<http://localhost:5174>
+- 后端 API：<http://localhost:3001>
+- Swagger：<http://localhost:3001/api-docs>
 - PostgreSQL：`localhost:15432`（用户名/密码均为 `postgres`）
 
 > 如需本机访问数据库，可连接 `localhost:15432/resumopti_dev`。
 
-### 2. 本地开发（使用 PostgreSQL）
+### 其他常用命令
 
-1. 复制 `backend/.env.example` 为 `backend/.env`，填入真实数据库参数：
-   ```ini
-   DB_DIALECT=postgres
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=postgres
-   DB_PASSWORD=postgres
-   DB_NAME=resumopti_dev
-   ```
-2. 初始化数据库：
-   ```bash
-   cd backend
-   npm install
-   npm run db:migrate
-   npm run db:seed   # 可选
-   ```
-3. 安装前端依赖：
-   ```bash
-   cd ../frontend
-   npm install
-   ```
-4. 回到根目录并启动：
-   ```bash
-   cd ..
-   npm install          # 安装根脚本依赖
-   npm start            # 并行启动 backend + frontend
-   ```
-
-> 若临时无法使用 PostgreSQL，可把 `DB_DIALECT` 改为 `sqlite` 体验功能，完成后再切回。
+```bash
+npm run stop          # 停止所有服务
+npm run restart       # 重启所有服务
+npm run logs          # 查看所有服务日志
+npm run logs:backend  # 只查看后端日志
+npm run logs:frontend # 只查看前端日志
+npm run logs:db       # 只查看数据库日志
+npm run ps            # 查看服务状态
+npm run info          # 显示服务访问地址
+npm run clean         # 停止并删除所有容器和数据卷（慎用）
+```
 
 ---
 
@@ -116,29 +111,26 @@ docker compose up --build -d
 
 | 命令                       | 作用                               |
 |----------------------------|------------------------------------|
-| `npm start`                | 并行启动后端 `nodemon` 与前端 `vite` |
-| `npm run start:backend`    | 单独启动后端开发服务               |
-| `npm run start:frontend`   | 单独启动前端开发服务               |
-| `docker compose up -d`     | 容器化部署                         |
+| `npm start`                | 使用 Docker 启动所有服务（前台运行，显示日志） |
+| `npm run start:detach`     | 使用 Docker 启动所有服务（后台运行） |
+| `npm run stop`             | 停止所有 Docker 服务               |
+| `npm run restart`          | 重启所有 Docker 服务               |
+| `npm run logs`             | 查看所有服务的实时日志             |
+| `npm run ps`               | 查看服务运行状态                   |
+| `npm run clean`            | 停止并删除所有容器和数据卷（慎用） |
 | `node acceptance-test.js`  | 运行验收测试（T082 场景）          |
-| `npm run test` (backend)   | Jest + Supertest                   |
-| `npm run test:unit` (frontend) | Vitest 组件测试                |
-| `npm run cypress:run`      | 前端 E2E（需额外配置）             |
 
 ---
 
 ## 环境变量
 
-后端 `.env` 示例详见 `backend/.env.example`：
+Docker Compose 会自动加载环境变量配置，无需手动配置。
 
-- `DB_DIALECT`：`postgres` / `sqlite`
-- `DB_HOST` / `DB_PORT` / `DB_USER` / `DB_PASSWORD` / `DB_NAME`
-- `DB_AUTO_SYNC` / `DB_SYNC_FORCE` 等自动建表开关
-- `JWT_SECRET`、`JWT_EXPIRES_IN`
-- `MAX_FILE_SIZE`（默认 10 MB）、`UPLOAD_DIR`
-- `CORS_ORIGIN`
+如需自定义配置，可参考：
+- 后端配置：`backend/.env.example`
+- 前端配置：`frontend/.env`（可自定义 `VITE_API_BASE_URL`）
 
-前端可在 `.env` 自定义 `VITE_API_BASE_URL`。
+**注意**：使用 Docker 启动时，所有环境变量已在 `docker-compose.yml` 中预配置，通常无需修改。
 
 ---
 

@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 # 清理函数
 cleanup() {
     echo -e "\n${YELLOW}正在清理测试环境...${NC}"
-    docker-compose -f docker-compose.test.yml down -v
+    docker compose -f docker-compose.test.yml down -v
     echo -e "${GREEN}清理完成${NC}"
 }
 
@@ -28,7 +28,7 @@ trap cleanup EXIT INT TERM
 # 步骤1: 启动测试环境
 echo -e "\n${YELLOW}步骤1: 启动测试环境${NC}"
 echo "启动 PostgreSQL, Backend, Frontend..."
-docker-compose -f docker-compose.test.yml up -d
+docker compose -f docker-compose.test.yml up -d
 
 # 步骤2: 等待服务就绪
 echo -e "\n${YELLOW}步骤2: 等待服务就绪${NC}"
@@ -48,7 +48,7 @@ done
 
 if [ $attempt -eq $max_attempts ]; then
     echo -e "${RED}✗ 后端服务启动超时${NC}"
-    docker-compose -f docker-compose.test.yml logs backend-test
+    docker compose -f docker-compose.test.yml logs backend-test
     exit 1
 fi
 
@@ -60,7 +60,7 @@ if curl -f http://localhost:5174 > /dev/null 2>&1; then
     echo -e "${GREEN}✓ 前端服务已就绪${NC}"
 else
     echo -e "${RED}✗ 前端服务未就绪${NC}"
-    docker-compose -f docker-compose.test.yml logs frontend-test
+    docker compose -f docker-compose.test.yml logs frontend-test
     exit 1
 fi
 

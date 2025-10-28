@@ -26,7 +26,7 @@ services:
       dockerfile: Dockerfile
     container_name: resumopti-backend
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       NODE_ENV: development
       DB_HOST: postgres
@@ -34,6 +34,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: resumopti_dev
+      CORS_ORIGIN: http://localhost:5174
     depends_on:
       postgres:
         condition: service_healthy
@@ -50,9 +51,9 @@ services:
       dockerfile: Dockerfile
     container_name: resumopti-frontend
     ports:
-      - "5173:5173"
+      - "5174:5173"
     environment:
-      VITE_API_BASE_URL: http://localhost:3000/api/v1
+      VITE_API_BASE_URL: http://localhost:3001/api/v1
     volumes:
       - ./frontend:/app
       - /app/node_modules
